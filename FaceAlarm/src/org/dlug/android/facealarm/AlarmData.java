@@ -120,7 +120,7 @@ public class AlarmData extends NavigationActivity  implements OnItemClickListene
     	
     		 Toast.makeText(AlarmData.this, "등록 액티비티 이동!", Toast.LENGTH_SHORT).show();
     		 
-			 Intent intent = new Intent(AlarmData.this,AlarmSet.class);
+			 Intent intent = new Intent(AlarmData.this,AlarmModif.class);
     		
     		 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |Intent.FLAG_ACTIVITY_SINGLE_TOP);
     		
@@ -172,7 +172,7 @@ public class AlarmData extends NavigationActivity  implements OnItemClickListene
  }
  
  protected void setData(String time ){
-	 arrData.add(new MyData(R.drawable.clockv2,time));
+	 arrData.add(new MyData(R.drawable.sms,time));
 	 
  }
 

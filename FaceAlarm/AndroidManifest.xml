@@ -22,14 +22,11 @@
         <activity android:name=".FirstGroup"></activity>
         <activity android:name=".SecondGroup"></activity>
         <activity android:name=".AlarmData"></activity>
-        <activity android:name=".ShowAlarm"></activity>
-        <activity android:name="MyData"></activity>
-        <activity android:name=".AlarmSet"></activity>
         <activity android:name="NavigationActivity"></activity>
         <activity android:name="ViewCounselGroup"></activity>
-        <activity android:name="AlarmAdapter"></activity>
-        <activity android:name="org.dlug.android.facealarm.AlarmSetAdapter"></activity>
         <receiver android:name="org.dlug.android.facealarm.AlarmReceiver"></receiver>
+        <activity android:name="AlarmModif"></activity>
+        <activity android:name="AlarmSet"></activity>
     </application>
 
 </manifest>
