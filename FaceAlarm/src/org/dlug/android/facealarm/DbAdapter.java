@@ -107,7 +107,7 @@ public class DbAdapter {
 		return mCursor;
 	}
 		
-	public boolean updateBook(long rowID, String hour, String minutes, String repeat, String snooze, String sound, String type_s, String type_v){
+	public boolean updateBook(long rowID, int hour, int minutes, String repeat, int snooze, int sound, int type_s, int type_v){
 		ContentValues args = new ContentValues();
 		args.put(KEY_TIME_HOUR, hour);
 		args.put(KEY_TIME_MIN, minutes);

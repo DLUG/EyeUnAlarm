@@ -51,37 +51,12 @@ public class AlarmData extends NavigationActivity  implements OnItemClickListene
 	 protected static int msgTag= 0;
 	 protected static long id = 0;
 	 protected static int itemPosition = 0;
-	 protected static int setTag = 0;
 	 String tempAPM;
 	 final DbAdapter db = new DbAdapter(this);
 	 
 	 
 	 static final int MESSAGE_DIALOG_ID =0;
 	 
-	 /*
-	 public Handler chatHandler = new Handler(){
-    	 @Override
-    	 public void handleMessage(Message msg){
-    		
-    		 switch(msg.what){
-    		 	case 1:
-    		 		msgTag = 1; 
-    		 		Toast.makeText(AlarmData.this, "msg = 1", Toast.LENGTH_SHORT).show();
-    		 		 id = msg.arg1;
-    		 		break;
-    		 	case 2:
-    		 		msgTag = 0; 
-    		 		Toast.makeText(AlarmData.this, "msg = 0", Toast.LENGTH_SHORT).show();
-    		 		break;
-  
-    		 		
-    		 }
-    	 }
-    	 
-     };
-	 */
-	
-
  @Override
  public void onCreate(Bundle savedInstanceState) {
      super.onCreate(savedInstanceState);
@@ -98,7 +73,7 @@ public class AlarmData extends NavigationActivity  implements OnItemClickListene
      
      
      db.open();
-     //db.deleteAll();
+     
      // 앱을 재실행 했을때 리스트목록이 없어지는 것을 방지하기 위해 매번 db 전체를 뿌려준다.
 	 Cursor c = db.fetchAllBooks();
 	 
@@ -137,19 +112,16 @@ public class AlarmData extends NavigationActivity  implements OnItemClickListene
   @Override
  public void onPause(){
 	 super.onPause();
-	 /*
-	 SharedPreferences sp = getSharedPreferences("sp_name_edit_text",MODE_PRIVATE);
-	 arrData.add(new MyData(R.drawable.bluedol,sp.getString("sp_key_edit_text_value", "default")));
-	 */
+
  }
  
  @Override
  public void onResume(){
 	 super.onResume();
-	
-	 //AlarmSet activity에서 set버튼을 누른경우 msgTag = 1 로 변경 
+	 db.open();
+	 //AlarmModif activity에서 set버튼을 누른경우 msgTag = 1 로 변경 , 추가된 리스트아이템만 add
 	 if(msgTag == 1){
-		 db.open();
+	
 		 Cursor c = db.fetchBook(id);
 		 c.moveToFirst();
 		 
@@ -157,16 +129,30 @@ public class AlarmData extends NavigationActivity  implements OnItemClickListene
 		 setData(tempAPM + " " + pad(c.getInt(1))+ ":"+ pad(c.getInt(2)) );
 		 updateData();
 		 
-		 db.close();
+		
 		 msgTag = 0;
 	 }
-	
+	 //AlarmSet activity에서 set버튼을 누른경우 msgTag = 0 , 모든 리스트 갱신
+	 else
+	 {
+		 arrData.clear();
+	 	 Cursor c = db.fetchAllBooks();
+	 
+	 	 if(c.moveToFirst()){
+			 do{
+				 tempAPM = apm(c.getInt(1));
+				 setData(tempAPM + " "+ pad(c.getInt(1))+":"+pad(c.getInt(2)));
+				 updateData();
+			 }while(c.moveToNext());
+	 	 }
+		 updateData();
+	 }
+	db.close();
  }
  
 
  
  public void updateData(){
-	   //arrData.clear();
 	   adapter.notifyDataSetChanged();
 	 
  }
@@ -182,7 +168,6 @@ public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 	 Toast.makeText(getApplicationContext(), "ITEM CLICK = "+ position, Toast.LENGTH_SHORT).show();
 	 
 	 itemPosition = position;
-	 setTag = 1;
 	 
 	 Intent intent = new Intent(AlarmData.this,AlarmSet.class);
 		

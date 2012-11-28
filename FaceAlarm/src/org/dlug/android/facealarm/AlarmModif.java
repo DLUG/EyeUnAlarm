@@ -156,8 +156,6 @@ public class AlarmModif extends AlarmData {
 	      mMinute = calDateTime.get(Calendar.MINUTE);
 	      updateDisplay();
 	      
-	      //SharedPreferences
-	      sp = getSharedPreferences("sp_pref",MODE_PRIVATE);
 	      //releaseAlarm(AlarmSet.this);
 	      
 	      Noti = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
@@ -166,7 +164,7 @@ public class AlarmModif extends AlarmData {
 	      confirmBtn.setOnClickListener(new OnClickListener(){
 	    	  public void onClick(View v){
 	    		  //db save
-	    		  sound = sp.getInt("sp_sound", 00);
+	    		
 	 
 	    		  db.open();
 	    		  
@@ -191,18 +189,10 @@ public class AlarmModif extends AlarmData {
 	    	        Toast.LENGTH_SHORT).show();
 
 	    	      db.close();
-
-	    	      /*
-	    	      Message msg = new Message();
-	    	      msg.what = 1;
-	    	      msg.arg1 = (int) id;
-	    	      //msgTag = 1;
-	    	      chatHandler.sendMessage(msg);
-	    	      */
-	    	    
+	    	      
 	    	      msgTag = 1;
 	    	      
-	    	      //AlarmManager 설
+	    	      //AlarmManager 설정 
 	    	      setAlarm(AlarmModif.this,snooze);
 	    	      
 	    	      Intent intent = new Intent(AlarmModif.this,AlarmData.class);
@@ -219,13 +209,8 @@ public class AlarmModif extends AlarmData {
 	      cancelBtn.setOnClickListener(new OnClickListener(){
 	    	  public void onClick(View v){
 	    		
-	    		  /*
-	    		  Message msg = new Message();
-	    	      msg.what = 2;
-	    	     
-	    	      chatHandler.sendMessage(msg);
-	    		  */
 	    		  msgTag = 0;
+	    		  
 	    		 // releaseAlarm(AlarmSet.this);
 	    		  Intent intent = new Intent(AlarmModif.this,AlarmData.class);
 	    		  intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -247,53 +232,11 @@ public class AlarmModif extends AlarmData {
   public void onResume(){
 	  super.onResume();
 	  
-	  if(setTag == 0){
-		  
-		  
-	  }
-	  else
-	  {
-		
-		  /*
-	  //editSet();
-	  TextView snoozeTime = (TextView)findViewById(R.id.snoozeTime);
-	   
 	  
-	  db.open();
-	  Cursor c =  db.fetchAllBooks();
-	  
-	  int i=0;
-	  if(c.moveToFirst()){
-		 do{
-			 if(i<itemPosition)
-			 {}
-			else
-				 break;
-			 i++;
-		 }while(c.moveToNext());
-	  }
-	  
-	  mHour = c.getInt(1);
-	  mMinute = c.getInt(2);
-	  snooze = c.getInt(4);
-	  //sound = c.getInt(5);
-	  
-	  db.close();
-	  
-	  snoozeTime.setText(c.getInt(4));
-	 //apm(mHour)+ " " + pad(mHour) + ":" + pad(mMinute)
-	 */
-	  }
-	  
-  }
-  public void editSet(){
-	  TextView timeView = (TextView)findViewById(R.id.timeView);
-	  timeView.setText("am 11:00");
-	
   }
 
   	//알람 등록
-  	private void setAlarm(Context context, long second){
+ private void setAlarm(Context context, long second){
   
   		Toast.makeText(getApplicationContext(), "setAlarm()", Toast.LENGTH_SHORT).show();
 	
@@ -321,12 +264,12 @@ public class AlarmModif extends AlarmData {
 }
 
 //알람 해제 
-  	private void releaseAlarm(Context context){
-  		AlarmManager alarmManager = (AlarmManager)context.getSystemService(context.ALARM_SERVICE);
-  		Intent intent = new Intent(context,AlarmReceiver.class);
-  		PendingIntent pIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
-  		alarmManager.cancel(pIntent);
-  	}
+ private void releaseAlarm(Context context){
+	AlarmManager alarmManager = (AlarmManager)context.getSystemService(context.ALARM_SERVICE);
+	Intent intent = new Intent(context,AlarmReceiver.class);
+	PendingIntent pIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
+	alarmManager.cancel(pIntent);
+}
   
   	/*
  private PendingIntent pendingIntent() {
@@ -373,13 +316,7 @@ private TimePickerDialog.OnTimeSetListener mTimeSetListener =
 		new TimePickerDialog.OnTimeSetListener(){
 			
 	public void onTimeSet(TimePicker view, int hourOfDay, int minute){
-		/*
-		SharedPreferences.Editor editor = sp.edit();
-		editor.putInt("sp_time_hour", mHour);
-		editor.putInt("sp_time_minutes", mMinute);
-		editor.commit();
-		*/
-		
+
 		mHour = hourOfDay;
 		mMinute = minute;
 		updateDisplay();
@@ -480,9 +417,7 @@ private SeekBar.OnSeekBarChangeListener controlListener = new SeekBar.OnSeekBarC
 	
 	public void onStopTrackingTouch(SeekBar seekBar) {
 		// TODO Auto-generated method stub
-		SharedPreferences.Editor editor = sp.edit();
-		editor.putInt("sp_sound", soundTemp);
-		editor.commit();
+		sound = soundTemp;
 		//Toast.makeText(getParent(), "sound = " + soundTemp, Toast.LENGTH_SHORT).show();
 		
 	}
@@ -501,16 +436,16 @@ private SeekBar.OnSeekBarChangeListener controlListener = new SeekBar.OnSeekBarC
 
 public void DisplayTitle(Cursor c)
 {
-Toast.makeText(this,
-"id: " + c.getString(0) + "\n" +
-"HOUR: " + c.getString(1) + "\n" +
-"MIN: " + c.getString(2) + "\n" +
-"REPEAT: " + c.getString(3) +"\n"+
-"SNOOZE: " + c.getString(4) +"\n"+
-"SOUND: " + c.getString(5) + "\n" + 
-"TYPE_S: " + c.getString(6) +"\n"+
-"TYPE_M: " + c.getString(7) +"\n",
-Toast.LENGTH_LONG).show(); 
+	Toast.makeText(this,
+	"id: " + c.getString(0) + "\n" +
+	"HOUR: " + c.getString(1) + "\n" +
+	"MIN: " + c.getString(2) + "\n" +
+	"REPEAT: " + c.getString(3) +"\n"+
+	"SNOOZE: " + c.getString(4) +"\n"+
+	"SOUND: " + c.getString(5) + "\n" + 
+	"TYPE_S: " + c.getString(6) +"\n"+
+	"TYPE_M: " + c.getString(7) +"\n",
+	Toast.LENGTH_LONG).show(); 
 }
 
 }
