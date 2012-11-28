@@ -42,6 +42,7 @@ public class AlarmModif extends AlarmData {
    	SeekBar soundSeekbar;
    	ImageView typeToggle_s;
    	ImageView typeToggle_v;
+   	ImageView repeatToggle;
    	
 	SharedPreferences sp;
 	
@@ -55,8 +56,12 @@ public class AlarmModif extends AlarmData {
 	private int mMinute;
 	private int snooze;
 	private int sound;
+	private int toggle_s;
+	private int toggle_v;
+	private int repeat;
 	int snoTemp;
 	int soundTemp;
+	int cnt=0;
 	
 	//AlarmManager
 	GregorianCalendar currentCalendar = new GregorianCalendar(TimeZone.getTimeZone("GMT+09:00"));
@@ -90,19 +95,77 @@ public class AlarmModif extends AlarmData {
 	      typeTxt = (TextView)findViewById(R.id.typeTxt);
 	      typeTxt.setText("type");
 	      timeView = (TextView)findViewById(R.id.timeView);
-	      timeView.setText(new StringBuilder().append(apm(currentCalendar.get(Calendar.HOUR)))
-	    		  .append(pad(currentCalendar.get(Calendar.HOUR)))
-	    		  .append(":").append(pad(currentCalendar.get(Calendar.MINUTE))));
 	      snoozeTime = (TextView)findViewById(R.id.snoozeTime);
-	      snoozeTime.setText("5minutes");
 	      soundSeekbar = (SeekBar)findViewById(R.id.soundBar);
 	  	  soundSeekbar.setMax(100);
    	  	  soundSeekbar.incrementProgressBy(10);
    	  	  soundSeekbar.setOnSeekBarChangeListener(controlListener);
-   	  	  ImageView typeToggle_s = (ImageView)findViewById(R.id.typeToggle_s);
+   	  	  typeToggle_s = (ImageView)findViewById(R.id.typeToggle_s);
    	  	  typeToggle_s.setImageResource(R.drawable.on);
-   	  	  ImageView typeToggle_v = (ImageView)findViewById(R.id.typeToggle_v);
+   	  	  toggle_s = 1;
+   	  	  typeToggle_v = (ImageView)findViewById(R.id.typeToggle_v);
    	  	  typeToggle_v.setImageResource(R.drawable.on);
+   	  	  toggle_v = 1;
+   	  	  repeatToggle = (ImageView)findViewById(R.id.repeatToggle);
+   	  	  repeatToggle.setImageResource(R.drawable.on);
+   	  	  repeat = 1;
+   	  	  
+   	  	  typeToggle_s.setOnClickListener(new OnClickListener(){
+
+	  		public void onClick(View v) {
+				cnt++;
+				// TODO Auto-generated method stub
+				if(cnt%2 ==0){
+					typeToggle_s.setImageResource(R.drawable.on);
+					toggle_s = 1;
+					cnt = 0;
+				}
+				else
+				{
+					typeToggle_s.setImageResource(R.drawable.off);
+					toggle_s = 0;
+				}
+			}
+  	
+   	  	  });
+   	  	  
+   	  	typeToggle_v.setOnClickListener(new OnClickListener(){
+
+	  		public void onClick(View v) {
+				cnt++;
+				// TODO Auto-generated method stub
+				if(cnt%2 ==0){
+					typeToggle_v.setImageResource(R.drawable.on);
+					toggle_v = 1;
+					cnt = 0;
+				}
+				else
+				{
+					typeToggle_v.setImageResource(R.drawable.off);
+					toggle_v = 0;
+				}
+			}
+  	
+   	  	  });
+   	  	
+   	  	repeatToggle.setOnClickListener(new OnClickListener(){
+
+	  		public void onClick(View v) {
+				cnt++;
+				// TODO Auto-generated method stub
+				if(cnt%2 ==0){
+					repeatToggle.setImageResource(R.drawable.on);
+					repeat = 1;
+					cnt = 0;
+				}
+				else
+				{
+					repeatToggle.setImageResource(R.drawable.off);
+					repeat = 0;
+				}
+			}
+	
+	  	  });
    	  	  
 	     //layout 리스너
 	      LinearLayout timeLyt = (LinearLayout)findViewById(R.id.layout_time);
@@ -172,11 +235,11 @@ public class AlarmModif extends AlarmData {
 	    	      id = db.createBook(   		  
 	    	    		  mHour,
 	    	    		  mMinute,
-	    	    		  "always",
+	    	    		  repeat,
 	    	    		  snooze,
 	    	    		  sound,
-	    	    		  1,
-	    	    		  1
+	    	    		  toggle_s,
+	    	    		  toggle_v
 	    	    		  );
 	    	      
 	    	      Cursor c = db.fetchBook(id);
@@ -232,8 +295,18 @@ public class AlarmModif extends AlarmData {
   public void onResume(){
 	  super.onResume();
 	  
-	  
-  }
+	  timeView.setText(new StringBuilder().append(apm(currentCalendar.get(Calendar.HOUR)))
+    		  .append(pad(currentCalendar.get(Calendar.HOUR)))
+    		  .append(":").append(pad(currentCalendar.get(Calendar.MINUTE))));
+	  snoozeTime.setText("5minutes");
+	  soundSeekbar.setProgress(10);
+	  typeToggle_s.setImageResource(R.drawable.on);
+	  toggle_s = 1;
+	  typeToggle_v.setImageResource(R.drawable.on);
+	  toggle_v = 1;
+	  repeatToggle.setImageResource(R.drawable.on);
+	  repeat = 1;
+}
 
   	//알람 등록
  private void setAlarm(Context context, long second){
@@ -389,6 +462,7 @@ protected Dialog onCreateDialog(int id){
 					// TODO Auto-generated method stub
 					final ImageView repeatToggle = (ImageView)findViewById(R.id.repeatToggle);
                	  	repeatToggle.setImageResource(R.drawable.on);
+               	  	repeat = 1;
 					dialog.dismiss();
 				}
 			})

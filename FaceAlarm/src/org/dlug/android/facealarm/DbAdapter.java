@@ -33,7 +33,7 @@ public class DbAdapter {
 	
 	private static final String DATABASE_CREATE =
 			"CREATE TABLE data (_id integer primary key autoincrement,"+
-			"hour integer not null, minutes integer not null, repeat text not null, snooze integer not null, sound integer not null, type_s integer not null, type_v integer not null)";
+			"hour integer not null, minutes integer not null, repeat integer not null, snooze integer not null, sound integer not null, type_s integer not null, type_v integer not null)";
 	
 	private static final String DATABASE_NAME = "setdata.db";
 	private static final String DATABASE_TABLE = "data";
@@ -76,7 +76,7 @@ public class DbAdapter {
 		mDbHelper.close();
 	}
 	
-	public long createBook(int hour,  int minutes, String repeat, int snooze, int sound, int type_s, int type_v){
+	public long createBook(int hour,  int minutes, int repeat, int snooze, int sound, int type_s, int type_v){
 		ContentValues initialValues = new ContentValues();
 		initialValues.put(KEY_TIME_HOUR,hour);
 		initialValues.put(KEY_TIME_MIN,minutes);
@@ -107,7 +107,7 @@ public class DbAdapter {
 		return mCursor;
 	}
 		
-	public boolean updateBook(long rowID, int hour, int minutes, String repeat, int snooze, int sound, int type_s, int type_v){
+	public boolean updateBook(long rowID, int hour, int minutes, int repeat, int snooze, int sound, int type_s, int type_v){
 		ContentValues args = new ContentValues();
 		args.put(KEY_TIME_HOUR, hour);
 		args.put(KEY_TIME_MIN, minutes);
