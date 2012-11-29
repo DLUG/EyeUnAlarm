@@ -66,9 +66,6 @@ public class AlarmSet extends AlarmData {
 	//AlarmManager
 	GregorianCalendar currentCalendar = new GregorianCalendar(TimeZone.getTimeZone("GMT+09:00"));
 	
-	private NotificationManager Noti;
-	
-		
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -217,10 +214,7 @@ public class AlarmSet extends AlarmData {
 	      updateDisplay();
 	      
 	      //releaseAlarm(AlarmSet.this);
-	      
-	      Noti = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-	      
-	     
+
 	      confirmBtn.setOnClickListener(new OnClickListener(){
 	    	  public void onClick(View v){
 	    		  //db save
@@ -370,25 +364,6 @@ public class AlarmSet extends AlarmData {
   		alarmManager.cancel(pIntent);
   	}
   
-  	/*
- private PendingIntent pendingIntent() {
- 	Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class);
- 	PendingIntent pi = PendingIntent.getBroadcast(this, 0, intent, 0);
- 	
- 	int icon = R.drawable.bluedol;
- 	String tickerText = "알람테스트";
- 	long when = System.currentTimeMillis();
- 	
- 	Notification notifi = new Notification(icon, tickerText, when);
- 	notifi.sound = Uri.parse("file:/system.media.audio/ringtones/ringer.mp3");
- 	//notifi.sound = Uri.withAppendedPath(Audio.Media.INTERNAL_CONTENT_URI, "6");
- 	notifi.vibrate = new long[]{1000};
- 	notifi.setLatestEventInfo(AlarmSet.this, "AlarmTest", "제발 울려라!!", pi);
- 	Noti.notify(1234, notifi);
- 	
- 	return pi;
- }
- */
 
 private void updateDisplay(){
 	

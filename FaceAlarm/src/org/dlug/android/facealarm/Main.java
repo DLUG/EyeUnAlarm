@@ -30,7 +30,7 @@ public class Main extends android.app.TabActivity {
         intent = new Intent().setClass(this,ViewCounselGroup.class);
         
         spec = tabhost.newTabSpec("FirstGroup").setIndicator("¾Ë¶÷ ", 
-        		getResources().getDrawable(R.drawable.places))
+        		getResources().getDrawable(R.drawable.googleicon))
         		.setContent(intent);
         
         tabhost.addTab(spec);

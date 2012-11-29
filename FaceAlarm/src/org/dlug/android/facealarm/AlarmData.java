@@ -158,7 +158,7 @@ public class AlarmData extends NavigationActivity  implements OnItemClickListene
  }
  
  protected void setData(String time ){
-	 arrData.add(new MyData(R.drawable.sms,time));
+	 arrData.add(new MyData(R.drawable.places,time));
 	 
  }
 

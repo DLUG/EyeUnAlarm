@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
@@ -16,6 +17,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -65,8 +67,7 @@ public class AlarmModif extends AlarmData {
 	
 	//AlarmManager
 	GregorianCalendar currentCalendar = new GregorianCalendar(TimeZone.getTimeZone("GMT+09:00"));
-	
-	private NotificationManager Noti;
+	long alarmTime;
 	
 		
 	/** Called when the activity is first created. */
@@ -75,7 +76,7 @@ public class AlarmModif extends AlarmData {
 	    super.onCreate(savedInstanceState);
 	    setContentView(R.layout.alarm_modif);
 	
-	
+	      //releaseAlarm(AlarmModif.this);
 	      //DbAdapter클래스 인스턴스 생성 
 	      final DbAdapter db = new DbAdapter(this);
 	      
@@ -221,8 +222,6 @@ public class AlarmModif extends AlarmData {
 	      
 	      //releaseAlarm(AlarmSet.this);
 	      
-	      Noti = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-	      
 	     
 	      confirmBtn.setOnClickListener(new OnClickListener(){
 	    	  public void onClick(View v){
@@ -329,11 +328,12 @@ public class AlarmModif extends AlarmData {
 		Log.i("TAG",gregorianCalendar.getTimeInMillis()+":");
 	}
 	
+	alarmTime = gregorianCalendar.getTimeInMillis();
 	Intent intent = new Intent(context, AlarmReceiver.class);
 	
 	PendingIntent pIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 	
-	alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,gregorianCalendar.getTimeInMillis(), snooze*1000*60, pIntent);
+	alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,gregorianCalendar.getTimeInMillis(), 24*1000*60*60, pIntent);
 }
 
 //알람 해제 
@@ -343,26 +343,7 @@ public class AlarmModif extends AlarmData {
 	PendingIntent pIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
 	alarmManager.cancel(pIntent);
 }
-  
-  	/*
- private PendingIntent pendingIntent() {
- 	Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class);
- 	PendingIntent pi = PendingIntent.getBroadcast(this, 0, intent, 0);
- 	
- 	int icon = R.drawable.bluedol;
- 	String tickerText = "알람테스트";
- 	long when = System.currentTimeMillis();
- 	
- 	Notification notifi = new Notification(icon, tickerText, when);
- 	notifi.sound = Uri.parse("file:/system.media.audio/ringtones/ringer.mp3");
- 	//notifi.sound = Uri.withAppendedPath(Audio.Media.INTERNAL_CONTENT_URI, "6");
- 	notifi.vibrate = new long[]{1000};
- 	notifi.setLatestEventInfo(AlarmSet.this, "AlarmTest", "제발 울려라!!", pi);
- 	Noti.notify(1234, notifi);
- 	
- 	return pi;
- }
- */
+
 
 private void updateDisplay(){
 	
