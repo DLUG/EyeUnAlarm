@@ -26,11 +26,10 @@
         android:cacheColorHint="#00000000"
       />
     
-    <Button
+    <ImageView
         android:id="@+id/alarm_set"
         android:layout_width="100dp"
         android:layout_height="100dp"
-      
         android:background="@drawable/androidset"  />
 
 </LinearLayout>

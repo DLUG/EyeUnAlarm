@@ -27,6 +27,8 @@ import android.view.View;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
@@ -53,7 +55,8 @@ public class AlarmData extends NavigationActivity  implements OnItemClickListene
 	 protected static int itemPosition = 0;
 	 String tempAPM;
 	 final DbAdapter db = new DbAdapter(this);
-	 
+	 ImageView setBtn;
+	 Animation ani;
 	 
 	 static final int MESSAGE_DIALOG_ID =0;
 	 
@@ -63,7 +66,7 @@ public class AlarmData extends NavigationActivity  implements OnItemClickListene
      setContentView(R.layout.alarm_data);
      
      //알람 등록 버튼 
-     Button setBtn = (Button)findViewById(R.id.alarm_set);    
+     setBtn = (ImageView)findViewById(R.id.alarm_set);    
      list = (ListView)findViewById(R.id.list);
      
      
@@ -85,14 +88,16 @@ public class AlarmData extends NavigationActivity  implements OnItemClickListene
 		 }while(c.moveToNext());
 	 }
 	 db.close();
-  
-
+	 
+	//애니메이션 
+	ani = AnimationUtils.loadAnimation(getParent(), R.layout.animation);
+	 
     list.setOnItemClickListener(this);
      
      setBtn.setOnClickListener(new OnClickListener(){
     	 
     	 public void onClick(View v){
-    	
+
     		 Toast.makeText(AlarmData.this, "등록 액티비티 이동!", Toast.LENGTH_SHORT).show();
     		 
 			 Intent intent = new Intent(AlarmData.this,AlarmModif.class);
@@ -118,6 +123,9 @@ public class AlarmData extends NavigationActivity  implements OnItemClickListene
  @Override
  public void onResume(){
 	 super.onResume();
+	 
+	 setBtn.startAnimation(ani);
+	 
 	 db.open();
 	 //AlarmModif activity에서 set버튼을 누른경우 msgTag = 1 로 변경 , 추가된 리스트아이템만 add
 	 if(msgTag == 1){
