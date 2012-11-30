@@ -102,10 +102,10 @@ public class AlarmModif extends AlarmData {
    	  	  soundSeekbar.incrementProgressBy(10);
    	  	  soundSeekbar.setOnSeekBarChangeListener(controlListener);
    	  	  typeToggle_s = (ImageView)findViewById(R.id.typeToggle_s);
-   	  	  typeToggle_s.setImageResource(R.drawable.on);
+   	  	  typeToggle_s.setImageResource(R.drawable.btn_bgm_final);
    	  	  toggle_s = 1;
    	  	  typeToggle_v = (ImageView)findViewById(R.id.typeToggle_v);
-   	  	  typeToggle_v.setImageResource(R.drawable.on);
+   	  	  typeToggle_v.setImageResource(R.drawable.btn_vibration_final);
    	  	  toggle_v = 1;
    	  	  repeatToggle = (ImageView)findViewById(R.id.repeatToggle);
    	  	  repeatToggle.setImageResource(R.drawable.on);
@@ -117,7 +117,7 @@ public class AlarmModif extends AlarmData {
 				cnt++;
 				// TODO Auto-generated method stub
 				if(cnt%2 ==0){
-					typeToggle_s.setImageResource(R.drawable.on);
+					typeToggle_s.setImageResource(R.drawable.btn_bgm_final);
 					toggle_s = 1;
 					cnt = 0;
 				}
@@ -136,7 +136,7 @@ public class AlarmModif extends AlarmData {
 				cnt++;
 				// TODO Auto-generated method stub
 				if(cnt%2 ==0){
-					typeToggle_v.setImageResource(R.drawable.on);
+					typeToggle_v.setImageResource(R.drawable.btn_vibration_final);
 					toggle_v = 1;
 					cnt = 0;
 				}
@@ -299,9 +299,9 @@ public class AlarmModif extends AlarmData {
     		  .append(":").append(pad(currentCalendar.get(Calendar.MINUTE))));
 	  snoozeTime.setText("5minutes");
 	  soundSeekbar.setProgress(10);
-	  typeToggle_s.setImageResource(R.drawable.on);
+	  typeToggle_s.setImageResource(R.drawable.btn_bgm_final);
 	  toggle_s = 1;
-	  typeToggle_v.setImageResource(R.drawable.on);
+	  typeToggle_v.setImageResource(R.drawable.btn_vibration_final);
 	  toggle_v = 1;
 	  repeatToggle.setImageResource(R.drawable.on);
 	  repeat = 1;

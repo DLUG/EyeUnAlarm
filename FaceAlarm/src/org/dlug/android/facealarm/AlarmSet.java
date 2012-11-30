@@ -111,7 +111,7 @@ public class AlarmSet extends AlarmData {
 				cnt++;
 				// TODO Auto-generated method stub
 				if(cnt%2 ==0){
-					typeToggle_s.setImageResource(R.drawable.on);
+					typeToggle_s.setImageResource(R.drawable.btn_bgm_final);
 					toggle_s = 1;
 					cnt = 0;
 				}
@@ -130,7 +130,7 @@ public class AlarmSet extends AlarmData {
 				cnt++;
 				// TODO Auto-generated method stub
 				if(cnt%2 ==0){
-					typeToggle_v.setImageResource(R.drawable.on);
+					typeToggle_v.setImageResource(R.drawable.btn_vibration_final);
 					toggle_v = 1;
 					cnt = 0;
 				}
@@ -309,11 +309,11 @@ public class AlarmSet extends AlarmData {
 	  else
 		  repeatToggle.setImageResource(R.drawable.off);
 	  if(toggle_s == 1)
-		  typeToggle_s.setImageResource(R.drawable.on);
+		  typeToggle_s.setImageResource(R.drawable.btn_bgm_final);
 	  else
 		  typeToggle_s.setImageResource(R.drawable.off);
 	  if(toggle_v == 1)
-		  typeToggle_v.setImageResource(R.drawable.on);
+		  typeToggle_v.setImageResource(R.drawable.btn_vibration_final);
 	  else
 		  typeToggle_v.setImageResource(R.drawable.off);
 	  

@@ -32,7 +32,7 @@ public class Main extends android.app.TabActivity {
         spec = tabhost.newTabSpec("FirstGroup").setIndicator("¾Ë¶÷ ", 
         		getResources().getDrawable(R.drawable.googleicon))
         		.setContent(intent);
-        
+
         tabhost.addTab(spec);
         
         
@@ -43,7 +43,7 @@ public class Main extends android.app.TabActivity {
         		.setContent(intent);
         
         tabhost.addTab(spec);
-        
+      
         tabhost.setCurrentTab(0);
      
     }

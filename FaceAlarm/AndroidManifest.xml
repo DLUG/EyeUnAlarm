@@ -21,7 +21,7 @@
         </activity>
         <activity android:name=".FirstGroup"></activity>
         <activity android:name=".SecondGroup"></activity>
-        <activity android:name=".AlarmData"></activity>
+        <activity android:name=".AlarmData"> </activity>
         <activity android:name="NavigationActivity"></activity>
         <activity android:name="ViewCounselGroup"></activity>
         <receiver android:name="org.dlug.android.facealarm.AlarmReceiver"></receiver>
