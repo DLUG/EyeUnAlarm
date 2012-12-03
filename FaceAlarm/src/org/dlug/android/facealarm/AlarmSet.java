@@ -65,6 +65,8 @@ public class AlarmSet extends AlarmData {
 	
 	//AlarmManager
 	GregorianCalendar currentCalendar = new GregorianCalendar(TimeZone.getTimeZone("GMT+09:00"));
+	long alarmTime;
+	GregorianCalendar gregorianCalendar;
 	
 	/** Called when the activity is first created. */
 	@Override
@@ -218,7 +220,7 @@ public class AlarmSet extends AlarmData {
 	      confirmBtn.setOnClickListener(new OnClickListener(){
 	    	  public void onClick(View v){
 	    		  //db save
-	    		  
+	    		  int state;
 	    		  db.open();
 	    		  
 	    		  Cursor c = db.fetchAllBooks();
@@ -231,23 +233,40 @@ public class AlarmSet extends AlarmData {
 	    			  i++;
 	    		  }
 	    		  id = c.getInt(0);
-	    		  
-	    	      db.updateBook(id, mHour, mMinute, repeat, snooze, sound, toggle_s, toggle_v);
+	    		  state = c.getInt(8);
+	    	      db.updateBook(id, mHour, mMinute, repeat, snooze, sound, toggle_s, toggle_v,state);
 	    	      
 
 	    	      db.close();
 	    	    
 	    	      msgTag = 0;
+	    	  	
+	    	    //설정 일시 
+	    	  	gregorianCalendar = new GregorianCalendar(TimeZone.getTimeZone("GMT+09:00"));
+	    	        
+	    	    int currentYY = currentCalendar.get(Calendar.YEAR);
+	    	  	int currentMM = currentCalendar.get(Calendar.MONTH);
+	    	  	int currentDD = currentCalendar.get(Calendar.DAY_OF_MONTH);
+	    	  	
+	    	  	gregorianCalendar.set(currentYY, currentMM, currentDD, mHour, mMinute, 00);
+
+	    	  	if(gregorianCalendar.getTimeInMillis() < currentCalendar.getTimeInMillis()){
+	    	  		gregorianCalendar.set(currentYY, currentMM, currentDD+1, mHour, mMinute,00);
+	    	  		Log.i("TAG",gregorianCalendar.getTimeInMillis()+":");
+	    	  	}
+	    	  	
+	    	  	alarmTime = gregorianCalendar.getTimeInMillis();
 	    	      
-	    	      //AlarmManager 설
-	    	      setAlarm(AlarmSet.this,snooze);
-	    	      
-	    	      Intent intent = new Intent(AlarmSet.this,AlarmData.class);
-	    	      
-	  		  	  intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |Intent.FLAG_ACTIVITY_SINGLE_TOP);
-	  		  	 
-	  		  	  goFreshHistory("AlarmData",intent);
-	  		  	 
+    	  	  //AlarmManager 설정
+	    	  if(state!=0)
+    	      setAlarm(AlarmSet.this,alarmTime,id);
+	    	      	      
+    	      Intent intent = new Intent(AlarmSet.this,AlarmData.class);
+    	      
+  		  	  intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |Intent.FLAG_ACTIVITY_SINGLE_TOP);
+  		  	 
+  		  	  goFreshHistory("AlarmData",intent);
+  		  	 
 	    	  }
 
 	    	  
@@ -327,43 +346,6 @@ public class AlarmSet extends AlarmData {
 	  timeView.setText("am 11:00");
 	
   }
-
-  	//알람 등록
-  	private void setAlarm(Context context, long second){
-  
-  		Toast.makeText(getApplicationContext(), "setAlarm()", Toast.LENGTH_SHORT).show();
-	
-	AlarmManager alarmManager = (AlarmManager)context.getSystemService(context.ALARM_SERVICE);
-	
-	//설정 일시 
-	GregorianCalendar gregorianCalendar = new GregorianCalendar(TimeZone.getTimeZone("GMT+09:00"));
-      
-    int currentYY = currentCalendar.get(Calendar.YEAR);
-	int currentMM = currentCalendar.get(Calendar.MONTH);
-	int currentDD = currentCalendar.get(Calendar.DAY_OF_MONTH);
-	
-	gregorianCalendar.set(currentYY, currentMM, currentDD, mHour, mMinute, 00);
-
-	if(gregorianCalendar.getTimeInMillis() < currentCalendar.getTimeInMillis()){
-		gregorianCalendar.set(currentYY, currentMM, currentDD+1, mHour, mMinute,00);
-		Log.i("TAG",gregorianCalendar.getTimeInMillis()+":");
-	}
-	
-	Intent intent = new Intent(context, AlarmReceiver.class);
-	
-	PendingIntent pIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-	
-	alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,gregorianCalendar.getTimeInMillis(), snooze*1000*60, pIntent);
-}
-
-//알람 해제 
-  	private void releaseAlarm(Context context){
-  		AlarmManager alarmManager = (AlarmManager)context.getSystemService(context.ALARM_SERVICE);
-  		Intent intent = new Intent(context,AlarmReceiver.class);
-  		PendingIntent pIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
-  		alarmManager.cancel(pIntent);
-  	}
-  
 
 private void updateDisplay(){
 	

@@ -7,8 +7,10 @@ import java.util.Calendar;
 import org.dlug.android.facealarm.R;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -57,6 +59,7 @@ public class AlarmData extends NavigationActivity  implements OnItemClickListene
 	 final DbAdapter db = new DbAdapter(this);
 	 ImageView setBtn;
 	 Animation ani;
+	 int reqcode=0;
 	 
 	 static final int MESSAGE_DIALOG_ID =0;
 	 
@@ -68,7 +71,6 @@ public class AlarmData extends NavigationActivity  implements OnItemClickListene
      //알람 등록 버튼 
      setBtn = (ImageView)findViewById(R.id.alarm_set);    
      list = (ListView)findViewById(R.id.list);
-     
      
      adapter = new AlarmAdapter(AlarmData.this,arrData);
      list.setAdapter(adapter);
@@ -105,7 +107,7 @@ public class AlarmData extends NavigationActivity  implements OnItemClickListene
     		 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |Intent.FLAG_ACTIVITY_SINGLE_TOP);
     		
     		 goNextHistory("AlarmSet",intent);
-    		 
+    		
     	 }
     	 
     	 
@@ -166,7 +168,7 @@ public class AlarmData extends NavigationActivity  implements OnItemClickListene
  }
  
  protected void setData(String time ){
-	 arrData.add(new MyData(R.drawable.btn_sound_final,time));
+	 arrData.add(new MyData(R.drawable.alarm,time));
 	 
  }
 
@@ -236,7 +238,11 @@ protected void DialogMessage(final int position){
 			db.close();
 			
 			arrData.remove(position);
-			updateData();	
+			updateData();
+			
+			releaseAlarm(AlarmData.this,tempId);
+			
+			
 		}
 		
 		}).setNegativeButton("No",
@@ -251,6 +257,27 @@ protected void DialogMessage(final int position){
 	alert.show();
 	
 }
+	//알람 등록
+void setAlarm(Context context, long second, long dbId){
+
+	Toast.makeText(getApplicationContext(), "setAlarm()", Toast.LENGTH_SHORT).show();
+	
+	AlarmManager alarmManager = (AlarmManager)context.getSystemService(context.ALARM_SERVICE);
+	Intent intent = new Intent(context, AlarmReceiver.class);
+	PendingIntent pIntent = PendingIntent.getBroadcast(context, (int) dbId, intent,
+														PendingIntent.FLAG_UPDATE_CURRENT);
+	alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,second, 24*1000*60*60, pIntent);
+}
+
+//알람 해제 
+void releaseAlarm(Context context, long dbId){
+	AlarmManager alarmManager = (AlarmManager)context.getSystemService(context.ALARM_SERVICE);
+	Intent intent = new Intent(context,AlarmReceiver.class);
+	PendingIntent pIntent = PendingIntent.getBroadcast(context, (int) dbId, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+	alarmManager.cancel(pIntent);
+}
+
+
 
 
 }

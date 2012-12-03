@@ -67,6 +67,7 @@ public class AlarmModif extends AlarmData {
 	
 	//AlarmManager
 	GregorianCalendar currentCalendar = new GregorianCalendar(TimeZone.getTimeZone("GMT+09:00"));
+	GregorianCalendar gregorianCalendar;
 	long alarmTime;
 	
 		
@@ -227,7 +228,7 @@ public class AlarmModif extends AlarmData {
 	    	  public void onClick(View v){
 	    		  //db save
 	    		
-	 
+	    		  
 	    		  db.open();
 	    		  
 	    	 
@@ -238,7 +239,8 @@ public class AlarmModif extends AlarmData {
 	    	    		  snooze,
 	    	    		  sound,
 	    	    		  toggle_s,
-	    	    		  toggle_v
+	    	    		  toggle_v,
+	    	    		  1
 	    	    		  );
 	    	      
 	    	      Cursor c = db.fetchBook(id);
@@ -254,8 +256,24 @@ public class AlarmModif extends AlarmData {
 	    	      
 	    	      msgTag = 1;
 	    	      
+	    	    //설정 일시 
+	    	  	gregorianCalendar = new GregorianCalendar(TimeZone.getTimeZone("GMT+09:00"));
+	    	        
+	    	      int currentYY = currentCalendar.get(Calendar.YEAR);
+	    	  	int currentMM = currentCalendar.get(Calendar.MONTH);
+	    	  	int currentDD = currentCalendar.get(Calendar.DAY_OF_MONTH);
+	    	  	
+	    	  	gregorianCalendar.set(currentYY, currentMM, currentDD, mHour, mMinute, 00);
+
+	    	  	if(gregorianCalendar.getTimeInMillis() < currentCalendar.getTimeInMillis()){
+	    	  		gregorianCalendar.set(currentYY, currentMM, currentDD+1, mHour, mMinute,00);
+	    	  		Log.i("TAG",gregorianCalendar.getTimeInMillis()+":");
+	    	  	}
+	    	  	
+	    	  	alarmTime = gregorianCalendar.getTimeInMillis();
+	    	      
 	    	      //AlarmManager 설정 
-	    	      setAlarm(AlarmModif.this,snooze);
+	    	      setAlarm(AlarmModif.this,alarmTime, id);
 	    	      
 	    	      Intent intent = new Intent(AlarmModif.this,AlarmData.class);
 	    	      
@@ -305,43 +323,6 @@ public class AlarmModif extends AlarmData {
 	  toggle_v = 1;
 	  repeatToggle.setImageResource(R.drawable.on);
 	  repeat = 1;
-}
-
-  	//알람 등록
- private void setAlarm(Context context, long second){
-  
-  		Toast.makeText(getApplicationContext(), "setAlarm()", Toast.LENGTH_SHORT).show();
-	
-	AlarmManager alarmManager = (AlarmManager)context.getSystemService(context.ALARM_SERVICE);
-	
-	//설정 일시 
-	GregorianCalendar gregorianCalendar = new GregorianCalendar(TimeZone.getTimeZone("GMT+09:00"));
-      
-    int currentYY = currentCalendar.get(Calendar.YEAR);
-	int currentMM = currentCalendar.get(Calendar.MONTH);
-	int currentDD = currentCalendar.get(Calendar.DAY_OF_MONTH);
-	
-	gregorianCalendar.set(currentYY, currentMM, currentDD, mHour, mMinute, 00);
-
-	if(gregorianCalendar.getTimeInMillis() < currentCalendar.getTimeInMillis()){
-		gregorianCalendar.set(currentYY, currentMM, currentDD+1, mHour, mMinute,00);
-		Log.i("TAG",gregorianCalendar.getTimeInMillis()+":");
-	}
-	
-	alarmTime = gregorianCalendar.getTimeInMillis();
-	Intent intent = new Intent(context, AlarmReceiver.class);
-	
-	PendingIntent pIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-	
-	alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,gregorianCalendar.getTimeInMillis(), 24*1000*60*60, pIntent);
-}
-
-//알람 해제 
- private void releaseAlarm(Context context){
-	AlarmManager alarmManager = (AlarmManager)context.getSystemService(context.ALARM_SERVICE);
-	Intent intent = new Intent(context,AlarmReceiver.class);
-	PendingIntent pIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
-	alarmManager.cancel(pIntent);
 }
 
 
