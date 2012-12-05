@@ -12,6 +12,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Vibrator;
 import android.provider.MediaStore.Audio;
+import android.util.Log;
 import android.widget.Toast;
 
 public class AlarmReceiver extends BroadcastReceiver {
@@ -19,11 +20,11 @@ public class AlarmReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 	    // TODO Auto-generated method stub
-		int Id;
+		int Id=0;
 		
 		//broadcast sender id 
 		Id = intent.getFlags();
-		
+		Log.i("adsf","alarmReceiver : "+Id);
 		Toast.makeText(context, "일어나라! 알람이다! id = "+ Id,Toast.LENGTH_SHORT).show();
 				
 		

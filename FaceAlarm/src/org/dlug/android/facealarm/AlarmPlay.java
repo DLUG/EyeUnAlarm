@@ -55,7 +55,7 @@ public class AlarmPlay extends Activity implements OnClickListener, OnCompletion
 	    Intent intent = getIntent();
 	    Id =  intent.getFlags();
 	    db.open();
-	    Log.i("adsf","slo : "+Id);
+	    Log.i("adsf","alarmPlay : "+Id);
 	    Cursor c = db.fetchBook(Id);
 	    c.moveToFirst();
 	    

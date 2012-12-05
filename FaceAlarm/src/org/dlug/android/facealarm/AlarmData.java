@@ -24,6 +24,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.SyncStateContract.Constants;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnLongClickListener;
@@ -80,7 +81,7 @@ public class AlarmData extends NavigationActivity  implements OnItemClickListene
      
      
      db.open();
-     db.deleteAll();
+     
      
      // 앱을 재실행 했을때 리스트목록이 없어지는 것을 방지하기 위해 매번 db 전체를 뿌려준다.
 	 Cursor c = db.fetchAllBooks();
@@ -267,9 +268,12 @@ void setAlarm(Context context, long second, long dbId){
 	AlarmManager alarmManager = (AlarmManager)context.getSystemService(context.ALARM_SERVICE);
 	Intent intent = new Intent(context, AlarmReceiver.class);
 	intent.setFlags((int) dbId);
+	
 	PendingIntent pIntent = PendingIntent.getBroadcast(context, (int) dbId, intent,
 														PendingIntent.FLAG_UPDATE_CURRENT);
+	Log.i("adsf","alarmData : "+dbId);
 	alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,second, 24*1000*60*60, pIntent);
+
 }
 
 //알람 해제 
