@@ -39,8 +39,10 @@ public class AlarmModif extends AlarmData {
    	TextView soundTxt;
    	TextView timeTxt;
    	TextView typeTxt;
+   	TextView eyesTxt;
    	TextView timeView;
    	TextView snoozeTime;
+   	TextView eyesTime;
    	SeekBar soundSeekbar;
    	ImageView typeToggle_s;
    	ImageView typeToggle_v;
@@ -52,17 +54,20 @@ public class AlarmModif extends AlarmData {
 	static final int TIME_DIALOG_ID = 0;
 	static final int SNOOZE_DIALOG_ID = 1;
 	static final int REPEAT_DIALOG_ID =4;
+	static final int EYES_DIALOG_ID = 5;
 	
 	//시간,스누즈,타입,사운드,반복 
 	private int mHour;
 	private int mMinute;
 	private int snooze;
 	private int sound;
+	private int eye;
 	private int toggle_s;
 	private int toggle_v;
 	private int repeat;
 	int snoTemp;
 	int soundTemp;
+	int eyeTemp;
 	int cnt=0;
 	
 	//AlarmManager
@@ -96,12 +101,16 @@ public class AlarmModif extends AlarmData {
 	      timeTxt.setText("알람 시간");
 	      typeTxt = (TextView)findViewById(R.id.typeTxt);
 	      typeTxt.setText("type");
+	      eyesTxt = (TextView)findViewById(R.id.eyesTxt);
+	      eyesTxt.setText("eyes time");
+	      
 	      timeView = (TextView)findViewById(R.id.timeView);
 	      snoozeTime = (TextView)findViewById(R.id.snoozeTime);
 	      soundSeekbar = (SeekBar)findViewById(R.id.soundBar);
 	  	  soundSeekbar.setMax(100);
    	  	  soundSeekbar.incrementProgressBy(10);
    	  	  soundSeekbar.setOnSeekBarChangeListener(controlListener);
+   	  	  eyesTime = (TextView)findViewById(R.id.eyesTime);
    	  	  typeToggle_s = (ImageView)findViewById(R.id.typeToggle_s);
    	  	  typeToggle_s.setImageResource(R.drawable.btn_bgm_final);
    	  	  toggle_s = 1;
@@ -214,7 +223,15 @@ public class AlarmModif extends AlarmData {
 					showDialog(REPEAT_DIALOG_ID);
 				}
 			}); 
-	    
+	      
+	      LinearLayout eyestimeLyt = (LinearLayout)findViewById(R.id.layout_eyes);
+	      eyestimeLyt.setOnClickListener(new View.OnClickListener(){
+	    	 
+	    	  	public void onClick(View v)
+	    	  	{
+	    	  		showDialog(EYES_DIALOG_ID);
+	    	  	}
+	      });
 	      //timePicker 
 	      final Calendar calDateTime = Calendar.getInstance();
 	      mHour = calDateTime.get(Calendar.HOUR_OF_DAY);
@@ -240,6 +257,7 @@ public class AlarmModif extends AlarmData {
 	    	    		  sound,
 	    	    		  toggle_s,
 	    	    		  toggle_v,
+	    	    		  eye,
 	    	    		  1
 	    	    		  );
 	    	      
@@ -316,7 +334,11 @@ public class AlarmModif extends AlarmData {
     		  .append(pad(currentCalendar.get(Calendar.HOUR)))
     		  .append(":").append(pad(currentCalendar.get(Calendar.MINUTE))));
 	  snoozeTime.setText("5minutes");
-	  soundSeekbar.setProgress(10);
+	  snooze = 5;
+	  soundSeekbar.setProgress(100);
+	  sound = 100;
+	  eyesTime.setText("5second");
+	  eye = 5;
 	  typeToggle_s.setImageResource(R.drawable.btn_bgm_final);
 	  toggle_s = 1;
 	  typeToggle_v.setImageResource(R.drawable.btn_vibration_final);
@@ -444,6 +466,47 @@ protected Dialog onCreateDialog(int id){
             
              
         }).create();
+	case EYES_DIALOG_ID:
+		String[] eyes={"5초 후에", "10초 후에", "15초 후에", "30초 후에", "40초 후에"};
+	
+		
+		return new AlertDialog.Builder(getParent())
+			.setTitle("Eyes Time")
+			.setPositiveButton("선택", new DialogInterface.OnClickListener() {
+				
+				public void onClick(DialogInterface dialog, int which) {
+					// TODO Auto-generated method stub
+					
+					
+					eye =eyeTemp;
+				
+					eyesTime.setText(eye + "second");
+					dialog.dismiss();
+				}
+			})
+			.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+				
+				
+				public void onClick(DialogInterface dialog, int which) {
+					// TODO Auto-generated method stub
+				}
+			})
+			.setSingleChoiceItems(eyes, -1, new DialogInterface.OnClickListener() {
+				
+				public void onClick(DialogInterface dialog, int which) {
+					// TODO Auto-generated method stub
+					
+					
+					switch( which ){
+					case 0: eyeTemp = 5; break;
+					case 1: eyeTemp = 10; break;
+					case 2: eyeTemp = 15; break;
+					case 3: eyeTemp = 30; break;
+					case 4: eyeTemp = 40; break;
+					}
+				}
+			}).create();
+		
 	}
 	
 	return null;
@@ -480,7 +543,9 @@ public void DisplayTitle(Cursor c)
 	"SNOOZE: " + c.getString(4) +"\n"+
 	"SOUND: " + c.getString(5) + "\n" + 
 	"TYPE_S: " + c.getString(6) +"\n"+
-	"TYPE_M: " + c.getString(7) +"\n",
+	"TYPE_M: " + c.getString(7) +"\n"+
+	"EYE: " + c.getString(8) +"\n"+
+	"STATE: " + c.getString(9) +"\n",
 	Toast.LENGTH_LONG).show(); 
 }
 

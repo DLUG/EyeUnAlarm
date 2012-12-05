@@ -37,8 +37,11 @@ public class AlarmSet extends AlarmData {
    	TextView soundTxt;
    	TextView timeTxt;
    	TextView typeTxt;
+   	TextView eyesTxt;
    	TextView timeView;
+   	TextView eyesTime;
    	TextView snoozeTime;
+  
    	SeekBar soundSeekbar;
    	ImageView typeToggle_s;
    	ImageView typeToggle_v;
@@ -50,17 +53,21 @@ public class AlarmSet extends AlarmData {
 	static final int TIME_DIALOG_ID = 0;
 	static final int SNOOZE_DIALOG_ID = 1;
 	static final int REPEAT_DIALOG_ID =4;
+	static final int EYES_DIALOG_ID = 5;
 	
 	//시간,스누즈,타입,사운드,반복 
 	private int mHour;
 	private int mMinute;
 	private int snooze;
 	private int sound;
+	private int eyes;
 	private int toggle_s;
 	private int toggle_v;
 	private int repeat;
+	private int eye;
 	int snoTemp;
 	int soundTemp;
+	int eyeTemp;
 	int cnt = 0;
 	
 	//AlarmManager
@@ -96,12 +103,15 @@ public class AlarmSet extends AlarmData {
 	      timeTxt.setText("알람 시간");
 	      typeTxt = (TextView)findViewById(R.id.typeTxt);
 	      typeTxt.setText("type");
+	      eyesTxt = (TextView)findViewById(R.id.eyesTxt);
+	      eyesTxt.setText("eyes time");
 	      
 	      timeView = (TextView)findViewById(R.id.timeView);
 	      snoozeTime = (TextView)findViewById(R.id.snoozeTime);
 	      soundSeekbar = (SeekBar)findViewById(R.id.soundBar);
 	  	  soundSeekbar.setMax(100);
    	  	  soundSeekbar.incrementProgressBy(10);
+   	  	  eyesTime = (TextView)findViewById(R.id.eyesTime);
    	  	  soundSeekbar.setOnSeekBarChangeListener(controlListener);
    	  	  typeToggle_s = (ImageView)findViewById(R.id.typeToggle_s);
  	  	  typeToggle_v = (ImageView)findViewById(R.id.typeToggle_v);
@@ -208,7 +218,16 @@ public class AlarmSet extends AlarmData {
 					showDialog(REPEAT_DIALOG_ID);
 				}
 			}); 
-	    
+	      
+	      LinearLayout eyestimeLyt = (LinearLayout)findViewById(R.id.layout_eyes);
+	      eyestimeLyt.setOnClickListener(new View.OnClickListener(){
+	    	 
+	    	  	public void onClick(View v)
+	    	  	{
+	    	  		showDialog(EYES_DIALOG_ID);
+	    	  	}
+	      });
+	      
 	      //timePicker 
 	      final Calendar calDateTime = Calendar.getInstance();
 	      mHour = calDateTime.get(Calendar.HOUR_OF_DAY);
@@ -233,8 +252,8 @@ public class AlarmSet extends AlarmData {
 	    			  i++;
 	    		  }
 	    		  id = c.getInt(0);
-	    		  state = c.getInt(8);
-	    	      db.updateBook(id, mHour, mMinute, repeat, snooze, sound, toggle_s, toggle_v,state);
+	    		  state = c.getInt(9);
+	    	      db.updateBook(id, mHour, mMinute, repeat, snooze, sound, toggle_s, toggle_v, eye, state);
 	    	      
 
 	    	      db.close();
@@ -317,12 +336,14 @@ public class AlarmSet extends AlarmData {
 	  sound = c.getInt(5);
 	  toggle_s = c.getInt(6);
 	  toggle_v = c.getInt(7);
+	  eye = c.getInt(8);
 	  
 	  timeView.setText(new StringBuilder().append(apm(mHour))
     		  .append(pad(mHour))
     		  .append(":").append(pad(mMinute)));
 	  snoozeTime.setText(snooze+"minutes");
 	  soundSeekbar.setProgress(sound);
+	  eyesTime.setText(eye+"second");
 	  if(repeat ==1)
 		  repeatToggle.setImageResource(R.drawable.on);
 	  else
@@ -465,6 +486,47 @@ protected Dialog onCreateDialog(int id){
             
              
         }).create();
+	case EYES_DIALOG_ID:
+String[] eyes={"5초 후에", "10초 후에", "15초 후에", "30초 후에", "40초 후에"};
+	
+		
+		return new AlertDialog.Builder(getParent())
+			.setTitle("Eyes Time")
+			.setPositiveButton("선택", new DialogInterface.OnClickListener() {
+				
+				public void onClick(DialogInterface dialog, int which) {
+					// TODO Auto-generated method stub
+					
+					
+					eye =eyeTemp;
+				
+					eyesTime.setText(eye + "second");
+					dialog.dismiss();
+				}
+			})
+			.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+				
+				
+				public void onClick(DialogInterface dialog, int which) {
+					// TODO Auto-generated method stub
+				}
+			})
+			.setSingleChoiceItems(eyes, -1, new DialogInterface.OnClickListener() {
+				
+				public void onClick(DialogInterface dialog, int which) {
+					// TODO Auto-generated method stub
+					
+					
+					switch( which ){
+					case 0: eyeTemp = 5; break;
+					case 1: eyeTemp = 10; break;
+					case 2: eyeTemp = 15; break;
+					case 3: eyeTemp = 30; break;
+					case 4: eyeTemp = 40; break;
+					}
+				}
+			}).create();
+		
 	}
 	
 	return null;
@@ -501,7 +563,9 @@ public void DisplayTitle(Cursor c)
 	"SNOOZE: " + c.getString(4) +"\n"+
 	"SOUND: " + c.getString(5) + "\n" + 
 	"TYPE_S: " + c.getString(6) +"\n"+
-	"TYPE_M: " + c.getString(7) +"\n",
+	"TYPE_M: " + c.getString(7) +"\n"+
+	"EYE: " + c.getString(8) +"\n"+
+	"STATE: " + c.getString(9) +"\n",
 	Toast.LENGTH_LONG).show(); 
 }
 

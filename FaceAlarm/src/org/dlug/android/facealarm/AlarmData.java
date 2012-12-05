@@ -68,6 +68,8 @@ public class AlarmData extends NavigationActivity  implements OnItemClickListene
      super.onCreate(savedInstanceState);
      setContentView(R.layout.alarm_data);
      
+     
+     
      //알람 등록 버튼 
      setBtn = (ImageView)findViewById(R.id.alarm_set);    
      list = (ListView)findViewById(R.id.list);
@@ -78,6 +80,7 @@ public class AlarmData extends NavigationActivity  implements OnItemClickListene
      
      
      db.open();
+     db.deleteAll();
      
      // 앱을 재실행 했을때 리스트목록이 없어지는 것을 방지하기 위해 매번 db 전체를 뿌려준다.
 	 Cursor c = db.fetchAllBooks();
@@ -112,6 +115,17 @@ public class AlarmData extends NavigationActivity  implements OnItemClickListene
     	 
     	 
      });
+     list.setOnItemLongClickListener(new OnItemLongClickListener(){
+    	 public boolean onItemLongClick(AdapterView<?> arg0, View arg1,int position, long arg3) {
+    	 	// TODO Auto-generated method stub
+    	 	Toast.makeText(getApplicationContext(), "LONG ITEM CLICK = "+ position, Toast.LENGTH_SHORT).show();
+    	 	
+    	 	
+    	 	DialogMessage(position);
+    	 	return false;
+    	 }
+      });
+
      
  }
  
@@ -185,19 +199,7 @@ public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 	
 	 goNextHistory("AlarmSet",intent);
 	 
-	 parent.setOnItemLongClickListener(new OnItemLongClickListener(){
 
-		public boolean onItemLongClick(AdapterView<?> arg0, View arg1,int position, long arg3) {
-			// TODO Auto-generated method stub
-			Toast.makeText(getApplicationContext(), "LONG ITEM CLICK = "+ position, Toast.LENGTH_SHORT).show();
-			
-			
-			DialogMessage(position);
-			return false;
-		}
-		 
-		 
-	 });
 	
 }
 
@@ -264,6 +266,7 @@ void setAlarm(Context context, long second, long dbId){
 	
 	AlarmManager alarmManager = (AlarmManager)context.getSystemService(context.ALARM_SERVICE);
 	Intent intent = new Intent(context, AlarmReceiver.class);
+	intent.setFlags((int) dbId);
 	PendingIntent pIntent = PendingIntent.getBroadcast(context, (int) dbId, intent,
 														PendingIntent.FLAG_UPDATE_CURRENT);
 	alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,second, 24*1000*60*60, pIntent);

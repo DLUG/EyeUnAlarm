@@ -19,11 +19,16 @@ public class AlarmReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 	    // TODO Auto-generated method stub
+		int Id;
 		
+		//broadcast sender id 
+		Id = intent.getFlags();
 		
-		Toast.makeText(context, "일어나라! 알람이다!",Toast.LENGTH_SHORT).show();
+		Toast.makeText(context, "일어나라! 알람이다! id = "+ Id,Toast.LENGTH_SHORT).show();
 				
+		
 		Intent i = new Intent(context,AlarmPlay.class);
+		i.setFlags(Id);
 		PendingIntent pi = PendingIntent.getActivity(context, 0, i, PendingIntent.FLAG_ONE_SHOT);
 		
 		try { 

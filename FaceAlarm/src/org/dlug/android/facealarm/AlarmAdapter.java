@@ -77,98 +77,98 @@ public class AlarmAdapter extends BaseAdapter {
 			c.moveToNext();
 			i++;
 		}
-		state = c.getInt(8);
+		state = c.getInt(9);
 		
 		db.close();
-			  ImageView icon = (ImageView)convertView.findViewById(R.id.image);
-			  icon.setImageResource(arrData.get(finalPosition).getImage());
-			  
-			  TextView name = (TextView)convertView.findViewById(R.id.name);
-			  name.setText(arrData.get(finalPosition).getName());
-			 
-			  final ImageView imageToggle = (ImageView)convertView.findViewById(R.id.imageToggle);
-			  if(state == 1)// state가 1일때 
-				  imageToggle.setImageResource(R.drawable.on);
-			  else
-				  imageToggle.setImageResource(R.drawable.off);
-			  //finalPosition 값을 받아오기 위해서 setTag()를 이용 getTag()로 받아온다. 
-			  
-			  imageToggle.setTag(finalPosition);
-			  imageToggle.setOnClickListener(new OnClickListener(){
-				public void onClick(View v) {
-					
-					final DbAdapter db = new DbAdapter(context);
-					db.open();
-					
-					Cursor c = db.fetchAllBooks();
-					c.moveToFirst();
-					long tempId;
-					int mHour;
-					int mMinute;
-					int i=0;
-					int temp = (Integer) v.getTag();
-					
-					while(i< temp){
-						c.moveToNext();
-						i++;
-					}
-					tempId = c.getLong(0);
-					mHour = c.getInt(1);
-					mMinute = c.getInt(2);
-					state = c.getInt(8);
-					// set 했을때의 알람시간 get
-				
-					
-					gregorianCalendar = new GregorianCalendar(TimeZone.getTimeZone("GMT+09:00"));
-	    	        
-		    	    int currentYY = currentCalendar.get(Calendar.YEAR);
-		    	  	int currentMM = currentCalendar.get(Calendar.MONTH);
-		    	  	int currentDD = currentCalendar.get(Calendar.DAY_OF_MONTH);
-		    	  	
-		    	  	gregorianCalendar.set(currentYY, currentMM, currentDD, mHour, mMinute, 00);
+	  ImageView icon = (ImageView)convertView.findViewById(R.id.image);
+	  icon.setImageResource(arrData.get(finalPosition).getImage());
+	  
+	  TextView name = (TextView)convertView.findViewById(R.id.name);
+	  name.setText(arrData.get(finalPosition).getName());
+	 
+	  final ImageView imageToggle = (ImageView)convertView.findViewById(R.id.imageToggle);
+	  if(state == 1)// state가 1일때 
+		  imageToggle.setImageResource(R.drawable.on);
+	  else
+		  imageToggle.setImageResource(R.drawable.off);
+	  //finalPosition 값을 받아오기 위해서 setTag()를 이용 getTag()로 받아온다. 
+	  
+	  imageToggle.setTag(finalPosition);
+	  imageToggle.setOnClickListener(new OnClickListener(){
+		public void onClick(View v) {
+			
+			final DbAdapter db = new DbAdapter(context);
+			db.open();
+			
+			Cursor c = db.fetchAllBooks();
+			c.moveToFirst();
+			long tempId;
+			int mHour;
+			int mMinute;
+			int i=0;
+			int temp = (Integer) v.getTag();
+			
+			while(i< temp){
+				c.moveToNext();
+				i++;
+			}
+			tempId = c.getLong(0);
+			mHour = c.getInt(1);
+			mMinute = c.getInt(2);
+			state = c.getInt(9);
+			// set 했을때의 알람시간 get
+		
+			
+			gregorianCalendar = new GregorianCalendar(TimeZone.getTimeZone("GMT+09:00"));
+	        
+    	    int currentYY = currentCalendar.get(Calendar.YEAR);
+    	  	int currentMM = currentCalendar.get(Calendar.MONTH);
+    	  	int currentDD = currentCalendar.get(Calendar.DAY_OF_MONTH);
+    	  	
+    	  	gregorianCalendar.set(currentYY, currentMM, currentDD, mHour, mMinute, 00);
 
-		    	  	if(gregorianCalendar.getTimeInMillis() < currentCalendar.getTimeInMillis()){
-		    	  		gregorianCalendar.set(currentYY, currentMM, currentDD+1, mHour, mMinute,00);
-		    	  		Log.i("TAG",gregorianCalendar.getTimeInMillis()+":");
-		    	  	}
-		    	  	
-		    	  	alarmTime = gregorianCalendar.getTimeInMillis();
-					
-					if(c.getInt(8)==0){ // alarm on 했을
-					imageToggle.setImageResource(R.drawable.on); // on image 변환 
-					Toast.makeText(context, v.getTag()+"", Toast.LENGTH_SHORT).show();
-					
-					state = 1; // state 값 1 
-					db.updateState(tempId, state); //db state 1
-					
-					AlarmManager alarmManager = (AlarmManager)context.getSystemService(context.ALARM_SERVICE);
-					Intent intent = new Intent(context, AlarmReceiver.class);
-					Toast.makeText(context, "tempId : "+tempId,Toast.LENGTH_SHORT).show();
-					PendingIntent pIntent = PendingIntent.getBroadcast(context, (int) tempId, intent,
-																		PendingIntent.FLAG_UPDATE_CURRENT);
-					alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,alarmTime, 24*1000*60*60, pIntent);
-					//알람매니저 set
-					
-					}
-					else{
-					imageToggle.setImageResource(R.drawable.off); // on image 변환
-					
-					state= 0; // state 0 
-					db.updateState(tempId, state);  // db state 0 
+    	  	if(gregorianCalendar.getTimeInMillis() < currentCalendar.getTimeInMillis()){
+    	  		gregorianCalendar.set(currentYY, currentMM, currentDD+1, mHour, mMinute,00);
+    	  		Log.i("TAG",gregorianCalendar.getTimeInMillis()+":");
+    	  	}
+    	  	
+    	  	alarmTime = gregorianCalendar.getTimeInMillis();
 			
-					AlarmManager alarmManager = (AlarmManager)context.getSystemService(context.ALARM_SERVICE);
-					Intent intent = new Intent(context,AlarmReceiver.class);
-					Toast.makeText(context, "tempId : "+tempId, Toast.LENGTH_SHORT).show();
-					PendingIntent pIntent = PendingIntent.getBroadcast(context, (int) tempId, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-					alarmManager.cancel(pIntent);
-					//알람매니저 release
-					
-					}
-					db.close();
-				}
+			if(c.getInt(9)==0){ // alarm on 했을
+			imageToggle.setImageResource(R.drawable.on); // on image 변환 
+			Toast.makeText(context, v.getTag()+"", Toast.LENGTH_SHORT).show();
 			
-				  
-			  });
+			state = 1; // state 값 1 
+			db.updateState(tempId, state); //db state 1
+			
+			AlarmManager alarmManager = (AlarmManager)context.getSystemService(context.ALARM_SERVICE);
+			Intent intent = new Intent(context, AlarmReceiver.class);
+			Toast.makeText(context, "tempId : "+tempId,Toast.LENGTH_SHORT).show();
+			PendingIntent pIntent = PendingIntent.getBroadcast(context, (int) tempId, intent,
+																PendingIntent.FLAG_UPDATE_CURRENT);
+			alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,alarmTime, 24*1000*60*60, pIntent);
+			//알람매니저 set
+			
+			}
+			else{
+			imageToggle.setImageResource(R.drawable.off); // on image 변환
+			
+			state= 0; // state 0 
+			db.updateState(tempId, state);  // db state 0 
+	
+			AlarmManager alarmManager = (AlarmManager)context.getSystemService(context.ALARM_SERVICE);
+			Intent intent = new Intent(context,AlarmReceiver.class);
+			Toast.makeText(context, "tempId : "+tempId, Toast.LENGTH_SHORT).show();
+			PendingIntent pIntent = PendingIntent.getBroadcast(context, (int) tempId, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+			alarmManager.cancel(pIntent);
+			//알람매니저 release
+			
+			}
+			db.close();
+		}
+	
+		  
+	  });
 			  
 		  return convertView;
 	}

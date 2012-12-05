@@ -17,18 +17,19 @@
     <LinearLayout 
         android:id="@+id/layout_time"
         android:layout_width="fill_parent"
-    	android:layout_height="60dp"
+    	android:layout_height="50dp"
     	android:orientation="horizontal" >
         <TextView
         android:id="@+id/timeTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
         android:gravity="left"
         android:text="TextView"
-        android:padding="20dp" />
+        android:padding="10dp"/>
 
         <TextView
-        android:layout_width="100dp"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:padding="20dp"/>
         
@@ -37,7 +38,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 		android:gravity="right"
-        android:padding="20dp"
+        android:padding="10dp"
         android:text="time" />
     
     </LinearLayout>
@@ -45,17 +46,18 @@
     <LinearLayout 
         android:id="@+id/layout_snooze"
         android:layout_width="fill_parent"
-    	android:layout_height="60dp"
+    	android:layout_height="50dp"
     	android:orientation="horizontal" >
         <TextView
         android:id="@+id/snoozeTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
         android:text="TextView"
-        android:padding="20dp" />
+        android:padding="10dp" />
         
         <TextView
-        android:layout_width="110dp"
+        android:layout_width="130dp"
         android:layout_height="wrap_content"
         android:padding="20dp"/>
         
@@ -64,31 +66,33 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="snooze"
-        android:padding="20dp" />
+        android:padding="10dp" />
         
     </LinearLayout>
     
     <LinearLayout
         android:id="@+id/layout_type" 
         android:layout_width="fill_parent"
-    	android:layout_height="60dp"
+    	android:layout_height="50dp"
     	android:orientation="horizontal" >
         <TextView
         android:id="@+id/typeTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
         android:text="TextView"
-        android:padding="20dp" />
+        android:padding="10dp"/>
         
         <TextView
-        android:layout_width="80dp"
+        android:layout_width="110dp"
         android:layout_height="wrap_content"
         android:padding="20dp"/>
         
         <ImageView
         android:id="@+id/typeToggle_s"
-        android:layout_width="60dp"
-        android:layout_height="50dp"
+        android:layout_width="50dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="19dp"
@@ -96,8 +100,9 @@
 
 		<ImageView
         android:id="@+id/typeToggle_v"
-        android:layout_width="60dp"
-        android:layout_height="50dp"
+        android:layout_width="50dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="19dp"
@@ -107,14 +112,16 @@
     <LinearLayout
         android:id="@+id/layout_sound"
         android:layout_width="fill_parent"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:orientation="horizontal" >
 
         <TextView
             android:id="@+id/soundTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:padding="10dp"
             android:text="TextView" />
 
         <SeekBar
@@ -128,24 +135,25 @@
     <LinearLayout 
         android:id="@+id/layout_repeat"
         android:layout_width="fill_parent"
-    	android:layout_height="60dp"
+    	android:layout_height="50dp"
     	android:orientation="horizontal" >
         <TextView
         android:id="@+id/repeatTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
         android:text="TextView" 
-        android:padding="20dp"/>
+        android:padding="10dp"/>
         
         <TextView
-        android:layout_width="160dp"
+        android:layout_width="180dp"
         android:layout_height="wrap_content"
         android:padding="20dp"/>
         
         <ImageView
         android:id="@+id/repeatToggle"
-        android:layout_width="60dp"
-        android:layout_height="50dp"
+        android:layout_width="50dp"
+        android:layout_height="40dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="19dp"
@@ -156,8 +164,36 @@
     </LinearLayout>
     
     <LinearLayout 
+        android:id="@+id/layout_eyes"
+        android:layout_width="fill_parent"
+    	android:layout_height="50dp"
+    	android:orientation="horizontal" >
+        
+        
+        <TextView
+        android:id="@+id/eyesTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:text="TextView"
+        android:padding="10dp" />
+        
+        <TextView
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:padding="20dp"/>
+        
+        <TextView
+        android:id="@+id/eyesTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="eyes"
+        android:padding="10dp" />
+    </LinearLayout>
+    
+    <LinearLayout 
          android:layout_width="fill_parent"
-    	android:layout_height="60dp"
+    	android:layout_height="50dp"
     	android:orientation="horizontal"
     	android:gravity="center"
     	 >
@@ -166,6 +202,7 @@
             android:id="@+id/confirmBtn"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:text="Button" />
 
         
@@ -178,6 +215,7 @@
             android:id="@+id/cancelBtn"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:text="Button" />
         
     </LinearLayout>
