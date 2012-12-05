@@ -34,10 +34,12 @@ public class DbAdapter {
 	public static final int FIND_BY_EYE = 7;
 	public static final int FIND_BY_ALARM = 8;
 	
+	SQLiteDatabase sqliteDB;
+	
 	private static final String TAG = "DbAdapter";
 	
 	private DatabaseHelper mDbHelper;
-	private SQLiteDatabase mDb; // µ¥ÀÌÅÍº£ÀÌ½º¸¦ ÀúÀå
+	private SQLiteDatabase mDb; // ï¿½ï¿½ï¿½ï¿½ï¿½Íºï¿½ï¿½Ì½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	
 	private static final String DATABASE_CREATE =
 			"CREATE TABLE data (_id integer primary key autoincrement,"+
@@ -49,10 +51,14 @@ public class DbAdapter {
 	
 	private final Context mCtx;
 	
+	
 	private class DatabaseHelper extends SQLiteOpenHelper{
+	
+		
 		
 		public DatabaseHelper(Context context){
 			super(context, DATABASE_NAME, null, DATABASE_VERSION);
+			
 			
 		}
 
@@ -72,6 +78,19 @@ public class DbAdapter {
 	public DbAdapter(Context ctx){
 		this.mCtx = ctx;
 		mDbHelper = new DatabaseHelper(mCtx);
+		
+		
+	}
+
+	public Cursor getResult(String query){
+		sqliteDB = mDbHelper.getReadableDatabase();
+		Cursor c = sqliteDB.rawQuery(query, null);
+		sqliteDB.close();
+		return c;
+	}
+	
+	public SQLiteDatabase getSqliteDb(){
+		return sqliteDB;
 	}
 	
 	public DbAdapter open() throws SQLException{

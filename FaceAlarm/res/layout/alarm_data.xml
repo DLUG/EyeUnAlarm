@@ -4,7 +4,7 @@
     android:layout_height="fill_parent"
     android:orientation="vertical"
     android:gravity="center"
-    android:background="@drawable/playbackground" >
+    android:background="@drawable/background" >
   
     <TextView
         android:layout_width="fill_parent"
@@ -30,6 +30,6 @@
         android:id="@+id/alarm_set"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:background="@drawable/androidgold"  />
+        android:background="@drawable/background"  />
 
 </LinearLayout>

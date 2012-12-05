@@ -27,7 +27,7 @@ import android.os.Bundle;
 public class AlarmAdapter extends BaseAdapter {
 	private Context context;
 	private ArrayList<MyData> arrData;
-	private LayoutInflater inflater; // Inflater °´Ã¼ »ý¼º 
+	private LayoutInflater inflater; // Inflater ï¿½ï¿½Ã¼ ï¿½ï¿½ 
 	/** Called when the activity is first created. */
 	int state;
 	
@@ -62,11 +62,11 @@ public class AlarmAdapter extends BaseAdapter {
 		
 		if(convertView == null){
 			   convertView = inflater.inflate(R.layout.alarm_row, parent, false); 
-			   // ·¹ÀÌ¾Æ¿ô¿¡ ¸Â°Ô Àû¿ë 
+			   // ï¿½ï¿½ï¿½Ì¾Æ¿ï¿½ï¿½ï¿½ ï¿½Â°ï¿½ ï¿½ï¿½ï¿½ 
 			  }
 		final DbAdapter db = new DbAdapter(context);
 		
-		//db open ¼³Á¤ ¾Ë¶÷ list¿¡¼­ on/off ÇßÀ»¶§ dbÀÇ stater°ªÀ» ¹Þ¾Æ¿Í¼­ ¾Ë¶÷¸Å´ÏÀú set/release
+		//db open ï¿½ï¿½ï¿½ï¿½ ï¿½Ë¶ï¿½ listï¿½ï¿½ï¿½ï¿½ on/off ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ dbï¿½ï¿½ staterï¿½ï¿½ï¿½ï¿½ ï¿½Þ¾Æ¿Í¼ï¿½ ï¿½Ë¶ï¿½ï¿½Å´ï¿½ï¿½ï¿½ set/release
 		db.open();
 		Cursor c = db.fetchAllBooks();
 		c.moveToFirst();
@@ -87,11 +87,11 @@ public class AlarmAdapter extends BaseAdapter {
 	  name.setText(arrData.get(finalPosition).getName());
 	 
 	  final ImageView imageToggle = (ImageView)convertView.findViewById(R.id.imageToggle);
-	  if(state == 1)// state°¡ 1ÀÏ¶§ 
-		  imageToggle.setImageResource(R.drawable.on);
+	  if(state == 1)// stateï¿½ï¿½ 1ï¿½Ï¶ï¿½ 
+		  imageToggle.setImageResource(R.drawable.icon_on);
 	  else
-		  imageToggle.setImageResource(R.drawable.off);
-	  //finalPosition °ªÀ» ¹Þ¾Æ¿À±â À§ÇØ¼­ setTag()¸¦ ÀÌ¿ë getTag()·Î ¹Þ¾Æ¿Â´Ù. 
+		  imageToggle.setImageResource(R.drawable.icon_off);
+	  //finalPosition ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¾Æ¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ø¼ï¿½ setTag()ï¿½ï¿½ ï¿½Ì¿ï¿½ getTag()ï¿½ï¿½ ï¿½Þ¾Æ¿Â´ï¿½. 
 	  
 	  imageToggle.setTag(finalPosition);
 	  imageToggle.setOnClickListener(new OnClickListener(){
@@ -116,7 +116,7 @@ public class AlarmAdapter extends BaseAdapter {
 			mHour = c.getInt(1);
 			mMinute = c.getInt(2);
 			state = c.getInt(9);
-			// set ÇßÀ»¶§ÀÇ ¾Ë¶÷½Ã°£ get
+			// set ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ë¶ï¿½ï¿½Ã°ï¿½ get
 		
 			
 			gregorianCalendar = new GregorianCalendar(TimeZone.getTimeZone("GMT+09:00"));
@@ -134,11 +134,11 @@ public class AlarmAdapter extends BaseAdapter {
     	  	
     	  	alarmTime = gregorianCalendar.getTimeInMillis();
 			
-			if(c.getInt(9)==0){ // alarm on ÇßÀ»
-			imageToggle.setImageResource(R.drawable.on); // on image º¯È¯ 
+			if(c.getInt(9)==0){ // alarm on ï¿½ï¿½ï¿½ï¿½
+			imageToggle.setImageResource(R.drawable.icon_on); // on image ï¿½ï¿½È¯ 
 			Toast.makeText(context, v.getTag()+"", Toast.LENGTH_SHORT).show();
 			
-			state = 1; // state °ª 1 
+			state = 1; // state ï¿½ï¿½ 1 
 			db.updateState(tempId, state); //db state 1
 			
 			AlarmManager alarmManager = (AlarmManager)context.getSystemService(context.ALARM_SERVICE);
@@ -147,11 +147,11 @@ public class AlarmAdapter extends BaseAdapter {
 			PendingIntent pIntent = PendingIntent.getBroadcast(context, (int) tempId, intent,
 																PendingIntent.FLAG_UPDATE_CURRENT);
 			alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,alarmTime, 24*1000*60*60, pIntent);
-			//¾Ë¶÷¸Å´ÏÀú set
+			//ï¿½Ë¶ï¿½ï¿½Å´ï¿½ï¿½ï¿½ set
 			
 			}
 			else{
-			imageToggle.setImageResource(R.drawable.off); // on image º¯È¯
+			imageToggle.setImageResource(R.drawable.icon_off); // on image ï¿½ï¿½È¯
 			
 			state= 0; // state 0 
 			db.updateState(tempId, state);  // db state 0 
@@ -161,7 +161,7 @@ public class AlarmAdapter extends BaseAdapter {
 			Toast.makeText(context, "tempId : "+tempId, Toast.LENGTH_SHORT).show();
 			PendingIntent pIntent = PendingIntent.getBroadcast(context, (int) tempId, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 			alarmManager.cancel(pIntent);
-			//¾Ë¶÷¸Å´ÏÀú release
+			//ï¿½Ë¶ï¿½ï¿½Å´ï¿½ï¿½ï¿½ release
 			
 			}
 			db.close();

@@ -25,7 +25,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 		//broadcast sender id 
 		Id = intent.getFlags();
 		Log.i("adsf","alarmReceiver : "+Id);
-		Toast.makeText(context, "ÀÏ¾î³ª¶ó! ¾Ë¶÷ÀÌ´Ù! id = "+ Id,Toast.LENGTH_SHORT).show();
+		Toast.makeText(context, "ï¿½Ï¾î³ªï¿½ï¿½! ï¿½Ë¶ï¿½ï¿½Ì´ï¿½! id = "+ Id,Toast.LENGTH_SHORT).show();
 				
 		
 		Intent i = new Intent(context,AlarmPlay.class);

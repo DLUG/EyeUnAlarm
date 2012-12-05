@@ -29,7 +29,7 @@ public class Main extends android.app.TabActivity {
         
         intent = new Intent().setClass(this,ViewCounselGroup.class);
         
-        spec = tabhost.newTabSpec("FirstGroup").setIndicator("¾Ë¶÷ ", 
+        spec = tabhost.newTabSpec("FirstGroup").setIndicator("ì•ŒëžŒ", 
         		getResources().getDrawable(R.drawable.googleicon))
         		.setContent(intent);
 
@@ -38,7 +38,7 @@ public class Main extends android.app.TabActivity {
         
         intent = new Intent().setClass(this,SecondGroup.class);
         
-        spec = tabhost.newTabSpec("SecondGroup").setIndicator("½Ã°è ",
+        spec = tabhost.newTabSpec("SecondGroup").setIndicator("ì‹œê³„",
         		getResources().getDrawable(R.drawable.clockv2))
         		.setContent(intent);
         

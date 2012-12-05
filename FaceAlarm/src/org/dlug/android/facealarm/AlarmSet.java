@@ -55,7 +55,7 @@ public class AlarmSet extends AlarmData {
 	static final int REPEAT_DIALOG_ID =4;
 	static final int EYES_DIALOG_ID = 5;
 	
-	//½Ã°£,½º´©Áî,Å¸ÀÔ,»ç¿îµå,¹İº¹ 
+	//ï¿½Ã°ï¿½,í™•ì¸ï¿½ï¿½,Å¸ï¿½ï¿½,í™•ì¸,ï¿½İºï¿½ 
 	private int mHour;
 	private int mMinute;
 	private int snooze;
@@ -82,25 +82,25 @@ public class AlarmSet extends AlarmData {
 	    setContentView(R.layout.alarm_modif);
 	
 	
-	      //DbAdapterÅ¬·¡½º ÀÎ½ºÅÏ½º »ı¼º 
+	      //DbAdapterÅ¬í™•ì¸ ï¿½Î½ï¿½ï¿½Ï½ï¿½ ï¿½ï¿½ 
 	      final DbAdapter db = new DbAdapter(this);
 	      
 	      db.open();
 	      
 	      
-	    //¹öÆ°,text ¸®½º³Ê 
+	    //ï¿½ï¿½Æ°,text í™•ì¸ï¿½ï¿½ 
 	      confirmBtn = (Button)findViewById(R.id.confirmBtn);
-	      confirmBtn.setText("È®ÀÎ");
+	      confirmBtn.setText("í™•ì¸");
 	      cancelBtn = (Button)findViewById(R.id.cancelBtn);
-	      cancelBtn.setText("Ãë¼Ò");
+	      cancelBtn.setText("ì·¨ì†Œ");
 	      snoozeTxt = (TextView)findViewById(R.id.snoozeTxt);
 	      snoozeTxt.setText("snooze");
 	      repeatTxt = (TextView)findViewById(R.id.repeatTxt);
-	      repeatTxt.setText("¹İº¹");
+	      repeatTxt.setText("ë°˜ë³µ");
 	      soundTxt = (TextView)findViewById(R.id.soundTxt);
 	      soundTxt.setText("sound");
 	      timeTxt = (TextView)findViewById(R.id.timeTxt);
-	      timeTxt.setText("¾Ë¶÷ ½Ã°£");
+	      timeTxt.setText("ì‹œê°„");
 	      typeTxt = (TextView)findViewById(R.id.typeTxt);
 	      typeTxt.setText("type");
 	      eyesTxt = (TextView)findViewById(R.id.eyesTxt);
@@ -123,13 +123,13 @@ public class AlarmSet extends AlarmData {
 				cnt++;
 				// TODO Auto-generated method stub
 				if(cnt%2 ==0){
-					typeToggle_s.setImageResource(R.drawable.btn_bgm_final);
+					typeToggle_s.setImageResource(R.drawable.btn_bgm);
 					toggle_s = 1;
 					cnt = 0;
 				}
 				else
 				{
-					typeToggle_s.setImageResource(R.drawable.off);
+					typeToggle_s.setImageResource(R.drawable.clock);
 					toggle_s = 0;
 				}
 			}
@@ -142,13 +142,13 @@ public class AlarmSet extends AlarmData {
 				cnt++;
 				// TODO Auto-generated method stub
 				if(cnt%2 ==0){
-					typeToggle_v.setImageResource(R.drawable.btn_vibration_final);
+					typeToggle_v.setImageResource(R.drawable.btn_vib);
 					toggle_v = 1;
 					cnt = 0;
 				}
 				else
 				{
-					typeToggle_v.setImageResource(R.drawable.off);
+					typeToggle_v.setImageResource(R.drawable.clock);
 					toggle_v = 0;
 				}
 			}
@@ -161,19 +161,19 @@ public class AlarmSet extends AlarmData {
 				cnt++;
 				// TODO Auto-generated method stub
 				if(cnt%2 ==0){
-					repeatToggle.setImageResource(R.drawable.on);
+					repeatToggle.setImageResource(R.drawable.icon_on);
 					repeat = 1;
 					cnt = 0;
 				}
 				else
 				{
-					repeatToggle.setImageResource(R.drawable.off);
+					repeatToggle.setImageResource(R.drawable.icon_off);
 					repeat = 0;
 				}
 			}
 	
 	  	  });
-	     //layout ¸®½º³Ê
+	     //layout í™•ì¸ï¿½ï¿½
 	      LinearLayout timeLyt = (LinearLayout)findViewById(R.id.layout_time);
 	      timeLyt.setOnClickListener(new View.OnClickListener() {
 			
@@ -197,7 +197,7 @@ public class AlarmSet extends AlarmData {
 				
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
-					Toast.makeText(AlarmSet.this, "type·¹ÀÌ¾Æ¿ô °Çµå¸²",
+					Toast.makeText(AlarmSet.this, "typeì·¨ì†ŒÌ¾Æ¿ï¿½ ï¿½Çµå¸²",
 			    	        Toast.LENGTH_SHORT).show();
 				}
 			}); 
@@ -206,7 +206,7 @@ public class AlarmSet extends AlarmData {
 				
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
-					Toast.makeText(AlarmSet.this, "sound·¹ÀÌ¾Æ¿ô °Çµå¸²",
+					Toast.makeText(AlarmSet.this, "soundì·¨ì†ŒÌ¾Æ¿ï¿½ ï¿½Çµå¸²",
 			    	        Toast.LENGTH_SHORT).show();
 				}
 			}); 
@@ -260,7 +260,7 @@ public class AlarmSet extends AlarmData {
 	    	    
 	    	      msgTag = 0;
 	    	  	
-	    	    //¼³Á¤ ÀÏ½Ã 
+	    	    //í™•ì¸ ï¿½Ï½ï¿½ 
 	    	  	gregorianCalendar = new GregorianCalendar(TimeZone.getTimeZone("GMT+09:00"));
 	    	        
 	    	    int currentYY = currentCalendar.get(Calendar.YEAR);
@@ -276,7 +276,7 @@ public class AlarmSet extends AlarmData {
 	    	  	
 	    	  	alarmTime = gregorianCalendar.getTimeInMillis();
 	    	      
-    	  	  //AlarmManager ¼³Á¤
+    	  	  //AlarmManager í™•ì¸
 	    	  if(state!=0)
     	      setAlarm(AlarmSet.this,alarmTime,id);
 	    	      	      
@@ -345,17 +345,17 @@ public class AlarmSet extends AlarmData {
 	  soundSeekbar.setProgress(sound);
 	  eyesTime.setText(eye+"second");
 	  if(repeat ==1)
-		  repeatToggle.setImageResource(R.drawable.on);
+		  repeatToggle.setImageResource(R.drawable.icon_on);
 	  else
-		  repeatToggle.setImageResource(R.drawable.off);
+		  repeatToggle.setImageResource(R.drawable.icon_off);
 	  if(toggle_s == 1)
-		  typeToggle_s.setImageResource(R.drawable.btn_bgm_final);
+		  typeToggle_s.setImageResource(R.drawable.btn_bgm);
 	  else
-		  typeToggle_s.setImageResource(R.drawable.off);
+		  typeToggle_s.setImageResource(R.drawable.icon_alert_off);
 	  if(toggle_v == 1)
-		  typeToggle_v.setImageResource(R.drawable.btn_vibration_final);
+		  typeToggle_v.setImageResource(R.drawable.btn_vib);
 	  else
-		  typeToggle_v.setImageResource(R.drawable.off);
+		  typeToggle_v.setImageResource(R.drawable.icon_alert_off);
 	  
 	  db.close();
 	  
@@ -388,7 +388,7 @@ private static String apm(int apm){
 }
 
 
-//TimePickerDialog Á¤ÀÇ 
+//TimePickerDialog í™•ì¸ 
 private TimePickerDialog.OnTimeSetListener mTimeSetListener =
 		new TimePickerDialog.OnTimeSetListener(){
 			
@@ -403,19 +403,19 @@ private TimePickerDialog.OnTimeSetListener mTimeSetListener =
 	}
 		
 };
-//´ÙÀÌ¾ó·Î±× Á¤ÀÇ 
+//ì·¨ì†ŒÌ¾ï¿½Î±ï¿½ í™•ì¸ 
 @Override
 protected Dialog onCreateDialog(int id){
 	switch(id){
 	case TIME_DIALOG_ID:
 		return new TimePickerDialog(getParent(), mTimeSetListener, mHour, mMinute, false );
 	case SNOOZE_DIALOG_ID:
-		String[] snoozes={"5ºĞ ÈÄ¿¡", "10ºĞ ÈÄ¿¡", "15ºĞ ÈÄ¿¡", "20ºĞ ÈÄ¿¡", "30ºĞ ÈÄ¿¡"};
+		String[] snoozes={"5ë¶„ í›„ì—", "10ë¶„ í›„ì—", "15ë¶„ í›„ì—", "20ë¶„ í›„ì—", "30ë¶„ í›„ì—"};
 	
 		
 		return new AlertDialog.Builder(getParent())
 			.setTitle("Snooze")
-			.setPositiveButton("¼±ÅÃ", new DialogInterface.OnClickListener() {
+			.setPositiveButton("í™•ì¸", new DialogInterface.OnClickListener() {
 				
 				public void onClick(DialogInterface dialog, int which) {
 					// TODO Auto-generated method stub
@@ -427,7 +427,7 @@ protected Dialog onCreateDialog(int id){
 					dialog.dismiss();
 				}
 			})
-			.setNegativeButton("Ãë¼Ò", new DialogInterface.OnClickListener() {
+			.setNegativeButton("ì·¨ì†Œ", new DialogInterface.OnClickListener() {
 				
 				
 				public void onClick(DialogInterface dialog, int which) {
@@ -450,27 +450,27 @@ protected Dialog onCreateDialog(int id){
 				}
 			}).create();
 	case REPEAT_DIALOG_ID:
-		String[] repeats={"¿ù¿äÀÏ¸¶´Ù",
-						  "È­¿äÀÏ¸¶´Ù",
-						  "¼ö¿äÀÏ¸¶´Ù",
-						  "¸ñ¿äÀÏ¸¶´Ù",
-						  "±İ¿äÀÏ¸¶´Ù",
-						  "Åä¿äÀÏ¸¶´Ù",
-						  "ÀÏ¿äÀÏ¸¶´Ù"
+		String[] repeats={"ì›”ìš”ì¼ë§ˆë‹¤",
+						  "í™”ìš”ì¼ë§ˆë‹¤",
+						  "ìˆ˜ìš”ì¼ë§ˆë‹¤",
+						  "ëª©ìš”ì¼ë§ˆë‹¤",
+						  "ê¸ˆìš”ì¼ë§ˆë‹¤",
+						  "í† ìš”ì¼ë§ˆë‹¤",
+						  "ì¼ìš”ì¼ë§ˆë‹¤"
 					   	  };
 		return new AlertDialog.Builder(getParent())
         .setTitle("Repeat")
-        .setPositiveButton("¼±ÅÃ", new DialogInterface.OnClickListener() {
+        .setPositiveButton("í™•ì¸", new DialogInterface.OnClickListener() {
 				
 				public void onClick(DialogInterface dialog, int which) {
 					// TODO Auto-generated method stub
 					final ImageView repeatToggle = (ImageView)findViewById(R.id.repeatToggle);
-               	  	repeatToggle.setImageResource(R.drawable.on);
+               	  	repeatToggle.setImageResource(R.drawable.icon_on);
                	  	repeat = 1;
 					dialog.dismiss();
 				}
 			})
-			.setNegativeButton("Ãë¼Ò", new DialogInterface.OnClickListener() {
+			.setNegativeButton("ì·¨ì†Œ", new DialogInterface.OnClickListener() {
 				
 				public void onClick(DialogInterface dialog, int which) {
 					// TODO Auto-generated method stub
@@ -487,12 +487,12 @@ protected Dialog onCreateDialog(int id){
              
         }).create();
 	case EYES_DIALOG_ID:
-String[] eyes={"5ÃÊ ÈÄ¿¡", "10ÃÊ ÈÄ¿¡", "15ÃÊ ÈÄ¿¡", "30ÃÊ ÈÄ¿¡", "40ÃÊ ÈÄ¿¡"};
+String[] eyes={"5ì´ˆ í›„ì—", "10ì´ˆ í›„ì—", "15ì´ˆ í›„ì—", "30ì´ˆ í›„ì—", "40ì´ˆ í›„ì—"};
 	
 		
 		return new AlertDialog.Builder(getParent())
 			.setTitle("Eyes Time")
-			.setPositiveButton("¼±ÅÃ", new DialogInterface.OnClickListener() {
+			.setPositiveButton("í™•ì¸", new DialogInterface.OnClickListener() {
 				
 				public void onClick(DialogInterface dialog, int which) {
 					// TODO Auto-generated method stub
@@ -504,7 +504,7 @@ String[] eyes={"5ÃÊ ÈÄ¿¡", "10ÃÊ ÈÄ¿¡", "15ÃÊ ÈÄ¿¡", "30ÃÊ ÈÄ¿¡", "40ÃÊ ÈÄ¿¡"};
 					dialog.dismiss();
 				}
 			})
-			.setNegativeButton("Ãë¼Ò", new DialogInterface.OnClickListener() {
+			.setNegativeButton("ì·¨ì†Œ", new DialogInterface.OnClickListener() {
 				
 				
 				public void onClick(DialogInterface dialog, int which) {

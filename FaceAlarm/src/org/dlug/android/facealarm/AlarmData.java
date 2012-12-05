@@ -71,7 +71,7 @@ public class AlarmData extends NavigationActivity  implements OnItemClickListene
      
      
      
-     //¾Ë¶÷ µî·Ï ¹öÆ° 
+     //ï¿½Ë¶ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½Æ° 
      setBtn = (ImageView)findViewById(R.id.alarm_set);    
      list = (ListView)findViewById(R.id.list);
      
@@ -83,7 +83,7 @@ public class AlarmData extends NavigationActivity  implements OnItemClickListene
      db.open();
      
      
-     // ¾ÛÀ» Àç½ÇÇà ÇßÀ»¶§ ¸®½ºÆ®¸ñ·ÏÀÌ ¾ø¾îÁö´Â °ÍÀ» ¹æÁöÇÏ±â À§ÇØ ¸Å¹ø db ÀüÃ¼¸¦ »Ñ·ÁÁØ´Ù.
+     // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Å¹ï¿½ db ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½Ñ·ï¿½ï¿½Ø´ï¿½.
 	 Cursor c = db.fetchAllBooks();
 	 
 	 if(c.moveToFirst()){
@@ -95,7 +95,7 @@ public class AlarmData extends NavigationActivity  implements OnItemClickListene
 	 }
 	 db.close();
 	 
-	//¾Ö´Ï¸ÞÀÌ¼Ç 
+	//ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ 
 	ani = AnimationUtils.loadAnimation(getParent(), R.layout.animation);
 	 
     list.setOnItemClickListener(this);
@@ -104,7 +104,7 @@ public class AlarmData extends NavigationActivity  implements OnItemClickListene
     	 
     	 public void onClick(View v){
 
-    		 Toast.makeText(AlarmData.this, "µî·Ï ¾×Æ¼ºñÆ¼ ÀÌµ¿!", Toast.LENGTH_SHORT).show();
+    		 Toast.makeText(AlarmData.this, "ï¿½ï¿½ï¿½ ï¿½ï¿½Æ¼ï¿½ï¿½Æ¼ ï¿½Ìµï¿½!", Toast.LENGTH_SHORT).show();
     		 
 			 Intent intent = new Intent(AlarmData.this,AlarmModif.class);
     		
@@ -144,7 +144,7 @@ public class AlarmData extends NavigationActivity  implements OnItemClickListene
 	 setBtn.startAnimation(ani);
 	 
 	 db.open();
-	 //AlarmModif activity¿¡¼­ set¹öÆ°À» ´©¸¥°æ¿ì msgTag = 1 ·Î º¯°æ , Ãß°¡µÈ ¸®½ºÆ®¾ÆÀÌÅÛ¸¸ add
+	 //AlarmModif activityï¿½ï¿½ï¿½ï¿½ setï¿½ï¿½Æ°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ msgTag = 1 ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ , ï¿½ß°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ï¿½Û¸ï¿½ add
 	 if(msgTag == 1){
 	
 		 Cursor c = db.fetchBook(id);
@@ -157,7 +157,7 @@ public class AlarmData extends NavigationActivity  implements OnItemClickListene
 		
 		 msgTag = 0;
 	 }
-	 //AlarmSet activity¿¡¼­ set¹öÆ°À» ´©¸¥°æ¿ì msgTag = 0 , ¸ðµç ¸®½ºÆ® °»½Å
+	 //AlarmSet activityï¿½ï¿½ï¿½ï¿½ setï¿½ï¿½Æ°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ msgTag = 0 , ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½
 	 else
 	 {
 		 arrData.clear();
@@ -183,7 +183,7 @@ public class AlarmData extends NavigationActivity  implements OnItemClickListene
  }
  
  protected void setData(String time ){
-	 arrData.add(new MyData(R.drawable.alarm,time));
+	 arrData.add(new MyData(R.drawable.clock,time));
 	 
  }
 
@@ -260,23 +260,23 @@ protected void DialogMessage(final int position){
 	alert.show();
 	
 }
-	//¾Ë¶÷ µî·Ï
+	//ï¿½Ë¶ï¿½ ï¿½ï¿½ï¿½
 void setAlarm(Context context, long second, long dbId){
 
 	Toast.makeText(getApplicationContext(), "setAlarm()", Toast.LENGTH_SHORT).show();
 	
 	AlarmManager alarmManager = (AlarmManager)context.getSystemService(context.ALARM_SERVICE);
-	Intent intent = new Intent(context, AlarmReceiver.class);
+	Intent intent = new Intent(context, AlarmPlay.class);
 	intent.setFlags((int) dbId);
 	
-	PendingIntent pIntent = PendingIntent.getBroadcast(context, (int) dbId, intent,
+	PendingIntent pIntent = PendingIntent.getActivity(context, (int) dbId, intent,
 														PendingIntent.FLAG_UPDATE_CURRENT);
 	Log.i("adsf","alarmData : "+dbId);
 	alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,second, 24*1000*60*60, pIntent);
 
 }
 
-//¾Ë¶÷ ÇØÁ¦ 
+//ï¿½Ë¶ï¿½ ï¿½ï¿½ï¿½ï¿½ 
 void releaseAlarm(Context context, long dbId){
 	AlarmManager alarmManager = (AlarmManager)context.getSystemService(context.ALARM_SERVICE);
 	Intent intent = new Intent(context,AlarmReceiver.class);
