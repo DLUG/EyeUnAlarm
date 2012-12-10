@@ -30,7 +30,14 @@
         <activity android:name=".AlarmListAlarmModify"> </activity>
         <activity android:name=".TabGroupFirst"></activity>
         <activity android:name=".TabGroupSecond"></activity>
-        <activity android:name="ViewCounselGroup"></activity>
+        <activity android:name=".ViewCounselGroup"></activity>
+        <activity android:name=".alarm.AlarmPlay">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT"/>
+          </intent-filter>
+        </activity>
+        
+        <receiver android:name=".alarm.AlarmReceiver"></receiver>
     </application>
 
 </manifest>

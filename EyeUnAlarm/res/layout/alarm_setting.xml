@@ -35,7 +35,7 @@
                 android:id="@+id/labelTitle"
                 android:layout_width="110dp"
                 android:layout_height="wrap_content"
-                android:text="@string/alarm_title"
+                android:text="@string/label_alarm_title"
                 android:textSize="18dp" />
 
             <TextView
@@ -60,7 +60,7 @@
 	            android:layout_width="110dp"
 	            android:layout_height="wrap_content"
 	            android:gravity="left"
-	            android:text="@string/alarm_time"
+	            android:text="@string/label_alarm_time"
 	            android:textSize="18dp" />
 	        
 	        <TextView
@@ -83,7 +83,7 @@
 	            android:id="@+id/labelSnooze"
 	            android:layout_width="110dp"
 	            android:layout_height="wrap_content"
-	            android:text="@string/snooze"
+	            android:text="@string/label_snooze"
 	            android:textSize="18dp" />
 	        
 	        <TextView
@@ -106,7 +106,7 @@
 	            android:id="@+id/labelType"
 	            android:layout_width="110dp"
 	            android:layout_height="wrap_content"
-	            android:text="@string/alarm_type"
+	            android:text="@string/label_alarm_type"
 	            android:textSize="18dp" />
 	        
 	        <ImageView
@@ -139,7 +139,7 @@
 	            android:id="@+id/labelVolume"
 	            android:layout_width="110dp"
 	            android:layout_height="wrap_content"
-	            android:text="@string/volume"
+	            android:text="@string/label_volume"
 	            android:textSize="18dp" />
 	
 	        <SeekBar
@@ -161,7 +161,7 @@
 	            android:id="@+id/labelRepeat"
 	            android:layout_width="110dp"
 	            android:layout_height="wrap_content"
-	            android:text="@string/repeat"
+	            android:text="@string/label_repeat"
 	            android:textSize="18dp" />
 	        
 	        <TextView
@@ -184,7 +184,7 @@
 	            android:id="@+id/labelRecogStrength"
 	            android:layout_width="110dp"
 	            android:layout_height="wrap_content"
-	            android:text="@string/recog_strength"
+	            android:text="@string/label_recog_strength"
 	            android:textSize="18dp" />
 	        
 	        <TextView

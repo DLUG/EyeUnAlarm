@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Toast;
 
 public class AlarmListAlarmModify extends AlarmListAlarmSet{
 	public void onCreate(Bundle savedInstanceState){
@@ -49,7 +50,9 @@ public class AlarmListAlarmModify extends AlarmListAlarmSet{
 			Map<String, Object> filter = new HashMap<String,Object>(2);
 			filter.put("_id", selectAlarmId);
 			myDb.updateAlarm(inputData, filter);
+			
 			Log.i("AlarmUpdate", "DBModified");
+			Toast.makeText(AlarmListAlarmModify.this, R.string.toast_updated_alarm, Toast.LENGTH_SHORT).show();
 			
 			onBackPressed();
 

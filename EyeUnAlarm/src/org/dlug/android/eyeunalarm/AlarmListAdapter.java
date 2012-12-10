@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.TimeZone;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;

@@ -6,21 +6,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TimeZone;
 
-import android.app.AlertDialog;
-import android.app.TimePickerDialog;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnMultiChoiceClickListener;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.SeekBar;
-import android.widget.TextView;
-import android.widget.TimePicker;
-import android.widget.SeekBar.OnSeekBarChangeListener;
+import android.widget.Toast;
 
 public class AlarmListAlarmAdd extends AlarmListAlarmSet{
 	public void onCreate(Bundle savedInstanceState){
@@ -62,7 +52,7 @@ public class AlarmListAlarmAdd extends AlarmListAlarmSet{
 			inputData.put(MyDbHelper.FIELD_ALERT_STATE, 1);
 			myDb.setAlarm(inputData);
 			Log.i("AlarmAdd", "DBAdded");
-			
+			Toast.makeText(AlarmListAlarmAdd.this, R.string.toast_added_alarm, Toast.LENGTH_SHORT).show();
 			onBackPressed();
 
 			listUpdate();

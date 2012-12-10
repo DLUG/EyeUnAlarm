@@ -5,9 +5,7 @@ package org.dlug.android.eyeunalarm;
 import org.dlug.android.eyeunalarm.R;
 
 import android.content.Intent;
-import android.content.ClipData.Item;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;

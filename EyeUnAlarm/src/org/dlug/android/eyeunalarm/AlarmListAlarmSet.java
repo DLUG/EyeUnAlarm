@@ -1,8 +1,5 @@
 package org.dlug.android.eyeunalarm;
 
-import java.util.GregorianCalendar;
-import java.util.TimeZone;
-
 import android.app.AlertDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
@@ -230,7 +227,7 @@ public abstract class AlarmListAlarmSet extends AlarmListActivity{
 			tmpTitle.setText(title);
 			
 			new AlertDialog.Builder(getParent())
-			.setTitle(getString(R.string.alarm_title))
+			.setTitle(R.string.label_alarm_title)
 //			.setIcon(R.drawable.clock)
 			.setView(alarmTitleDialog)
 			.setPositiveButton(R.string.btn_confirm, new DialogInterface.OnClickListener(){
@@ -265,7 +262,7 @@ public abstract class AlarmListAlarmSet extends AlarmListActivity{
 		@Override
 		public void onClick(View v) {
 			new AlertDialog.Builder(getParent())
-			.setTitle(getString(R.string.snooze))
+			.setTitle(R.string.label_snooze)
 //			.setIcon(R.drawable.clock)
 			.setItems(R.array.dialog_snooze, new DialogInterface.OnClickListener(){
 				@Override
@@ -304,7 +301,7 @@ public abstract class AlarmListAlarmSet extends AlarmListActivity{
 		@Override
 		public void onClick(View v) {
 			new AlertDialog.Builder(getParent())
-			.setTitle(getString(R.string.repeat))
+			.setTitle(R.string.label_repeat)
 //			.setIcon(R.drawable.clock)
 			.setMultiChoiceItems(R.array.weekday, parseRepeatBinary(repeat), new OnMultiChoiceClickListener(){
 				@Override
@@ -323,7 +320,7 @@ public abstract class AlarmListAlarmSet extends AlarmListActivity{
 		@Override
 		public void onClick(View v) {
 			new AlertDialog.Builder(getParent())
-			.setTitle(getString(R.string.recog_strength))
+			.setTitle(R.string.label_recog_strength)
 //			.setIcon(R.drawable.clock)
 			.setItems(R.array.dialog_recog_strength, new DialogInterface.OnClickListener(){
 				@Override
@@ -336,7 +333,6 @@ public abstract class AlarmListAlarmSet extends AlarmListActivity{
 			.show();
 		}
 	};
-	private OnClickListener onClickConfirm;
 	protected OnClickListener onClickCancel = new OnClickListener(){
 		@Override
 		public void onClick(View v) {
