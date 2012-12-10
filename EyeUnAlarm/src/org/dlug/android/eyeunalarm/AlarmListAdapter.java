@@ -132,7 +132,7 @@ public class AlarmListAdapter extends BaseAdapter{
 				Map<String, Object> filter = new HashMap<String, Object>();
 				updateData.put("alert_state", 0);
 				filter.put("_id", alarmItemHandler.get("_id"));
-				myDb.update(updateData, filter);
+				myDb.updateAlarm(updateData, filter);
 			} else {
 				viewHandler.setImageResource(R.drawable.icon_on);
 				alarmItemHandler.put("alert_state", 1);
@@ -142,7 +142,7 @@ public class AlarmListAdapter extends BaseAdapter{
 				Map<String, Object> filter = new HashMap<String, Object>();
 				updateData.put("alert_state", 1);
 				filter.put("_id", alarmItemHandler.get("_id"));
-				myDb.update(updateData, filter);
+				myDb.updateAlarm(updateData, filter);
 			}
 		}
 	};

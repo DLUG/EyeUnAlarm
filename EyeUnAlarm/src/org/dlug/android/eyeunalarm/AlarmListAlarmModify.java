@@ -11,25 +11,31 @@ import android.view.View.OnClickListener;
 public class AlarmListAlarmModify extends AlarmListAlarmSet{
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.alarm_setting);
 
-		Map<String, Object> thisAlarmData = myDb.getAlarm(selectItemPosition);
+		titleAlarmSet.setText(R.string.title_modify_alarm);
+		btnConfirm.setText(R.string.btn_update);
 		
-		setTitle((String) thisAlarmData.get(myDb.FIELD_ALARM_NAME));
-		setAlarmTime((Integer) thisAlarmData.get(myDb.FIELD_HOURS), (Integer) thisAlarmData.get(myDb.FIELD_MINUTES));
-		setSnooze((Integer) thisAlarmData.get(myDb.FIELD_SNOOZE));
-		setType((Integer) thisAlarmData.get(myDb.FIELD_TYPE));
-		setVolume((Integer) thisAlarmData.get(myDb.FIELD_ALERT_VOLUME));
-		setRepeat((Integer) thisAlarmData.get(myDb.FIELD_REPEAT));
-		setRecogStrength((Integer) thisAlarmData.get(myDb.FIELD_RECOG_TIME));
+		findViewById(R.id.btnConfirm).setOnClickListener(onClickConfirm);
+	}
+	
+	public void onResume(){
+		Map<String, Object> thisAlarmData = myDb.getAlarm(selectAlarmId);
 		
-		btnConfirm.setText(R.string.update);
+		setTitle((String) thisAlarmData.get(MyDbHelper.FIELD_ALARM_NAME));
+		setAlarmTime((Integer) thisAlarmData.get(MyDbHelper.FIELD_HOURS), (Integer) thisAlarmData.get(MyDbHelper.FIELD_MINUTES));
+		setSnooze((Integer) thisAlarmData.get(MyDbHelper.FIELD_SNOOZE));
+		setType((Integer) thisAlarmData.get(MyDbHelper.FIELD_TYPE));
+		setVolume((Integer) thisAlarmData.get(MyDbHelper.FIELD_ALERT_VOLUME));
+		setRepeat((Integer) thisAlarmData.get(MyDbHelper.FIELD_REPEAT));
+		setRecogStrength((Integer) thisAlarmData.get(MyDbHelper.FIELD_RECOG_TIME));
+		
+		super.onResume();
 	}
 	
 	private OnClickListener onClickConfirm = new OnClickListener(){
 		@Override
 		public void onClick(View v) {
-			Map<String, Object> inputData = new HashMap<String,Object>();
+			Map<String, Object> inputData = new HashMap<String,Object>(10);
 			inputData.put("alarm_name", title);
 			inputData.put("hours", alarmTime[0]);
 			inputData.put("minutes", alarmTime[1]);
@@ -39,8 +45,11 @@ public class AlarmListAlarmModify extends AlarmListAlarmSet{
 			inputData.put("type", (typeS * 2 + typeV));
 			inputData.put("recog_time", recogStrength);
 			inputData.put("alert_state", 1);
-			myDb.setAlarm(inputData);
-			Log.i("AlarmAdd", "DBAdded");
+			
+			Map<String, Object> filter = new HashMap<String,Object>(2);
+			filter.put("_id", selectAlarmId);
+			myDb.updateAlarm(inputData, filter);
+			Log.i("AlarmUpdate", "DBModified");
 			
 			onBackPressed();
 

@@ -26,7 +26,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".AlarmList"> </activity>
-        <activity android:name="org.dlug.android.eyeunalarm.AlarmListAlarmAdd"> </activity>
+        <activity android:name=".AlarmListAlarmAdd"> </activity>
+        <activity android:name=".AlarmListAlarmModify"> </activity>
         <activity android:name=".TabGroupFirst"></activity>
         <activity android:name=".TabGroupSecond"></activity>
         <activity android:name="ViewCounselGroup"></activity>

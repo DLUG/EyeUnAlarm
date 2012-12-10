@@ -14,7 +14,7 @@
 		    android:layout_height="wrap_content"
 		    android:gravity="center"
 		    android:padding="5dp"
-		    android:text="@string/alarm_list"
+		    android:text="@string/title_alarm_list"
 		    android:textColor="#FF000000"
 		    android:textSize="25sp"
 		    android:textStyle="bold" />

@@ -49,7 +49,7 @@ public class AlarmList extends AlarmListActivity{
 	private OnItemClickListener onClickList = new OnItemClickListener(){
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-			selectItemPosition = position;
+			selectAlarmId = (Integer) (alarmListData.get(position)).get("_id");
 			
 			Intent intent = new Intent(AlarmList.this, AlarmListAlarmModify.class);
 			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |Intent.FLAG_ACTIVITY_SINGLE_TOP);

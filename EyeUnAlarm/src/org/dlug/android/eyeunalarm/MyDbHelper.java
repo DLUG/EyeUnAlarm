@@ -119,7 +119,7 @@ public class MyDbHelper extends SQLiteOpenHelper{
 	public Map<String, Object> getAlarm(int id){
 		Map<String, Object> rowData = new HashMap<String, Object>(10);
 		
-		String query = "SELECT * FROM " + TABLE_NAME + "WHERE _id = " + id + ";";
+		String query = "SELECT * FROM " + TABLE_NAME + " WHERE _id = " + id + ";";
 		
 		Log.d("DBQuery - getAlarm", query);
 		
@@ -158,7 +158,7 @@ public class MyDbHelper extends SQLiteOpenHelper{
 		oSQLiteDB.execSQL(query);
 	}
 
-	public void update(Map<String, Object> updateData, Map<String, Object> filter) {
+	public void updateAlarm(Map<String, Object> updateData, Map<String, Object> filter) {
 		String query = "UPDATE " + TABLE_NAME + " SET ";
 		for(String key: updateData.keySet()){
 			query += key + " = '" + updateData.get(key) + "', "; 

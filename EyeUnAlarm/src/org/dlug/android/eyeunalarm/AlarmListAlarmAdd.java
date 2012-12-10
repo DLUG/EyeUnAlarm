@@ -25,8 +25,15 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 public class AlarmListAlarmAdd extends AlarmListAlarmSet{
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.alarm_setting);
 
+		titleAlarmSet.setText(R.string.title_add_alarm);
+		btnConfirm.setText(R.string.btn_confirm);
+		findViewById(R.id.btnConfirm).setOnClickListener(onClickConfirm);
+	}
+	
+	public void onResume(){
+		GregorianCalendar currentCalendar = new GregorianCalendar(TimeZone.getTimeZone("GMT+09:00"));
+		
 		setTitle("Alarm");
 		setAlarmTime(currentCalendar.get(Calendar.HOUR_OF_DAY), currentCalendar.get(Calendar.MINUTE));
 		setSnooze(snooze);
@@ -35,8 +42,8 @@ public class AlarmListAlarmAdd extends AlarmListAlarmSet{
 		setVolume(100);
 		setRepeat(127);
 		setRecogStrength(5);
-		
-		btnConfirm.setText(R.string.confirm);
+
+		super.onResume();
 	}
 	
 	private OnClickListener onClickConfirm = new OnClickListener(){

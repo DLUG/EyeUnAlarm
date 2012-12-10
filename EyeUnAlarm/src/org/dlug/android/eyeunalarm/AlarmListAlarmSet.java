@@ -34,6 +34,7 @@ public abstract class AlarmListAlarmSet extends AlarmListActivity{
 	protected int repeat = 127;
 	protected int recogStrength = 5;
 	
+	protected TextView titleAlarmSet;
 	protected TextView viewTitle;
 	protected TextView viewTime;
 	protected TextView viewSnooze;
@@ -44,12 +45,11 @@ public abstract class AlarmListAlarmSet extends AlarmListActivity{
 	protected TextView viewRecogStrength;
 	protected Button btnConfirm;
 	
-	protected GregorianCalendar currentCalendar;
-	
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.alarm_setting);
 
+		titleAlarmSet = (TextView) findViewById(R.id.titleAlarmSet);
 		viewTitle = (TextView) findViewById(R.id.viewTitle);
 		viewTime = (TextView) findViewById(R.id.viewTime);
 		viewSnooze = (TextView) findViewById(R.id.viewSnooze);
@@ -69,10 +69,7 @@ public abstract class AlarmListAlarmSet extends AlarmListActivity{
 		barVolume.setOnSeekBarChangeListener(onChangeVolume);
 		findViewById(R.id.layoutRepeat).setOnClickListener(onClickRepeat);
 		findViewById(R.id.layoutRecogTime).setOnClickListener(onClickRecogStrength);
-		findViewById(R.id.btnConfirm).setOnClickListener(onClickConfirm);
 		findViewById(R.id.btnCancel).setOnClickListener(onClickCancel);
-		
-		currentCalendar = new GregorianCalendar(TimeZone.getTimeZone("GMT+09:00"));
 		
 		btnConfirm.setText("Modify This");
 	}
@@ -236,14 +233,14 @@ public abstract class AlarmListAlarmSet extends AlarmListActivity{
 			.setTitle(getString(R.string.alarm_title))
 //			.setIcon(R.drawable.clock)
 			.setView(alarmTitleDialog)
-			.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener(){
+			.setPositiveButton(R.string.btn_confirm, new DialogInterface.OnClickListener(){
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					EditText tmpTitle = (EditText)alarmTitleDialog.findViewById(R.id.editAlarmTitle);
 					setTitle(tmpTitle.getText().toString());
 				}
 			})
-			.setNegativeButton(R.string.cancel, null)
+			.setNegativeButton(R.string.btn_cancel, null)
 			.show();
 		}
 	};
@@ -277,7 +274,7 @@ public abstract class AlarmListAlarmSet extends AlarmListActivity{
 					viewSnooze.setText(snooze + " " + getString(R.string.minutes));
 				}
 			})
-			.setNegativeButton(R.string.cancel, null)
+			.setNegativeButton(R.string.btn_cancel, null)
 			.show();
 		}
 	};
@@ -318,7 +315,7 @@ public abstract class AlarmListAlarmSet extends AlarmListActivity{
 					setRepeat(tmpRepeat);
 				}
 			})
-			.setNeutralButton(R.string.back, null)
+			.setNeutralButton(R.string.btn_back, null)
 			.show();
 		}
 	};
@@ -335,7 +332,7 @@ public abstract class AlarmListAlarmSet extends AlarmListActivity{
 					viewRecogStrength.setText(recogStrength + "");
 				}
 			})
-			.setNegativeButton(R.string.cancel, null)
+			.setNegativeButton(R.string.btn_cancel, null)
 			.show();
 		}
 	};
