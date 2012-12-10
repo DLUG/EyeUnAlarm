@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:gravity="top"
+    android:background="@drawable/background" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="0dp"
+        android:layout_weight="0"
+        android:background="#FF000000"
+        android:gravity="center_horizontal"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/TextView01"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/alert"
+            android:textColor="#FFFFFFFF"
+            android:textSize="30sp" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/snoozePlay"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Snooze"
+         />
+    
+        <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:orientation="vertical" >
+
+        <FrameLayout
+            android:id="@+id/PreviewFrame"
+            android:layout_width="fill_parent"
+            android:layout_height="177dp"
+            android:enabled="true"
+            android:gravity="center_vertical|top" >
+        </FrameLayout>
+
+        <ImageView
+            android:id="@+id/modifyImage"
+            android:layout_width="fill_parent"
+            android:layout_height="204dp"
+            android:enabled="true"
+            android:gravity="center_vertical|top" >
+
+        </ImageView>
+        
+    </LinearLayout>
+    
+ </LinearLayout>

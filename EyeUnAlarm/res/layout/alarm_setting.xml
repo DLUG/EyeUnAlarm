@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/scrollView1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+	<TextView
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:gravity="center"
+	    android:text="@string/set_alarm"
+	    android:textColor="#FF000000"
+	    android:textSize="30sp"
+	    android:textStyle="bold" />
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:orientation="vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp" >
+
+        <LinearLayout
+            android:id="@+id/layoutTitle"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:gravity="center_vertical" >
+
+            <TextView
+                android:id="@+id/labelTitle"
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:text="@string/alarm_title"
+                android:textSize="18dp" />
+
+            <TextView
+                android:id="@+id/viewTitle"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Title Test"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textSize="18dp" />
+
+        </LinearLayout>
+
+	    <LinearLayout
+	        android:id="@+id/layoutTime"
+	        android:layout_width="fill_parent"
+	        android:layout_height="50dp"
+	        android:gravity="center_vertical"
+	        android:orientation="horizontal" >
+	
+	        <TextView
+	            android:id="@+id/labelTime"
+	            android:layout_width="110dp"
+	            android:layout_height="wrap_content"
+	            android:gravity="left"
+	            android:text="@string/alarm_time"
+	            android:textSize="18dp" />
+	        
+	        <TextView
+	            android:id="@+id/viewTime"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:text="AM 12:00"
+	            android:textSize="18dp" />
+	    
+	    </LinearLayout>
+	    
+	    <LinearLayout 
+	        android:id="@+id/layoutSnooze"
+	        android:layout_width="fill_parent"
+	    	android:layout_height="50dp"
+	         android:gravity="center_vertical"
+	    	android:orientation="horizontal" >
+	
+	        <TextView
+	            android:id="@+id/labelSnooze"
+	            android:layout_width="110dp"
+	            android:layout_height="wrap_content"
+	            android:text="@string/snooze"
+	            android:textSize="18dp" />
+	        
+	        <TextView
+	            android:id="@+id/viewSnooze"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:text="5 Minutes"
+	            android:textSize="18dp" />
+	        
+	    </LinearLayout>
+	    
+	    <LinearLayout
+	        android:id="@+id/layoutType" 
+	        android:layout_width="fill_parent"
+	    	android:layout_height="50dp"
+	        android:gravity="center_vertical"
+	    	android:orientation="horizontal" >
+	
+	        <TextView
+	            android:id="@+id/labelType"
+	            android:layout_width="110dp"
+	            android:layout_height="wrap_content"
+	            android:text="@string/alarm_type"
+	            android:textSize="18dp" />
+	        
+	        <ImageView
+	            android:id="@+id/btnTypeS"
+	            android:layout_width="50dp"
+	            android:layout_height="50dp"
+	            android:layout_alignParentRight="true"
+	            android:layout_centerVertical="true"
+	            android:layout_marginRight="25dp"
+	            android:src="@drawable/btn_bgm" />
+	
+			<ImageView
+			    android:id="@+id/btnTypeV"
+			    android:layout_width="50dp"
+			    android:layout_height="50dp"
+			    android:layout_alignParentRight="true"
+			    android:layout_centerVertical="true"
+			    android:src="@drawable/btn_vib" />
+	
+	    </LinearLayout>
+	
+	    <LinearLayout
+	        android:id="@+id/layoutVolume"
+	        android:layout_width="fill_parent"
+	        android:layout_height="50dp"
+	        android:gravity="center_vertical"
+	        android:orientation="horizontal" >
+	
+	        <TextView
+	            android:id="@+id/labelVolume"
+	            android:layout_width="110dp"
+	            android:layout_height="wrap_content"
+	            android:text="@string/volume"
+	            android:textSize="18dp" />
+	
+	        <SeekBar
+	            android:id="@+id/barVolume"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="1" />
+	
+	    </LinearLayout>
+	
+	    <LinearLayout
+	        android:id="@+id/layoutRepeat"
+	        android:layout_width="fill_parent"
+	        android:layout_height="50dp"
+	        android:gravity="center_vertical"
+	        android:orientation="horizontal" >
+	
+	        <TextView
+	            android:id="@+id/labelRepeat"
+	            android:layout_width="110dp"
+	            android:layout_height="wrap_content"
+	            android:text="@string/repeat"
+	            android:textSize="18dp" />
+	        
+	        <TextView
+	            android:id="@+id/viewRepeat"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:text="Mon, Tue, Wed, Thu, Fri, Sat"
+	            android:textSize="13sp" />
+	        
+	    </LinearLayout>
+	    
+	    <LinearLayout 
+	        android:id="@+id/layoutRecogTime"
+	        android:layout_width="fill_parent"
+	    	android:layout_height="50dp"
+	        android:gravity="center_vertical"
+	    	android:orientation="horizontal" >
+	        
+	        <TextView
+	            android:id="@+id/labelRecogStrength"
+	            android:layout_width="110dp"
+	            android:layout_height="wrap_content"
+	            android:text="@string/recog_strength"
+	            android:textSize="18dp" />
+	        
+	        <TextView
+	            android:id="@+id/viewRecogStrength"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:text="5"
+	            android:textSize="18dp" />
+
+	    </LinearLayout>
+	</LinearLayout>
+    
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/btnConfirm"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="40dp"
+            android:text="Confirm/Update"
+            android:textSize="16sp" />
+        
+        <Button
+            android:id="@+id/btnCancel"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel"
+            android:textSize="16dp" />
+
+    </LinearLayout>
+
+
+
+</LinearLayout>
+    </ScrollView>
