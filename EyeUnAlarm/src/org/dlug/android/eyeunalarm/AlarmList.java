@@ -1,12 +1,11 @@
 package org.dlug.android.eyeunalarm;
 
 
-import java.util.List;
-import java.util.Map;
 
 import org.dlug.android.eyeunalarm.R;
 
 import android.content.Intent;
+import android.content.ClipData.Item;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -50,7 +49,11 @@ public class AlarmList extends AlarmListActivity{
 	private OnItemClickListener onClickList = new OnItemClickListener(){
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+			selectItemPosition = position;
 			
+			Intent intent = new Intent(AlarmList.this, AlarmListAlarmModify.class);
+			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |Intent.FLAG_ACTIVITY_SINGLE_TOP);
+			goNextHistory("AlarmModify", intent);
 		}
 	};
 	

@@ -1,9 +1,6 @@
 package org.dlug.android.eyeunalarm;
 
-import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.TimeZone;
 
 import android.app.AlertDialog;
@@ -11,7 +8,6 @@ import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnMultiChoiceClickListener;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -97,10 +93,25 @@ public abstract class AlarmListAlarmSet extends AlarmListActivity{
 		this.snooze = snooze;
 	}
 	
+	protected void setType(int type){
+		if((type & 2) == 2){
+			setTypeS(TRUE);
+		} else {
+			setTypeS(FALSE);
+		}
+		if((type & 1) == 1){
+			setTypeV(TRUE);
+		} else {
+			setTypeV(FALSE);
+		}
+	}
+	
 	protected void setTypeS(int type){
 		if(type == TRUE){
+			typeS = TRUE;
 			btnTypeS.setImageResource(R.drawable.btn_bgm);
 		} else {
+			typeS = FALSE;
 			btnTypeS.setImageResource(R.drawable.icon_alert_off);
 		}
 		
@@ -118,9 +129,11 @@ public abstract class AlarmListAlarmSet extends AlarmListActivity{
 	}
 	
 	protected void setTypeV(int type){
-		if(type == 1){
+		if(type == TRUE){
+			typeV = TRUE;
 			btnTypeV.setImageResource(R.drawable.btn_vib);
 		} else {
+			typeV = FALSE;
 			btnTypeV.setImageResource(R.drawable.icon_alert_off);
 		}
 		

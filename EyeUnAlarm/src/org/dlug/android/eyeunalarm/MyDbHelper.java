@@ -13,28 +13,42 @@ import android.util.Log;
 
 public class MyDbHelper extends SQLiteOpenHelper{
 	// SET DB Feature =========================
-	public static final String DB_FILE_NAME = "eyeunclock.db";
-	public static final String TABLE_NAME = "eyeunclock";
+	private static final String DB_FILE_NAME = "eyeunclock.db";
+	private static final String TABLE_NAME = "eyeunclock";
 
-	public static final String[] FIELD_NAMES = {
-		"_id", 
-		"alarm_name", 
-		"hours", 
-		"minutes", 
-		"repeat", 
-		"snooze", 
-		"alert_song", 
-		"type", 
-		"recog_time", 
-		"alert_state"
+	public static final String FIELD_ID = "_id";
+	public static final String FIELD_ALARM_NAME = "alarm_name";
+	public static final String FIELD_HOURS = "hours";
+	public static final String FIELD_MINUTES = "minutes";
+	public static final String FIELD_REPEAT = "repeat";
+	public static final String FIELD_SNOOZE = "snooze";
+	public static final String FIELD_ALERT_SONG = "alert_song";
+	public static final String FIELD_ALERT_VOLUME = "alert_volume";
+	public static final String FIELD_TYPE = "type";
+	public static final String FIELD_RECOG_TIME = "recog_time";
+	public static final String FIELD_ALERT_STATE = "alert_state";
+
+	private static final String[] FIELD_NAMES = {
+		FIELD_ID, 
+		FIELD_ALARM_NAME, 
+		FIELD_HOURS, 
+		FIELD_MINUTES, 
+		FIELD_REPEAT, 
+		FIELD_SNOOZE, 
+		FIELD_ALERT_SONG, 
+		FIELD_ALERT_VOLUME,
+		FIELD_TYPE, 
+		FIELD_RECOG_TIME, 
+		FIELD_ALERT_STATE
 	};
 	
-	public static final String[] FIELD_TYPES = {
+	private static final String[] FIELD_TYPES = {
 		"INTEGER PRIMARY KEY AUTOINCREMENT",
 		"STRING", 
 		"INTEGER NOT NULL", 
 		"INTEGER NOT NULL", 
 		"INTEGER NOT NULL", 
+		"INTEGER NOT NULL",
 		"INTEGER NOT NULL", 
 		"INTEGER NOT NULL", 
 		"INTEGER NOT NULL", 
@@ -47,7 +61,7 @@ public class MyDbHelper extends SQLiteOpenHelper{
 	private SQLiteDatabase oSQLiteDB;
 	
 	public MyDbHelper(Context context, int version) {
-		super(context, TABLE_NAME, null, version);
+		super(context, DB_FILE_NAME, null, version);
 
 		oSQLiteDB = this.getReadableDatabase();
 	}

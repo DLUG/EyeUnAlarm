@@ -43,15 +43,16 @@ public class AlarmListAlarmAdd extends AlarmListAlarmSet{
 		@Override
 		public void onClick(View v) {
 			Map<String, Object> inputData = new HashMap<String,Object>();
-			inputData.put("alarm_name", title);
-			inputData.put("hours", alarmTime[0]);
-			inputData.put("minutes", alarmTime[1]);
-			inputData.put("repeat", repeat);
-			inputData.put("snooze", snooze);
-			inputData.put("alert_song", "");
-			inputData.put("type", (typeS * 2 + typeV));
-			inputData.put("recog_time", recogStrength);
-			inputData.put("alert_state", 1);
+			inputData.put(MyDbHelper.FIELD_ALARM_NAME, title);
+			inputData.put(MyDbHelper.FIELD_HOURS, alarmTime[0]);
+			inputData.put(MyDbHelper.FIELD_MINUTES, alarmTime[1]);
+			inputData.put(MyDbHelper.FIELD_REPEAT, repeat);
+			inputData.put(MyDbHelper.FIELD_SNOOZE, snooze);
+			inputData.put(MyDbHelper.FIELD_ALERT_SONG, "");
+			inputData.put(MyDbHelper.FIELD_ALERT_VOLUME, volume);
+			inputData.put(MyDbHelper.FIELD_TYPE, (typeS * 2 + typeV));
+			inputData.put(MyDbHelper.FIELD_RECOG_TIME, recogStrength);
+			inputData.put(MyDbHelper.FIELD_ALERT_STATE, 1);
 			myDb.setAlarm(inputData);
 			Log.i("AlarmAdd", "DBAdded");
 			

@@ -11,6 +11,8 @@ public class AlarmListActivity extends TabNavigationActivity{
 	protected static List<Map<String, Object>> alarmListData;
 	protected static AlarmListAdapter alarmListAdapter;
 
+	protected static int selectItemPosition = 0;
+	
 	protected void listUpdate(){
 		Log.i("Update", "Run");
 		alarmListData = myDb.getAlarmList();

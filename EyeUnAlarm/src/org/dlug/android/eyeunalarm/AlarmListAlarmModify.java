@@ -1,43 +1,27 @@
 package org.dlug.android.eyeunalarm;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TimeZone;
 
-import android.app.AlertDialog;
-import android.app.TimePickerDialog;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnMultiChoiceClickListener;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.SeekBar;
-import android.widget.TextView;
-import android.widget.TimePicker;
-import android.widget.SeekBar.OnSeekBarChangeListener;
 
 public class AlarmListAlarmModify extends AlarmListAlarmSet{
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.alarm_setting);
 
-		//TODO: GetDB
-		/*
-		setTitle("Alarm");
-		setAlarmTime(currentCalendar.get(Calendar.HOUR_OF_DAY), currentCalendar.get(Calendar.MINUTE));
-		setSnooze(snooze);
-		setTypeS(TRUE);
-		setTypeV(TRUE);
-		setVolume(100);
-		setRepeat(127);
-		setRecogStrength(5);
-		 */
+		Map<String, Object> thisAlarmData = myDb.getAlarm(selectItemPosition);
+		
+		setTitle((String) thisAlarmData.get(myDb.FIELD_ALARM_NAME));
+		setAlarmTime((Integer) thisAlarmData.get(myDb.FIELD_HOURS), (Integer) thisAlarmData.get(myDb.FIELD_MINUTES));
+		setSnooze((Integer) thisAlarmData.get(myDb.FIELD_SNOOZE));
+		setType((Integer) thisAlarmData.get(myDb.FIELD_TYPE));
+		setVolume((Integer) thisAlarmData.get(myDb.FIELD_ALERT_VOLUME));
+		setRepeat((Integer) thisAlarmData.get(myDb.FIELD_REPEAT));
+		setRecogStrength((Integer) thisAlarmData.get(myDb.FIELD_RECOG_TIME));
 		
 		btnConfirm.setText(R.string.update);
 	}
