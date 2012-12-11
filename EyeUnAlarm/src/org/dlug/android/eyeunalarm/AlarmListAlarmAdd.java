@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TimeZone;
 
+import android.content.Intent;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -21,7 +24,7 @@ public class AlarmListAlarmAdd extends AlarmListAlarmSet{
 		findViewById(R.id.btnConfirm).setOnClickListener(onClickConfirm);
 	}
 	
-	public void onResume(){
+	public void onStart(){
 		GregorianCalendar currentCalendar = new GregorianCalendar(TimeZone.getTimeZone("GMT+09:00"));
 		
 		setTitle("Alarm");
@@ -29,6 +32,7 @@ public class AlarmListAlarmAdd extends AlarmListAlarmSet{
 		setSnooze(snooze);
 		setTypeS(TRUE);
 		setTypeV(TRUE);
+		setBellURI("content://settings/system/ringtone");
 		setVolume(100);
 		setRepeat(127);
 		setRecogStrength(5);
@@ -45,7 +49,7 @@ public class AlarmListAlarmAdd extends AlarmListAlarmSet{
 			inputData.put(MyDbHelper.FIELD_MINUTES, alarmTime[1]);
 			inputData.put(MyDbHelper.FIELD_REPEAT, repeat);
 			inputData.put(MyDbHelper.FIELD_SNOOZE, snooze);
-			inputData.put(MyDbHelper.FIELD_ALERT_SONG, "");
+			inputData.put(MyDbHelper.FIELD_ALERT_SONG, bellURI);
 			inputData.put(MyDbHelper.FIELD_ALERT_VOLUME, volume);
 			inputData.put(MyDbHelper.FIELD_TYPE, (typeS * 2 + typeV));
 			inputData.put(MyDbHelper.FIELD_RECOG_TIME, recogStrength);
@@ -56,6 +60,12 @@ public class AlarmListAlarmAdd extends AlarmListAlarmSet{
 			onBackPressed();
 
 			listUpdate();
+			try {
+				this.finalize();
+			} catch (Throwable e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	};
 }

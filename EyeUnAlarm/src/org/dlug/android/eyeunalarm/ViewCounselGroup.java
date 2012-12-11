@@ -1,7 +1,10 @@
 package org.dlug.android.eyeunalarm;
 
 import android.content.Intent;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 @SuppressWarnings("deprecation")
@@ -20,5 +23,11 @@ public class ViewCounselGroup extends TabGroupFirst {
     @Override
     public void onBackPressed() {
     	super.onBackPressed();
+    }
+    
+    @Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    	AlarmListActivity tmp = (AlarmListActivity) this.getCurrentActivity();
+    	tmp.onActivityResultTrigger(requestCode, resultCode, data);
     }
 }

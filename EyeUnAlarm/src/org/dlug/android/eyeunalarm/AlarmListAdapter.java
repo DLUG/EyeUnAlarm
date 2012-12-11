@@ -126,6 +126,8 @@ public class AlarmListAdapter extends BaseAdapter{
 				viewHandler.setImageResource(R.drawable.icon_off);
 				alarmItemHandler.put("alert_state", 0);
 				
+				((MyActivity)context).alarmSet(context, position, false);
+				
 				MyDbHelper myDb = ((MyActivity)context).getMyDb();
 				Map<String, Object> updateData = new HashMap<String, Object>();
 				Map<String, Object> filter = new HashMap<String, Object>();

@@ -2,6 +2,8 @@
 <resources>
     <string name="app_name">EyeUn Alarm</string>
 
+    <string name="loading">Loading</string>
+    
     <string name="title_alarm_list">Alarm List</string>
     <string name="title_add_alarm">Add Alarm</string>
     <string name="title_modify_alarm">Modify Alarm</string>
@@ -10,9 +12,19 @@
     <string name="label_alarm_time">Alarm Time</string>
     <string name="label_snooze">Snooze</string>
     <string name="label_alarm_type">Alarm Type</string>
+    <string name="label_bell">Bell Sound</string>
     <string name="label_volume">Volume</string>
     <string name="label_repeat">Repeat</string>
     <string name="label_recog_strength">Recognize Strength</string>
+
+    <string name="delete_title">Delete Alarm</string>
+    <string name="delete_message">Do you want to Delete Alarm?</string>
+    
+    <string name="empty_title">List Empty</string>
+    <string name="empty_message">Please Add Alarm</string>
+    
+    <string name="ringtone_default">Default Ringtone</string>
+    <string name="ringtone_slient">Slient</string>
     
     <string name="btn_confirm">Confirm</string>
     <string name="btn_update">Update</string>
@@ -34,10 +46,16 @@
 	    <item>20 minutes</item>
 	</string-array>
 	<string-array name="dialog_recog_strength">
-	    <item>5</item>
 	    <item>10</item>
-	    <item>15</item>
 	    <item>20</item>
+	    <item>30</item>
+	    <item>40</item>
+	    <item>50</item>
+	    <item>60</item>
+	    <item>70</item>
+	    <item>80</item>
+	    <item>90</item>
+	    <item>100</item>
 	</string-array>
 	
 	<string-array name="weekday">

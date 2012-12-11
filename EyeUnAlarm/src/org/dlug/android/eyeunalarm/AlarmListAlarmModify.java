@@ -19,13 +19,14 @@ public class AlarmListAlarmModify extends AlarmListAlarmSet{
 		findViewById(R.id.btnConfirm).setOnClickListener(onClickConfirm);
 	}
 	
-	public void onResume(){
+	public void onStart(){
 		Map<String, Object> thisAlarmData = myDb.getAlarm(selectAlarmId);
 		
 		setTitle((String) thisAlarmData.get(MyDbHelper.FIELD_ALARM_NAME));
 		setAlarmTime((Integer) thisAlarmData.get(MyDbHelper.FIELD_HOURS), (Integer) thisAlarmData.get(MyDbHelper.FIELD_MINUTES));
 		setSnooze((Integer) thisAlarmData.get(MyDbHelper.FIELD_SNOOZE));
 		setType((Integer) thisAlarmData.get(MyDbHelper.FIELD_TYPE));
+		setBellURI((String) thisAlarmData.get(MyDbHelper.FIELD_ALERT_SONG));
 		setVolume((Integer) thisAlarmData.get(MyDbHelper.FIELD_ALERT_VOLUME));
 		setRepeat((Integer) thisAlarmData.get(MyDbHelper.FIELD_REPEAT));
 		setRecogStrength((Integer) thisAlarmData.get(MyDbHelper.FIELD_RECOG_TIME));
@@ -42,7 +43,7 @@ public class AlarmListAlarmModify extends AlarmListAlarmSet{
 			inputData.put("minutes", alarmTime[1]);
 			inputData.put("repeat", repeat);
 			inputData.put("snooze", snooze);
-			inputData.put("alert_song", "");
+			inputData.put("alert_song", bellURI);
 			inputData.put("type", (typeS * 2 + typeV));
 			inputData.put("recog_time", recogStrength);
 			inputData.put("alert_state", 1);
@@ -57,6 +58,12 @@ public class AlarmListAlarmModify extends AlarmListAlarmSet{
 			onBackPressed();
 
 			listUpdate();
+			try {
+				this.finalize();
+			} catch (Throwable e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	};
 }

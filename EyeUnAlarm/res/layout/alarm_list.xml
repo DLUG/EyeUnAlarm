@@ -53,7 +53,7 @@
 			    android:id="@+id/btnAddAlarm"
 			    android:layout_width="100dp"
 			    android:layout_height="100dp"
-			    android:background="@drawable/clock" />
+			    android:background="@drawable/add_alarm" />
 
 		</LinearLayout>
 	</LinearLayout>

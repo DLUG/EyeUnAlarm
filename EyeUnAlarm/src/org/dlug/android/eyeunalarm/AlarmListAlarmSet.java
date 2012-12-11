@@ -1,10 +1,19 @@
 package org.dlug.android.eyeunalarm;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+
 import android.app.AlertDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnMultiChoiceClickListener;
+import android.content.Intent;
+import android.database.Cursor;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -18,7 +27,7 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 
 public abstract class AlarmListAlarmSet extends AlarmListActivity{
 	protected static final int[] snoozeArr = {5, 10, 15, 20};
-	protected static final int[] recogStrengthArr = {5, 10, 15, 20};
+	protected static final int[] recogStrengthArr = {10, 20, 30, 40, 50, 60, 70, 80, 90, 100};
 	protected static final int TRUE = 1;
 	protected static final int FALSE = 0;
 	
@@ -27,6 +36,7 @@ public abstract class AlarmListAlarmSet extends AlarmListActivity{
 	protected int snooze = 5;
 	protected int typeS = 1;
 	protected int typeV = 1;
+	protected String bellURI;
 	protected int volume = 100;
 	protected int repeat = 127;
 	protected int recogStrength = 5;
@@ -37,6 +47,7 @@ public abstract class AlarmListAlarmSet extends AlarmListActivity{
 	protected TextView viewSnooze;
 	protected ImageView btnTypeS;
 	protected ImageView btnTypeV;
+	protected TextView viewBell;
 	protected SeekBar barVolume;
 	protected TextView viewRepeat;
 	protected TextView viewRecogStrength;
@@ -52,6 +63,7 @@ public abstract class AlarmListAlarmSet extends AlarmListActivity{
 		viewSnooze = (TextView) findViewById(R.id.viewSnooze);
 		btnTypeS = (ImageView) findViewById(R.id.btnTypeS);
 		btnTypeV = (ImageView) findViewById(R.id.btnTypeV);
+		viewBell = (TextView) findViewById(R.id.viewBell);
 		barVolume = (SeekBar) findViewById(R.id.barVolume);
 		barVolume.setMax(100);
 		viewRepeat = (TextView) findViewById(R.id.viewRepeat);
@@ -63,6 +75,7 @@ public abstract class AlarmListAlarmSet extends AlarmListActivity{
 		findViewById(R.id.layoutSnooze).setOnClickListener(onClickSnooze);
 		btnTypeS.setOnClickListener(onClickTypeS);
 		btnTypeV.setOnClickListener(onClickTypeV);
+		findViewById(R.id.layoutBell).setOnClickListener(onClickBell);
 		barVolume.setOnSeekBarChangeListener(onChangeVolume);
 		findViewById(R.id.layoutRepeat).setOnClickListener(onClickRepeat);
 		findViewById(R.id.layoutRecogTime).setOnClickListener(onClickRecogStrength);
@@ -144,6 +157,32 @@ public abstract class AlarmListAlarmSet extends AlarmListActivity{
 		}
 	}
 	
+	protected void setBellURI(String uri){
+		bellURI = uri;
+		String resultString = "";
+		
+		if(uri == null){
+			resultString = getString(R.string.ringtone_slient);
+		} else if(uri.equals("content://settings/system/ringtone")){
+			resultString = getString(R.string.ringtone_default);
+		} else {
+			Uri mUri = Uri.parse(uri);
+			Ringtone r = RingtoneManager.getRingtone(this, mUri);
+
+			resultString = r.getTitle(this);
+		}
+		
+		viewBell.setText(resultString);
+/*
+		try {
+			URI oURI = new URI(bellURI);
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+*/		
+	}
+	
 	protected void setVolume(int volume){
 		barVolume.setProgress(volume);
 		this.volume = volume;
@@ -181,7 +220,7 @@ public abstract class AlarmListAlarmSet extends AlarmListActivity{
 		this.repeat = repeat;
 	}
 	
-	protected boolean[] parseRepeatBinary(int repeat){
+	public static boolean[] parseRepeatBinary(int repeat){
 		boolean[] result = {false, false, false, false, false, false, false}; 
 		
 		if((repeat & 64) == 64)
@@ -202,7 +241,7 @@ public abstract class AlarmListAlarmSet extends AlarmListActivity{
 		return result;
 	}
 	
-	protected int makeRepeatBinary(boolean[] repeat){
+	public static int makeRepeatBinary(boolean[] repeat){
 		int result = 0;
 		
 		for(int i = 0; i < 7; i++){
@@ -287,6 +326,17 @@ public abstract class AlarmListAlarmSet extends AlarmListActivity{
 			toggleTypeV();
 		}
 	};
+	protected OnClickListener onClickBell = new OnClickListener(){
+		@Override
+		public void onClick(View v) {
+			Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
+			if(bellURI != null){
+				Uri oUri = Uri.parse(bellURI);
+				intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, oUri);
+			}
+	        getParent().startActivityForResult(intent, 0);
+		}
+	};
 	protected OnSeekBarChangeListener onChangeVolume = new OnSeekBarChangeListener() {
 		@Override
 		public void onStopTrackingTouch(SeekBar seekBar) {}
@@ -339,4 +389,38 @@ public abstract class AlarmListAlarmSet extends AlarmListActivity{
 			onBackPressed();
 		}
 	};
+	
+/*	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    	switch(requestCode){
+    	case 0 :
+    		Uri uri = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
+    		Log.d("URI", uri + "");
+
+    		break;
+    	}
+    }
+*/
+	
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		Log.d("ResultCode", resultCode + "");
+		if(resultCode != 0){
+	    	switch(requestCode){
+	    	case 0 :
+	    		Uri uri = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
+	    		Log.d("URI", uri + "");
+	    		
+	    		String resultURI = "";
+	    		
+	    		if(uri == null)
+	    			resultURI = null;
+	    		else
+	    			resultURI = uri.toString();
+	    		
+	    		setBellURI(resultURI);
+	
+	    		break;
+	    	}
+		}
+    }
 }

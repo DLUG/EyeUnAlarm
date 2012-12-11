@@ -49,7 +49,7 @@ public class MyDbHelper extends SQLiteOpenHelper{
 		"INTEGER NOT NULL", 
 		"INTEGER NOT NULL", 
 		"INTEGER NOT NULL",
-		"INTEGER NOT NULL", 
+		"STRING", 
 		"INTEGER NOT NULL", 
 		"INTEGER NOT NULL", 
 		"INTEGER NOT NULL",
@@ -107,8 +107,11 @@ public class MyDbHelper extends SQLiteOpenHelper{
 			for(int j = 0; j < FIELD_NAMES.length; j++){
 				if(FIELD_TYPES[j].subSequence(0, 3).equals("INT"))
 					rowData.put(FIELD_NAMES[j], cursor.getInt(j));
-				else if(FIELD_TYPES[j].subSequence(0, 3).equals("STR"))
+				else if(FIELD_TYPES[j].subSequence(0, 3).equals("STR")){
 					rowData.put(FIELD_NAMES[j], cursor.getString(j));
+					if(cursor.getString(j).equals("null"))
+						rowData.put(FIELD_NAMES[j], null);
+				}
 			}
 			result.add(rowData);
 		}
@@ -131,8 +134,42 @@ public class MyDbHelper extends SQLiteOpenHelper{
 			for(int j = 0; j < FIELD_NAMES.length; j++){
 				if(FIELD_TYPES[j].subSequence(0, 3).equals("INT"))
 					rowData.put(FIELD_NAMES[j], cursor.getInt(j));
-				else if(FIELD_TYPES[j].subSequence(0, 3).equals("STR"))
+				else if(FIELD_TYPES[j].subSequence(0, 3).equals("STR")){
 					rowData.put(FIELD_NAMES[j], cursor.getString(j));
+					if(cursor.getString(j).equals("null"))
+						rowData.put(FIELD_NAMES[j], null);
+				}
+			}
+		}
+		
+		return rowData;
+	}
+	
+	public Map<String, Object> getAlarm(Map<String, Object> filter){
+		Map<String, Object> rowData = new HashMap<String, Object>(10);
+		
+		String query = "SELECT * FROM " + TABLE_NAME + " WHERE ";
+		
+		for(String key: filter.keySet()){
+			query += key + " = '" + filter.get(key) + "' AND "; 
+		}
+		query = query.substring(0, query.length() - 5);
+		
+		Log.d("DBQuery - getAlarm", query);
+		
+		Cursor cursor = oSQLiteDB.rawQuery(query, null);
+		
+		cursor.moveToFirst();
+		
+		if(cursor.getCount() != 0){
+			for(int j = 0; j < FIELD_NAMES.length; j++){
+				if(FIELD_TYPES[j].subSequence(0, 3).equals("INT"))
+					rowData.put(FIELD_NAMES[j], cursor.getInt(j));
+				else if(FIELD_TYPES[j].subSequence(0, 3).equals("STR")){
+					rowData.put(FIELD_NAMES[j], cursor.getString(j));
+					if(cursor.getString(j).equals("null"))
+						rowData.put(FIELD_NAMES[j], null);
+				}
 			}
 		}
 		
@@ -168,9 +205,9 @@ public class MyDbHelper extends SQLiteOpenHelper{
 		query += " WHERE ";
 		
 		for(String key: filter.keySet()){
-			query += key + " = '" + filter.get(key) + "', "; 
+			query += key + " = '" + filter.get(key) + "' AND "; 
 		}
-		query = query.substring(0, query.length() - 2);
+		query = query.substring(0, query.length() - 5);
 		
 		Log.d("DBQuery - update", query);
 		
@@ -178,12 +215,12 @@ public class MyDbHelper extends SQLiteOpenHelper{
 	}
 	
 	public void delete(Map<String, Object> filter){
-		String query = "UPDATE FROM " + TABLE_NAME + " WHERE ";
+		String query = "DELETE FROM " + TABLE_NAME + " WHERE ";
 		
 		for(String key: filter.keySet()){
-			query += key + " = '" + filter.get(key) + "', "; 
+			query += key + " = '" + filter.get(key) + "' AND "; 
 		}
-		query = query.substring(0, query.length() - 2);
+		query = query.substring(0, query.length() - 5);
 		
 		Log.d("DBQuery - delete", query);
 		
