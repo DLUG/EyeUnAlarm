@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">EyeUn Alarm</string>
+
+    <string name="loading">Loading</string>
+    
+    <string name="title_alarm_list">알람 목록</string>
+    <string name="title_add_alarm">알람 추가</string>
+    <string name="title_modify_alarm">알람 수정</string>
+    
+    <string name="label_alarm_title">알람 제목</string>
+    <string name="label_alarm_time">알람 시각</string>
+    <string name="label_snooze">Snooze</string>
+    <string name="label_alarm_type">알람 타입</string>
+    <string name="label_bell">알람 소리</string>
+    <string name="label_volume">음량</string>
+    <string name="label_repeat">반복</string>
+    <string name="label_recog_strength">인식 강도</string>
+
+    <string name="delete_title">알람 삭제</string>
+    <string name="delete_message">알람을 삭제하시겠습니까?</string>
+    
+    <string name="empty_title">목록 비어있음</string>
+    <string name="empty_message">알람을 추가해주세요.</string>
+    
+    <string name="ringtone_default">기본 알람음</string>
+    <string name="ringtone_slient">묵음</string>
+    
+    <string name="btn_confirm">확인</string>
+    <string name="btn_update">수정</string>
+    <string name="btn_cancel">취소</string>
+    <string name="btn_back">뒤로</string>
+
+    <string name="toast_updated_alarm">업데이트 되었습니다.!</string>
+    <string name="toast_added_alarm">추가되었습니다.!</string>
+    
+    <string name="minutes">분</string>
+    <string name="seconds">초</string>
+    <string name="everyday">매일</string>
+    <string name="workday">근무요일</string>
+    
+    <string-array name="dialog_snooze">
+	    <item>5 분</item>
+	    <item>10 분</item>
+	    <item>15 분</item>
+	    <item>20 분</item>
+	</string-array>
+	<string-array name="dialog_recog_strength">
+	    <item>10</item>
+	    <item>20</item>
+	    <item>30</item>
+	    <item>40</item>
+	    <item>50</item>
+	    <item>60</item>
+	    <item>70</item>
+	    <item>80</item>
+	    <item>90</item>
+	    <item>100</item>
+	</string-array>
+	
+	<string-array name="weekday">
+	    <item>일</item>
+	    <item>월</item>
+	    <item>화</item>
+	    <item>수</item>
+	    <item>목</item>
+	    <item>금</item>
+	    <item>토</item>
+	</string-array>
+	
+</resources>
