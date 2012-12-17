@@ -44,7 +44,6 @@ public class AlarmPlay extends MyActivity{
 	protected boolean[] repeat;
 	protected int recogStrength = 5;
 	
-	FrameLayout previewFrame;
 	ImageView modifyImage;
 	CameraPreview cameraView;
 	public ProgressBar barRecogEye;
@@ -93,33 +92,7 @@ public class AlarmPlay extends MyActivity{
 		if(!repeat[todayDayOfWeek - 1])
 			finish();
 		
-		previewFrame = (FrameLayout) findViewById(R.id.PreviewFrame);
 		modifyImage = (ImageView) findViewById(R.id.modifyImage);
-		
-		File xmlFile = new File("/data/data/org.dlug.android.eyeunalarm/files/eyes.xml");
-		if(!xmlFile.exists()){
-/*
-			File filesFolder = new File("/data/data/com.example.detectobject/files");
-			if(!filesFolder.exists()){
-				filesFolder.mkdir();
-			}
-*/			
-			try {
-				InputStream input = getAssets().open("haarcascade_eye.xml");
-				byte[] data = new byte[input.available()];
-				input.read(data);
-				input.close();
-				FileOutputStream output = openFileOutput("eyes.xml", Context.MODE_PRIVATE);
-				output.write(data);
-				output.close();
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
 		
 		cameraView = new CameraPreview(getApplicationContext(), 640, 480, 100, this, recogStrength);
 		
@@ -151,9 +124,8 @@ public class AlarmPlay extends MyActivity{
 					// Load native library after(!) OpenCV initialization
 					System.loadLibrary("DetectEye");
 					
-					previewFrame.removeAllViews();
-					previewFrame.addView(cameraView);
 					cameraView.setModifyView(modifyImage);
+					cameraView.start();
 					
 					if(typeS){
 						player = MediaPlayer.create(getApplicationContext(), Uri.parse(bellURI));

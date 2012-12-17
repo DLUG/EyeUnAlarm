@@ -28,7 +28,8 @@ public abstract class MyActivity extends Activity{
 	protected static int currentMM;
 	protected static int currentDD;
 
-	public void onCreate(Bundle savedInstanceState){
+	@Override
+	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		
 		if(myDb == null){

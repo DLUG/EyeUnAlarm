@@ -15,7 +15,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.ImageView;
 
-public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
+public class CameraPreview extends SurfaceView{
 	private int maxWidth;
 	private int maxHeight;
 	private int jpegQuality;
@@ -31,7 +31,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
 //	private ImageView ivCam;
 
-	private SurfaceHolder mHolder;
+//	private SurfaceHolder mHolder;
 	private Camera mCamera;
 
 	private byte[] previewData;
@@ -50,17 +50,12 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 		this.judgement_thresold = judgement_thresold;
 		this.parent = parent;
 		
-		mHolder = getHolder();
-		mHolder.addCallback(this);
-		mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+//		mHolder = getHolder();
+//		mHolder.addCallback(this);
+//		mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 		this.maxWidth = maxWidth;
 		this.maxHeight = maxHeight;
 		this.jpegQuality = jpegQuality;
-	}
-
-	public void surfaceCreated(SurfaceHolder holder) {
-//		mCamera = Camera.open();
-//		mCamera = Camera.open(Camera.CameraInfo.CAMERA_FACING_FRONT);
 		
 		int useCameraId = 99;
 		
@@ -69,7 +64,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 		
 		for(int i = 0; i < cameraCount; i++){
 			Camera.getCameraInfo( i, cameraInfo );
-			if ( cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_FRONT  ) {
+			if ( cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
             	useCameraId = i;
 			}
 		}
@@ -88,65 +83,44 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 		parameters.set("orientation", "landscape");
 		format = parameters.getPreviewFormat();
 
-		try {
-			mCamera.setPreviewDisplay(holder);
-			setPreviewEvent();
-		} catch (IOException exception) {
-			mCamera.release();
-			mCamera = null;
-			// TODO: add more exception handling logic here
-		}
-	}
-
-	public void surfaceDestroyed(SurfaceHolder holder) {
-		mCamera.stopPreview();
-		mCamera.release();
-	}
-
-	public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {
-		if(trigger){
 //			boolean supportResolution = false;
 
-			Camera.Parameters parameters = mCamera.getParameters();
 
-			Log.i("Still","int w:"+w+"/int h:"+h);
-			List<Camera.Size> sizes = parameters.getSupportedPreviewSizes();
-			List<Camera.Size> supportsizes = parameters.getSupportedPictureSizes();
+		List<Camera.Size> sizes = parameters.getSupportedPreviewSizes();
+		List<Camera.Size> supportsizes = parameters.getSupportedPictureSizes();
 
-			previewWidth = 0;
-			previewHeight = 0;
+		previewWidth = 0;
+		previewHeight = 0;
 
 // Pick Preview Resolution
-			for (Camera.Size size : sizes){
-				Log.i("Still","preview size.height>"+size.height+"/size.width"+size.width );
-				if(size.width <= maxWidth && size.height <= maxHeight){
-					previewWidth = size.width;
-					previewHeight = size.height;
-					break;
-				}
+		for (Camera.Size size : sizes){
+			Log.i("Still","preview size.height>"+size.height+"/size.width"+size.width );
+			if(size.width <= maxWidth && size.height <= maxHeight){
+				previewWidth = size.width;
+				previewHeight = size.height;
+				break;
 			}
-			Log.i("Still","preview size.width>" + previewWidth + "/size.height" + previewHeight);
-			parameters.setPreviewSize(previewWidth, previewHeight);
-
-			
-// Pick Picture Resolution (Not use)	
-			int pictureWidth = 0;
-			int pictureHeight = 0;
-			for(Camera.Size size : supportsizes){
-				Log.i("Still","Picture size.width>" + size.width + "/size.height" + size.height );
-				if(size.width <= maxWidth && size.height <= maxHeight){
-					pictureWidth = size.width;
-					pictureHeight = size.height;
-
-					break;
-				}
-			}
-
-			Log.i("Still","Picture size.width>" + pictureWidth + "/size.height" + pictureHeight);
-			parameters.setPictureSize(pictureWidth, pictureHeight);
-			mCamera.setParameters(parameters);
-			mCamera.startPreview();
 		}
+		Log.i("Still","Using size.width>" + previewWidth + "/size.height" + previewHeight);
+		parameters.setPreviewSize(previewWidth, previewHeight);
+
+		
+// Pick Picture Resolution (Not use, but Need)	
+		int pictureWidth = 0;
+		int pictureHeight = 0;
+		for(Camera.Size size : supportsizes){
+			Log.i("Still","Picture size.width>" + size.width + "/size.height" + size.height );
+			if(size.width <= maxWidth && size.height <= maxHeight){
+				pictureWidth = size.width;
+				pictureHeight = size.height;
+
+				break;
+			}
+		}
+
+		Log.i("Still","Picture size.width>" + pictureWidth + "/size.height" + pictureHeight);
+		parameters.setPictureSize(pictureWidth, pictureHeight);
+		mCamera.setParameters(parameters);
 	}
 
 // Take Picture (Not Use) ================================
@@ -173,10 +147,16 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 		return out.toByteArray();
 	}
 
+	public void start(){
+		mCamera.startPreview();
+	}
+	
 // Pausing	
 	public void pause(){
 		trigger = false;
-		this.mCamera.setPreviewCallback(null);
+		mCamera.stopPreview();
+		mCamera.setPreviewCallback(null);
+		mCamera.release();
 	}
 
 // PreviewEvent for Capture

@@ -23,7 +23,7 @@ public class AlarmList extends AlarmListActivity{
 	int deletePosition = 0;
 	
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.alarm_list);
 
@@ -88,7 +88,8 @@ public class AlarmList extends AlarmListActivity{
 		}
 	};
 	
-	public void onResume(){
+	@Override
+	protected void onResume(){
 		super.onResume();
 	}
 	

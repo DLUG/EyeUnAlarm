@@ -23,37 +23,28 @@
             android:textColor="#FFFFFFFF"
             android:textSize="30sp" />
     </LinearLayout>
-
-    <Button
-        android:id="@+id/btnSnooze"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Snooze"
-         />
     
         <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:orientation="vertical" >
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical" >
 
-        <FrameLayout
-            android:id="@+id/PreviewFrame"
-            android:layout_width="fill_parent"
-            android:layout_height="150dp"
-            android:enabled="true"
-            android:gravity="center_vertical|top" >
-        </FrameLayout>
+            <Button
+                android:id="@+id/btnSnooze"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Snooze" />
 
         <ImageView
             android:id="@+id/modifyImage"
             android:layout_width="fill_parent"
-            android:layout_height="150dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
             android:enabled="true"
-            android:gravity="center_vertical|top" >
+            android:gravity="center_vertical|top"
+            android:src="@drawable/background" >
 
         </ImageView>
-        
-    </LinearLayout>
 
         <ProgressBar
             android:id="@+id/barRecogEye"
@@ -63,5 +54,7 @@
             android:layout_weight="0"
             android:minHeight="20dp"
             android:minWidth="480dp" />
+        
+    </LinearLayout>
     
  </LinearLayout>

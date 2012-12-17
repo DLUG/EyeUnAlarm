@@ -10,7 +10,8 @@ import android.view.View.OnClickListener;
 import android.widget.Toast;
 
 public class AlarmListAlarmModify extends AlarmListAlarmSet{
-	public void onCreate(Bundle savedInstanceState){
+	@Override
+	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 
 		titleAlarmSet.setText(R.string.title_modify_alarm);
@@ -19,7 +20,8 @@ public class AlarmListAlarmModify extends AlarmListAlarmSet{
 		findViewById(R.id.btnConfirm).setOnClickListener(onClickConfirm);
 	}
 	
-	public void onStart(){
+	@Override
+	protected void onStart(){
 		Map<String, Object> thisAlarmData = myDb.getAlarm(selectAlarmId);
 		
 		setTitle((String) thisAlarmData.get(MyDbHelper.FIELD_ALARM_NAME));

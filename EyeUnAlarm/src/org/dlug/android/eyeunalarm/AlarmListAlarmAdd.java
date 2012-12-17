@@ -13,7 +13,8 @@ import android.view.View.OnClickListener;
 import android.widget.Toast;
 
 public class AlarmListAlarmAdd extends AlarmListAlarmSet{
-	public void onCreate(Bundle savedInstanceState){
+	@Override
+	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 
 		titleAlarmSet.setText(R.string.title_add_alarm);
@@ -21,7 +22,8 @@ public class AlarmListAlarmAdd extends AlarmListAlarmSet{
 		findViewById(R.id.btnConfirm).setOnClickListener(onClickConfirm);
 	}
 	
-	public void onStart(){
+	@Override
+	protected void onStart(){
 		GregorianCalendar currentCalendar = new GregorianCalendar(TimeZone.getTimeZone("GMT+09:00"));
 		
 		setTitle("Alarm");
