@@ -5,17 +5,14 @@ import java.io.IOException;
 import java.util.List;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.graphics.YuvImage;
 import android.hardware.Camera;
 import android.hardware.Camera.PreviewCallback;
-import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
@@ -46,6 +43,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 	
 	AlarmPlay parent;
 
+	@SuppressWarnings("deprecation")
 	CameraPreview(Context context, int maxWidth, int maxHeight, int jpegQuality, AlarmPlay parent, int judgement_thresold) {
 		super(context);
 

@@ -6,9 +6,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TimeZone;
 
-import android.content.Intent;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;

@@ -1,10 +1,7 @@
 package org.dlug.android.eyeunalarm;
 
 import android.content.Intent;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 @SuppressWarnings("deprecation")

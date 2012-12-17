@@ -1,14 +1,11 @@
 package org.dlug.android.eyeunalarm;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 
 import android.app.AlertDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnMultiChoiceClickListener;
 import android.content.Intent;
-import android.database.Cursor;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
