@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.List;
 
 import android.graphics.Bitmap;
+import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.graphics.YuvImage;
 import android.hardware.Camera;
@@ -18,7 +19,6 @@ import android.widget.ImageView;
 public class CameraPreview extends SurfaceView{
 	private int maxWidth;
 	private int maxHeight;
-	private int jpegQuality;
 	private int previewWidth;
 	private int previewHeight;
 	private int format;
@@ -44,9 +44,11 @@ public class CameraPreview extends SurfaceView{
 	AlarmPlay parent;
 
 	@SuppressWarnings("deprecation")
-	CameraPreview(Context context, int maxWidth, int maxHeight, int jpegQuality, AlarmPlay parent, int judgement_thresold) {
+	CameraPreview(Context context, int maxWidth, int maxHeight, AlarmPlay parent, int judgement_thresold) throws RuntimeException, NullPointerException{
 		super(context);
 
+		System.loadLibrary("DetectEye");
+		
 		this.judgement_thresold = judgement_thresold;
 		this.parent = parent;
 		
@@ -55,7 +57,6 @@ public class CameraPreview extends SurfaceView{
 //		mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 		this.maxWidth = maxWidth;
 		this.maxHeight = maxHeight;
-		this.jpegQuality = jpegQuality;
 		
 		int useCameraId = 99;
 		
@@ -75,6 +76,7 @@ public class CameraPreview extends SurfaceView{
 			mCamera = Camera.open(useCameraId);
 		
 		Log.i("Still", "surfaceCreated(SurfaceHolder holder) ");
+		
 		mCamera.setDisplayOrientation(90);	// Rotate Camera
 
 		  
@@ -121,6 +123,8 @@ public class CameraPreview extends SurfaceView{
 		Log.i("Still","Picture size.width>" + pictureWidth + "/size.height" + pictureHeight);
 		parameters.setPictureSize(pictureWidth, pictureHeight);
 		mCamera.setParameters(parameters);
+		
+		setPreviewEvent();
 	}
 
 // Take Picture (Not Use) ================================
@@ -135,17 +139,6 @@ public class CameraPreview extends SurfaceView{
 		}		
 	}
 */
-
-// Capture Picture from Preview Image	
-	public byte[] videoCapture(){
-		YuvImage image = new YuvImage(previewData, format, previewWidth, previewHeight, null);
-
-		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		Rect area = new Rect(0, 0, previewWidth, previewHeight);
-		image.compressToJpeg(area, jpegQuality, out);
-
-		return out.toByteArray();
-	}
 
 	public void start(){
 		mCamera.startPreview();
@@ -184,84 +177,16 @@ public class CameraPreview extends SurfaceView{
 					parent.pass();
 				}
 				
-//				Bitmap bm = BitmapFactory.decodeByteArray(byte_src, 0, byte_src.length);
-//				Bitmap bm = BitmapFactory.decodeByteArray(result2, 0, result2.length);
-				Bitmap bm = Bitmap.createBitmap(previewWidth, previewHeight, Bitmap.Config.ARGB_8888);
-				bm.setPixels(result, 0/* offset */, previewWidth /* stride */, 0, 0, previewWidth, previewHeight);
 				
+				Bitmap bm = Bitmap.createBitmap(previewHeight, previewWidth, Bitmap.Config.ARGB_8888);
+				bm.setPixels(result, 0/* offset */, previewHeight /* stride */, 0, 0, previewHeight, previewWidth);
+
 				modifyImage.setImageBitmap(bm);
 				
 			}
 		});
 	}
 
-	/*	TODO: Get Image from Preview Video
-	public void onPreviewFrame(byte[] data, Camera camera, String fileName) 
-	{
-
-
-	    Camera.Parameters parameters = camera.getParameters();
-	    int imageFormat = parameters.getPreviewFormat();
-	    if (imageFormat == ImageFormat.NV21)
-	    {
-	        Rect rect = new Rect(0, 0, IMAGE_WIDTH, IMAGE_HEIGHT); 
-	        YuvImage img = new YuvImage(data, ImageFormat.NV21, IMAGE_WIDTH, IMAGE_HEIGHT, null);
-	        OutputStream outStream = null;
-	        File file = new File(fileName);
-	        try 
-	        {
-	            outStream = new FileOutputStream(file);
-	            img.compressToJpeg(rect, 100, outStream);
-	            outStream.flush();
-	            outStream.close();
-	        } 
-	        catch (FileNotFoundException e) 
-	        {
-	            e.printStackTrace();
-	        }
-	        catch (IOException e) 
-	        {
-	            e.printStackTrace();
-	        }
-	    }
-	}
-	 */
-
-
-	/*
-	 	private Size getOptimalPreviewSize(List<Size> sizes, int w, int h) {
-		final double ASPECT_TOLERANCE = 0.05;
-		double targetRatio = (double) w / h;
-		if (sizes == null) return null;
-
-		Size optimalSize = null;
-		double minDiff = Double.MAX_VALUE;
-
-		int targetHeight = h;
-
-		// Try to find an size match aspect ratio and size
-		for (Size size : sizes) {
-			double ratio = (double) size.width / size.height;
-			if (Math.abs(ratio - targetRatio) > ASPECT_TOLERANCE) continue;
-			if (Math.abs(size.height - targetHeight) < minDiff) {
-				optimalSize = size;
-				minDiff = Math.abs(size.height - targetHeight);
-			}
-		}
-
-		// Cannot find the one match the aspect ratio, ignore the requirement
-		if (optimalSize == null) {
-			minDiff = Double.MAX_VALUE;
-			for (Size size : sizes) {
-				if (Math.abs(size.height - targetHeight) < minDiff) {
-					optimalSize = size;
-					minDiff = Math.abs(size.height - targetHeight);
-				}
-			}
-		}
-		return optimalSize;
-	}
-	 */
 	
 	public native void ObjectRecog(int width, int height, byte yuv[], int[] rgba, int[] value);
 

@@ -23,7 +23,7 @@ public class AlarmListAlarmAdd extends AlarmListAlarmSet{
 	}
 	
 	@Override
-	protected void onStart(){
+	protected void onResume(){
 		GregorianCalendar currentCalendar = new GregorianCalendar(TimeZone.getTimeZone("GMT+09:00"));
 		
 		setTitle("Alarm");
@@ -60,7 +60,7 @@ public class AlarmListAlarmAdd extends AlarmListAlarmSet{
 
 			listUpdate();
 			try {
-				this.finalize();
+				AlarmListAlarmAdd.this.finalize();
 			} catch (Throwable e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

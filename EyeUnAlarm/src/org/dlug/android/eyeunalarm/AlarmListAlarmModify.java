@@ -21,7 +21,7 @@ public class AlarmListAlarmModify extends AlarmListAlarmSet{
 	}
 	
 	@Override
-	protected void onStart(){
+	protected void onResume(){
 		Map<String, Object> thisAlarmData = myDb.getAlarm(selectAlarmId);
 		
 		setTitle((String) thisAlarmData.get(MyDbHelper.FIELD_ALARM_NAME));
@@ -61,7 +61,7 @@ public class AlarmListAlarmModify extends AlarmListAlarmSet{
 
 			listUpdate();
 			try {
-				this.finalize();
+				AlarmListAlarmModify.this.finalize();
 			} catch (Throwable e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

@@ -33,6 +33,7 @@
 
     <string name="toast_updated_alarm">업데이트 되었습니다.!</string>
     <string name="toast_added_alarm">추가되었습니다.!</string>
+    <string name="toast_cannot_open_camera">카메라를 열 수 없습니다.</string>
     
     <string name="minutes">분</string>
     <string name="seconds">초</string>

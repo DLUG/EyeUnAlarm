@@ -385,6 +385,11 @@ public abstract class AlarmListAlarmSet extends AlarmListActivity{
 		@Override
 		public void onClick(View v) {
 			onBackPressed();
+			try {
+				AlarmListAlarmSet.this.finalize();
+			} catch (Throwable e) {
+				e.printStackTrace();
+			}
 		}
 	};
 	

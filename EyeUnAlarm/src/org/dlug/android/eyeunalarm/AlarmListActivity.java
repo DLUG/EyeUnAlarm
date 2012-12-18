@@ -47,7 +47,6 @@ public abstract class AlarmListActivity extends TabNavigationActivity{
 	  		
     	  	if(gregorianCalendar.getTimeInMillis() < currentCalendar.getTimeInMillis()){
     	  		gregorianCalendar.set(currentYY, currentMM, currentDD+1, mHour, mMinute, 0);
-    	  		Log.i("TAG",gregorianCalendar.getTimeInMillis()+":");
     	  	} else {
     	  		gregorianCalendar.set(currentYY, currentMM, currentDD, mHour, mMinute, 0);
     	  	}

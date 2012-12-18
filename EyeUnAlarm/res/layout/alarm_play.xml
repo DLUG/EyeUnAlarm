@@ -35,25 +35,31 @@
                 android:layout_height="wrap_content"
                 android:text="Snooze" />
 
-        <ImageView
-            android:id="@+id/modifyImage"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:enabled="true"
-            android:gravity="center_vertical|top"
-            android:src="@drawable/background" >
+            <LinearLayout
+                android:id="@+id/layoutPlayVideo"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical" >
 
-        </ImageView>
+                <ImageView
+                    android:id="@+id/modifyImage"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1"
+                    android:enabled="true"
+                    android:gravity="center_vertical|top"
+                    android:src="@drawable/background" />
 
-        <ProgressBar
-            android:id="@+id/barRecogEye"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="fill_parent"
-            android:layout_height="20dp"
-            android:layout_weight="0"
-            android:minHeight="20dp"
-            android:minWidth="480dp" />
+                <ProgressBar
+                    android:id="@+id/barRecogEye"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="20dp"
+                    android:layout_weight="0"
+                    android:minHeight="20dp"
+                    android:minWidth="480dp" />
+
+            </LinearLayout>
         
     </LinearLayout>
     

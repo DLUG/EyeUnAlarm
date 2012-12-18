@@ -14,78 +14,88 @@ using namespace std;
 using namespace cv;
 
 extern "C" {
-JNIEXPORT void JNICALL Java_org_dlug_android_eyeunalarm_alarm_CameraPreview_ObjectRecog(JNIEnv* env, jobject, jint width, jint height, jbyteArray yuv, jintArray bgra, jintArray recogValue)
-{
-    jbyte* _yuv  = env->GetByteArrayElements(yuv, 0);
-    jint*  _bgra = env->GetIntArrayElements(bgra, 0);
-    jint*  _recogValue = env->GetIntArrayElements(recogValue, 0);
-
-    Mat myuv(height + height/2, width, CV_8UC1, (unsigned char *)_yuv);
-    Mat mbgra(height, width, CV_8UC4, (unsigned char *)_bgra);
-//    Mat mgray(height, width, CV_8UC1, (unsigned char *)_yuv);
-
-    //Please make attention about BGRA byte order
-    //ARGB stored in java as int array becomes BGRA at native level
-    cvtColor(myuv, mbgra, CV_YUV420sp2BGR, 4);
-
- //Start ===============================================
-    int i = 0;
-	double t = 0;
-	int scale = 3;
-
-
-	vector<Rect> faces;
-	const static Scalar colors[] =  { CV_RGB(0,0,255),
-		CV_RGB(0,128,255),
-		CV_RGB(0,255,255),
-		CV_RGB(0,255,0),
-		CV_RGB(255,128,0),
-		CV_RGB(255,255,0),
-		CV_RGB(255,0,0),
-		CV_RGB(255,0,255)} ;
-
-	Mat gray, smallImg( cvRound (mbgra.rows/scale), cvRound(mbgra.cols/scale), CV_8UC1 );
-
-	CascadeClassifier cascade;
-
-	if(!cascade.load("/data/data/org.dlug.android.eyeunalarm/files/eyes.xml")){
-			Loge("ERROR: Could not load classifier cascade");
-			return;
-	}
-
-	cvtColor( mbgra, gray, CV_BGR2GRAY );
-	resize( gray, smallImg, smallImg.size(), 0, 0, INTER_LINEAR );
-//	equalizeHist( smallImg, smallImg );
-
-	cascade.detectMultiScale( smallImg, faces,
-		1.1, 2, 0
-		//|CV_HAAR_FIND_BIGGEST_OBJECT
-		//|CV_HAAR_DO_ROUGH_SEARCH
-		|CV_HAAR_SCALE_IMAGE
-		,
-		Size(30, 30) );
-
-	int judge = 0;
-	for( vector<Rect>::const_iterator r = faces.begin(); r != faces.end(); r++, i++ )
+	JNIEXPORT void JNICALL Java_org_dlug_android_eyeunalarm_alarm_CameraPreview_ObjectRecog(JNIEnv* env, jobject, jint width, jint height, jbyteArray yuv, jintArray bgra, jintArray recogValue)
 	{
-		judge++;
-		Mat smallImgROI;
-		vector<Rect> nestedObjects;
-		Point center;
-		Scalar color = colors[i%8];
-		int radius;
-		center.x = cvRound((r->x + r->width*0.5)*scale);
-		center.y = cvRound((r->y + r->height*0.5)*scale);
-		radius = cvRound((r->width + r->height)*0.25*scale);
-		circle( mbgra, center, radius, color, 3, 8, 0 );
- //End  ===============================================
+		jbyte* _yuv  = env->GetByteArrayElements(yuv, 0);
+		jint*  _bgra = env->GetIntArrayElements(bgra, 0);
+		jint*  _recogValue = env->GetIntArrayElements(recogValue, 0);
+
+		Mat myuv(height + height/2, width, CV_8UC1, (unsigned char *)_yuv);
+		Mat m_bgra(width, height, CV_8UC4, (unsigned char *)_bgra);
+	//    Mat mgray(height, width, CV_8UC1, (unsigned char *)_yuv);
+		Mat mbgra;
+		Mat dst;
+
+		//Please make attention about BGRA byte order
+		//ARGB stored in java as int array becomes BGRA at native level
+		cvtColor(myuv, mbgra, CV_YUV420sp2BGR, 4);
+
+
+		Point center(width / 2, height / 2);
+		Mat M = cv::getRotationMatrix2D(center, -90, 1.0);
+		cv::warpAffine(mbgra, dst, M, cv::Size(height, width));
+
+
+	 //Start ===============================================
+		int i = 0;
+		double t = 0;
+		int scale = 3;
+
+
+		vector<Rect> faces;
+		const static Scalar colors[] =  { CV_RGB(0,0,255),
+			CV_RGB(0,128,255),
+			CV_RGB(0,255,255),
+			CV_RGB(0,255,0),
+			CV_RGB(255,128,0),
+			CV_RGB(255,255,0),
+			CV_RGB(255,0,0),
+			CV_RGB(255,0,255)} ;
+
+		Mat gray, smallImg( cvRound (dst.rows/scale), cvRound(dst.cols/scale), CV_8UC1 );
+
+		CascadeClassifier cascade;
+
+		if(!cascade.load("/data/data/org.dlug.android.eyeunalarm/files/eyes.xml")){
+				Loge("ERROR: Could not load classifier cascade");
+				return;
+		}
+
+		cvtColor( dst, gray, CV_BGR2GRAY );
+		resize( gray, smallImg, smallImg.size(), 0, 0, INTER_LINEAR );
+	//	equalizeHist( smallImg, smallImg );
+
+		cascade.detectMultiScale( smallImg, faces,
+			1.1, 2, 0
+			//|CV_HAAR_FIND_BIGGEST_OBJECT
+			//|CV_HAAR_DO_ROUGH_SEARCH
+			|CV_HAAR_SCALE_IMAGE
+			,
+			Size(60, 60) );
+
+		int judge = 0;
+		for( vector<Rect>::const_iterator r = faces.begin(); r != faces.end(); r++, i++ )
+		{
+			judge++;
+			Mat smallImgROI;
+			vector<Rect> nestedObjects;
+			Point center;
+			Scalar color = colors[i%8];
+			int radius;
+			center.x = cvRound((r->x + r->width*0.5)*scale);
+			center.y = cvRound((r->y + r->height*0.5)*scale);
+			radius = cvRound((r->width + r->height)*0.25*scale);
+			circle( dst, center, radius, color, 3, 8, 0 );
+	 //End  ===============================================
+		}
+
+		if(judge > 0)
+			_recogValue[0] = 1;
+
+		dst.copyTo(m_bgra);
+
+		env->ReleaseIntArrayElements(bgra, _bgra, 0);
+		env->ReleaseByteArrayElements(yuv, _yuv, 0);
+		env->ReleaseIntArrayElements(recogValue, _recogValue, 0);
 	}
-
-	if(judge > 0)
-		_recogValue[0] = 1;
-
-    env->ReleaseIntArrayElements(bgra, _bgra, 0);
-    env->ReleaseByteArrayElements(yuv, _yuv, 0);
-    env->ReleaseIntArrayElements(recogValue, _recogValue, 0);
-}
 }
