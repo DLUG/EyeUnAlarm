@@ -35,7 +35,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-public class AlarmPlay extends MyActivity implements AlarmPlayImpl{
+public class AlarmPlayTest extends MyActivity implements AlarmPlayImpl{
 	protected String title = "";
 	protected int[] alarmTime = {0, 0};
 	protected int snooze = 5;
@@ -57,7 +57,6 @@ public class AlarmPlay extends MyActivity implements AlarmPlayImpl{
 	
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		
 		
 		File xmlFile = new File(this.getFilesDir().getPath() + "/eyes.xml");
 		if(!xmlFile.exists()){
@@ -97,6 +96,7 @@ public class AlarmPlay extends MyActivity implements AlarmPlayImpl{
 		filter.put(MyDbHelper.FIELD_HOURS, currentHH);
 		filter.put(MyDbHelper.FIELD_MINUTES, currentmm);
 		
+/* TODO: Active This Part
 		Map<String, Object> currentAlarm = myDb.getAlarm(filter);
 		
 		title = (String) currentAlarm.get(MyDbHelper.FIELD_ALARM_NAME);
@@ -111,6 +111,23 @@ public class AlarmPlay extends MyActivity implements AlarmPlayImpl{
 		repeatBinary = (Integer) currentAlarm.get(MyDbHelper.FIELD_REPEAT);
 		repeat = AlarmListAlarmSet.parseRepeatBinary(repeatBinary);
 		recogStrength = (Integer) currentAlarm.get(MyDbHelper.FIELD_RECOG_TIME);
+*/
+		
+// Sample Data
+		title = "TestAlarm";
+		alarmTime[0] = 12;
+		alarmTime[1] = 12;
+		snooze = 5;
+		int type = 2;
+		typeS = (type & 2) == 2;
+		typeV = (type & 1) == 1;
+		bellURI = "";
+		volume = 100;
+		repeatBinary = 255;
+		repeat = AlarmListAlarmSet.parseRepeatBinary(repeatBinary);
+		recogStrength = (Integer) 100;
+// Sample Data End
+
 		
 		findViewById(R.id.btnSnooze).setOnClickListener(onClickSnooze);
 		
