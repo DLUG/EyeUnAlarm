@@ -16,6 +16,7 @@ import org.dlug.android.eyeunalarm.MyActivity;
 import org.dlug.android.eyeunalarm.MyDbHelper;
 import org.dlug.android.eyeunalarm.R;
 
+import android.app.Activity;
 import android.app.KeyguardManager;
 import android.app.KeyguardManager.KeyguardLock;
 import android.content.Context;
@@ -233,6 +234,7 @@ public class AlarmPlay extends MyActivity implements AlarmPlayImpl{
 	public void onBackPressed(){
 		Log.i("Btn", "Back");
 	}
+	
 	
 	public void setProgressBar(int percent){
 		barRecogEye.setProgress(percent);

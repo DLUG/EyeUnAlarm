@@ -6,7 +6,7 @@
 
     <uses-sdk
         android:minSdkVersion="9"
-        android:targetSdkVersion="14" />
+        android:targetSdkVersion="17" />
 	<uses-permission android:name="android.permission.VIBRATE"/>
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
@@ -18,7 +18,7 @@
         android:label="@string/app_name"
         android:theme="@android:style/Theme.Light.NoTitleBar" >
         <activity
-            android:name="org.dlug.android.eyeunalarm.AlarmListLoading"
+            android:name="org.dlug.android.eyeunalarm.ActivityMain"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,20 +26,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".TabMain"> </activity>
-        <activity android:name=".AlarmList"> </activity>
-        <activity android:name=".AlarmListAlarmAdd"> </activity>
-        <activity android:name=".AlarmListAlarmModify"> </activity>
-        <activity android:name=".TabGroupFirst"></activity>
-        <activity android:name=".TabGroupSecond"></activity>
-        <activity android:name=".ViewCounselGroup"></activity>
-        <activity android:name=".alarm.AlarmPlay">
+        <activity android:name="org.dlug.android.eyeunalarm.TabMain"> </activity>
+        <activity android:name="org.dlug.android.eyeunalarm.AlarmList"> </activity>
+        <activity android:name="org.dlug.android.eyeunalarm.AlarmListAlarmAdd"> </activity>
+        <activity android:name="org.dlug.android.eyeunalarm.AlarmListAlarmModify"> </activity>
+        <activity android:name="org.dlug.android.eyeunalarm.TabGroupFirst"></activity>
+        <activity android:name="org.dlug.android.eyeunalarm.TabGroupSecond"></activity>
+        <activity android:name="org.dlug.android.eyeunalarm.ViewCounselGroup"></activity>
+        <activity android:name="org.dlug.android.eyeunalarm.alarm.AlarmPlayTest">
+<!-- .AlarmListLoading -->
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT"/>
           </intent-filter>
         </activity>
         
-        <receiver android:name=".alarm.AlarmReceiver"></receiver>
+        <receiver android:name="org.dlug.android.eyeunalarm.alarm.AlarmReceiver"></receiver>
     </application>
 
 </manifest>

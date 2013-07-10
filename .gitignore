@@ -1,0 +1,26 @@
+# built application files
+*.apk
+*.ap_
+
+# files for the dex VM
+*.dex
+
+# Java class files
+*.class
+
+# generated files
+bin/
+gen/
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+# Eclipse project files
+.classpath
+.project
+
+# Mabin's Rule
+libs/
+obj/
+/OpenCV-2.4.6-android-sdk/
+/JakeWharton-ActionBarSherlock-071a61c/

@@ -7,7 +7,7 @@ public class TabGroupSecond extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
-        setContentView(R.layout.watch);
+        setContentView(R.layout.clock);
 	}
 
 }
