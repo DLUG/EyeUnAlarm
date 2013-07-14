@@ -62,27 +62,10 @@
                 android:src="@drawable/alarm_list" />
         </LinearLayout>
     </LinearLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0" >
-
-        <FrameLayout
-            android:id="@+id/container1"
-            android:layout_width="match_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="0" >
-        </FrameLayout>
-
-        <FrameLayout
-            android:id="@+id/container2"
-            android:layout_width="match_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="0" >
-
-        </FrameLayout>
-
-    </RelativeLayout>
-
+	        <org.dlug.android.eyeunalarm.LayoutForTouch
+		        android:id="@+id/containerTest"
+		        android:layout_width="match_parent"
+		        android:layout_height="fill_parent"
+		        android:layout_weight="0" >
+		    </org.dlug.android.eyeunalarm.LayoutForTouch>
 </LinearLayout>
