@@ -24,3 +24,11 @@ ChangeLog
 - Add Temporary Unlock Button when Camera isn't opened.
 - Fix fixed-value bugs in Add/Modify Alarm
 - etc
+
+▶0.7.0
+- Change Logic of Tab (Using DolmanTab)
+- Refactoring Logic
+- Update OpenCV Library (to 2.4.11)
+- Support for x86
+- Fix Images
+- Use Android Own Theme of Each Version

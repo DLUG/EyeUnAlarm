@@ -3,13 +3,19 @@ package org.dlug.android.eyeunalarm;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.dlug.android.eyeunalarm.R;
+import org.dlug.android.eyeunalarm.AlarmController.AlarmData;
+
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Toast;
 
-public class AlarmListAlarmModify extends AlarmListAlarmSet{
+public class ActivityAlarmModify extends ActivityAlarmSetAbstract{
+	private int selectedAlarmId;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -18,21 +24,22 @@ public class AlarmListAlarmModify extends AlarmListAlarmSet{
 		btnConfirm.setText(R.string.btn_update);
 		
 		findViewById(R.id.btnConfirm).setOnClickListener(onClickConfirm);
+		selectedAlarmId = this.getIntent().getIntExtra("selectedAlarmId", 0);
+
+		AlarmData thisAlarmData = AlarmController.getAlarm(selectedAlarmId);
+		
+		setTitle(thisAlarmData.alarmName);
+		setAlarmTime(thisAlarmData.hours, thisAlarmData.minutes);
+		setSnooze(thisAlarmData.snooze);
+		setType(thisAlarmData.type);
+		setBellURI(Uri.parse(thisAlarmData.alertSong));
+		setVolume(thisAlarmData.alertVolume);
+		setRepeat(thisAlarmData.repeat);
+		setRecogStrength(thisAlarmData.recogTime);
 	}
 	
 	@Override
 	protected void onResume(){
-		Map<String, Object> thisAlarmData = myDb.getAlarm(selectAlarmId);
-		
-		setTitle((String) thisAlarmData.get(MyDbHelper.FIELD_ALARM_NAME));
-		setAlarmTime((Integer) thisAlarmData.get(MyDbHelper.FIELD_HOURS), (Integer) thisAlarmData.get(MyDbHelper.FIELD_MINUTES));
-		setSnooze((Integer) thisAlarmData.get(MyDbHelper.FIELD_SNOOZE));
-		setType((Integer) thisAlarmData.get(MyDbHelper.FIELD_TYPE));
-		setBellURI((String) thisAlarmData.get(MyDbHelper.FIELD_ALERT_SONG));
-		setVolume((Integer) thisAlarmData.get(MyDbHelper.FIELD_ALERT_VOLUME));
-		setRepeat((Integer) thisAlarmData.get(MyDbHelper.FIELD_REPEAT));
-		setRecogStrength((Integer) thisAlarmData.get(MyDbHelper.FIELD_RECOG_TIME));
-		
 		super.onResume();
 	}
 	
@@ -50,22 +57,16 @@ public class AlarmListAlarmModify extends AlarmListAlarmSet{
 			inputData.put("recog_time", recogStrength);
 			inputData.put("alert_state", 1);
 			
-			Map<String, Object> filter = new HashMap<String,Object>(2);
-			filter.put("_id", selectAlarmId);
-			myDb.updateAlarm(inputData, filter);
+			AlarmController.updateAlarm(inputData, selectedAlarmId);
 			
 			Log.i("AlarmUpdate", "DBModified");
-			Toast.makeText(AlarmListAlarmModify.this, R.string.toast_updated_alarm, Toast.LENGTH_SHORT).show();
+			Toast.makeText(ActivityAlarmModify.this, R.string.toast_updated_alarm, Toast.LENGTH_SHORT).show();
+			Bridge.getAdapterAlarmList().reloadData();
 			
 			onBackPressed();
 
-			listUpdate();
-			try {
-				AlarmListAlarmModify.this.finalize();
-			} catch (Throwable e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			ActivityAlarmModify.this.finish();
+			
 		}
 	};
 }

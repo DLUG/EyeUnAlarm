@@ -6,22 +6,21 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.dlug.android.eyeunalarm.alarm.ActivityAlarmPlayTest;
+
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.media.MediaPlayer;
-import android.media.MediaPlayer.OnCompletionListener;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Vibrator;
 import android.util.Log;
 import android.widget.LinearLayout;
 
-public class AlarmListLoading extends AlarmListActivity{
+public class ActivityLoading extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.loading);
+		setContentView(R.layout.activity_loading);
 
 		AsyncTask<Void, Void, Void> loadingTask = new AsyncTask<Void, Void, Void>(){
 
@@ -33,14 +32,9 @@ public class AlarmListLoading extends AlarmListActivity{
 				layout = (LinearLayout) findViewById(R.id.layoutLoading);
 
 				
-				File xmlFile = new File("/data/data/org.dlug.android.eyeunalarm/files/eyes.xml");
+				File xmlFile = new File(ActivityLoading.this.getFilesDir().getAbsolutePath() + "/eyes.xml");
 				if(!xmlFile.exists()){
-		/*
-					File filesFolder = new File("/data/data/com.example.detectobject/files");
-					if(!filesFolder.exists()){
-						filesFolder.mkdir();
-					}
-		*/			
+					Log.d("Loading", "'eyes.xml' isn't exist!");
 					try {
 						InputStream input = getAssets().open("haarcascade_eye.xml");
 						byte[] data = new byte[input.available()];
@@ -50,22 +44,22 @@ public class AlarmListLoading extends AlarmListActivity{
 						output.write(data);
 						output.close();
 					} catch (FileNotFoundException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
 				
 				
+				AlarmController.init(ActivityLoading.this);
 				
 				
-				
+/*				
 				alarmListData = myDb.getAlarmList();
 				alarmListAdapter = new AlarmListAdapter(AlarmListLoading.this, alarmListData);
 
 				alarmUpdate();
+*/
 				try {
 					Thread.sleep(150);
 					publishProgress();
@@ -85,7 +79,7 @@ public class AlarmListLoading extends AlarmListActivity{
 					e.printStackTrace();
 				}
 
-				Intent intent = new Intent(AlarmListLoading.this, TabMain.class);
+				Intent intent = new Intent(ActivityLoading.this, ActivityMain.class);
 				startActivity(intent);
 				finish();
 
@@ -114,4 +108,3 @@ public class AlarmListLoading extends AlarmListActivity{
 		loadingTask.execute();
 	}
 }
-

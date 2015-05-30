@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@drawable/background"
     android:gravity="top"
     android:orientation="vertical" >
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
         android:layout_margin="0dp"
-        android:layout_weight="0"
-        android:background="#FF000000"
-        android:gravity="center_horizontal"
+        android:background="#FFFFFF"
+        android:gravity="center"
         android:orientation="vertical" >
 
         <TextView
@@ -20,8 +19,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Alarm Title"
-            android:textColor="#FFFFFFFF"
-            android:textSize="30sp" />
+            android:textColor="#000000"
+            android:textSize="25sp" />
     </LinearLayout>
     
         <LinearLayout
@@ -32,18 +31,17 @@
 
             <Button
                 android:id="@+id/btnSnooze"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_weight="0"
                 android:text="Snooze" />
 
-            <LinearLayout
+            <ProgressBar
+                android:id="@+id/barRecogEye"
+                style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginBottom="0dp"
-                android:background="#ffffff"
-                android:orientation="vertical" >
-
-            </LinearLayout>
+                android:layout_height="wrap_content"
+                android:layout_weight="0" />
 
             <LinearLayout
                 android:id="@+id/layoutPlayVideo"
@@ -54,15 +52,6 @@
                 android:orientation="vertical" >
 
             </LinearLayout>
-
-            <ProgressBar
-                android:id="@+id/barRecogEye"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="fill_parent"
-                android:layout_height="20dp"
-                android:layout_weight="0"
-                android:minHeight="20dp"
-                android:minWidth="480dp" />
         
     </LinearLayout>
     

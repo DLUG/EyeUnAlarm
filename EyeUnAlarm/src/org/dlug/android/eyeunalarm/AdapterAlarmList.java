@@ -1,10 +1,11 @@
 package org.dlug.android.eyeunalarm;
 
 import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.TimeZone;
+
+import org.dlug.android.eyeunalarm.R;
+import org.dlug.android.eyeunalarm.AlarmController.AlarmData;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -15,19 +16,20 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class AlarmListAdapter extends BaseAdapter{
+public class AdapterAlarmList extends BaseAdapter{
 	private Context context;
-	private List<Map<String, Object>> alarmListData;
+	private List<AlarmData> alarmListData;
 	private LayoutInflater inflater; 
 	
 	GregorianCalendar currentCalendar = new GregorianCalendar(TimeZone.getTimeZone("GMT+09:00"));
 	GregorianCalendar gregorianCalendar;
 	long alarmTime;
 	
-	public AlarmListAdapter(Context c, List<Map<String, Object>> alarmItems) {
-		 this.context = c;
-		 this.alarmListData = alarmItems;
-		 inflater = (LayoutInflater)c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+	public AdapterAlarmList(Context c) {
+		super();
+		this.context = c;
+		this.alarmListData = AlarmController.getAlarmList();
+		inflater = (LayoutInflater)c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	 }
 	
 	@Override
@@ -36,7 +38,7 @@ public class AlarmListAdapter extends BaseAdapter{
 	}
 
 	@Override
-	public Object getItem(int position) {
+	public AlarmData getItem(int position) {
 		return alarmListData.get(position);
 	}
 
@@ -48,14 +50,14 @@ public class AlarmListAdapter extends BaseAdapter{
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		if(convertView == null){
-			convertView = inflater.inflate(R.layout.alarm_item, parent, false);
+			convertView = inflater.inflate(R.layout.item_alarm_list, parent, false);
 		}
 		
-		Map<String, Object> currentData = alarmListData.get(position); 
-		String alarmTime = String.format("%02d", currentData.get("hours")) + ":" + String.format("%02d", currentData.get("minutes"));
-		String alarmTitle = (String)currentData.get("alarm_name");
+		AlarmData currentData = alarmListData.get(position); 
+		String alarmTime = String.format("%02d", currentData.hours) + ":" + String.format("%02d", currentData.minutes);
+		String alarmTitle = (String)currentData.alarmName;
 		boolean alert_state;
-		if(((Integer)currentData.get("alert_state")) == 1){
+		if((currentData.alertState) == 1){
 			alert_state = true;
 		} else {
 			alert_state = false;
@@ -68,9 +70,9 @@ public class AlarmListAdapter extends BaseAdapter{
 		alarmTimeView.setText(alarmTime);
 		alarmTitleView.setText(alarmTitle);
 		if(alert_state){
-			alarmStateView.setImageResource(R.drawable.icon_on);
+			alarmStateView.setImageResource(R.drawable.icon_alarm_on);
 		} else {
-			alarmStateView.setImageResource(R.drawable.icon_off);
+			alarmStateView.setImageResource(R.drawable.icon_alarm_off);
 		}
 		alarmStateView.setTag(position);
 
@@ -78,7 +80,7 @@ public class AlarmListAdapter extends BaseAdapter{
 		
 		TextView txtRepeat = (TextView) convertView.findViewById(R.id.txtRepeat);
 		
-		int repeat = (Integer) currentData.get("repeat");
+		int repeat = (Integer) currentData.repeat;
 		
 		String[] weekday = context.getResources().getStringArray(R.array.weekday);
 		
@@ -112,8 +114,9 @@ public class AlarmListAdapter extends BaseAdapter{
 		return convertView;
 	}
 
-	public void setData(List<Map<String, Object>> alarmListData) {
-		this.alarmListData = alarmListData;		
+	public void reloadData() {
+		this.alarmListData = AlarmController.getAlarmList();
+		this.notifyDataSetChanged();
 	}
 	
 	private OnClickListener onClickAlarmState = new OnClickListener(){
@@ -121,30 +124,21 @@ public class AlarmListAdapter extends BaseAdapter{
 		public void onClick(View v) {
 			ImageView viewHandler = (ImageView) v;
 			int position = (Integer) v.getTag();
-			Map<String, Object> alarmItemHandler = alarmListData.get(position);
-			if((Integer)alarmItemHandler.get("alert_state") == 1){
-				viewHandler.setImageResource(R.drawable.icon_off);
-				alarmItemHandler.put("alert_state", 0);
+			
+			AlarmData alarmItemHandler = alarmListData.get(position);
+			if(alarmItemHandler.alertState == 1){
+				viewHandler.setImageResource(R.drawable.icon_alarm_off);
+				alarmItemHandler.alertState = 0;
 				
-				((MyActivity)context).alarmSet(context, position, false);
-				
-				MyDbHelper myDb = ((MyActivity)context).getMyDb();
-				Map<String, Object> updateData = new HashMap<String, Object>();
-				Map<String, Object> filter = new HashMap<String, Object>();
-				updateData.put("alert_state", 0);
-				filter.put("_id", alarmItemHandler.get("_id"));
-				myDb.updateAlarm(updateData, filter);
+				AlarmController.disableAlarm(position);
 			} else {
-				viewHandler.setImageResource(R.drawable.icon_on);
-				alarmItemHandler.put("alert_state", 1);
+				viewHandler.setImageResource(R.drawable.icon_alarm_on);
+				alarmItemHandler.alertState = 1;
 				
-				MyDbHelper myDb = ((MyActivity)context).getMyDb();
-				Map<String, Object> updateData = new HashMap<String, Object>();
-				Map<String, Object> filter = new HashMap<String, Object>();
-				updateData.put("alert_state", 1);
-				filter.put("_id", alarmItemHandler.get("_id"));
-				myDb.updateAlarm(updateData, filter);
+				AlarmController.enableAlarm(position);
 			}
 		}
 	};
+	
+	
 }

@@ -1,6 +1,8 @@
 package org.dlug.android.eyeunalarm;
 
+import org.dlug.android.eyeunalarm.R;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
@@ -22,7 +24,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
-public abstract class AlarmListAlarmSet extends AlarmListActivity{
+public abstract class ActivityAlarmSetAbstract extends Activity{
 	protected static final int[] snoozeArr = {5, 10, 15, 20};
 	protected static final int[] recogStrengthArr = {10, 20, 30, 40, 50, 60, 70, 80, 90, 100};
 	protected static final int TRUE = 1;
@@ -33,7 +35,7 @@ public abstract class AlarmListAlarmSet extends AlarmListActivity{
 	protected int snooze = 5;
 	protected int typeS = 1;
 	protected int typeV = 1;
-	protected String bellURI;
+	protected String bellURI = "content://settings/system/ringtone";
 	protected int volume = 100;
 	protected int repeat = 127;
 	protected int recogStrength = 5;
@@ -53,7 +55,7 @@ public abstract class AlarmListAlarmSet extends AlarmListActivity{
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.alarm_setting);
+		setContentView(R.layout.activity_alarm_setting);
 
 		titleAlarmSet = (TextView) findViewById(R.id.titleAlarmSet);
 		viewTitle = (TextView) findViewById(R.id.viewTitle);
@@ -114,10 +116,10 @@ public abstract class AlarmListAlarmSet extends AlarmListActivity{
 	protected void setTypeS(int type){
 		if(type == TRUE){
 			typeS = TRUE;
-			btnTypeS.setImageResource(R.drawable.btn_bgm);
+			btnTypeS.setImageResource(R.drawable.icon_bgm_on);
 		} else {
 			typeS = FALSE;
-			btnTypeS.setImageResource(R.drawable.icon_alert_off);
+			btnTypeS.setImageResource(R.drawable.icon_bgm_or_vib_off);
 		}
 		
 		typeS = type;
@@ -126,20 +128,20 @@ public abstract class AlarmListAlarmSet extends AlarmListActivity{
 	protected void toggleTypeS(){
 		if(typeS == TRUE){
 			typeS = FALSE;
-			btnTypeS.setImageResource(R.drawable.icon_alert_off);
+			btnTypeS.setImageResource(R.drawable.icon_bgm_or_vib_off);
 		} else {
 			typeS = TRUE;
-			btnTypeS.setImageResource(R.drawable.btn_bgm);
+			btnTypeS.setImageResource(R.drawable.icon_bgm_on);
 		}
 	}
 	
 	protected void setTypeV(int type){
 		if(type == TRUE){
 			typeV = TRUE;
-			btnTypeV.setImageResource(R.drawable.btn_vib);
+			btnTypeV.setImageResource(R.drawable.icon_vib_on);
 		} else {
 			typeV = FALSE;
-			btnTypeV.setImageResource(R.drawable.icon_alert_off);
+			btnTypeV.setImageResource(R.drawable.icon_bgm_or_vib_off);
 		}
 		
 		typeV = type;
@@ -148,37 +150,29 @@ public abstract class AlarmListAlarmSet extends AlarmListActivity{
 	protected void toggleTypeV(){
 		if(typeV == TRUE){
 			typeV = FALSE;
-			btnTypeV.setImageResource(R.drawable.icon_alert_off);
+			btnTypeV.setImageResource(R.drawable.icon_bgm_or_vib_off);
 		} else {
 			typeV = TRUE;
-			btnTypeV.setImageResource(R.drawable.btn_vib);
+			btnTypeV.setImageResource(R.drawable.icon_vib_on);
 		}
 	}
 	
-	protected void setBellURI(String uri){
-		bellURI = uri;
+	protected void setBellURI(Uri uri){
+		
 		String resultString = "";
 		
 		if(uri == null){
 			resultString = getString(R.string.ringtone_slient);
-		} else if(uri.equals("content://settings/system/ringtone")){
+		} else if(uri.toString().equals("content://settings/system/ringtone")){
 			resultString = getString(R.string.ringtone_default);
 		} else {
-			Uri mUri = Uri.parse(uri);
-			Ringtone r = RingtoneManager.getRingtone(this, mUri);
+			Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), uri);
 
-			resultString = r.getTitle(this);
+			resultString = r.getTitle(getApplicationContext());
 		}
-		
+		Log.d("BellString", resultString);
 		viewBell.setText(resultString);
-/*
-		try {
-			URI oURI = new URI(bellURI);
-		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-*/		
+		bellURI = uri.toString();
 	}
 	
 	protected void setVolume(int volume){
@@ -258,12 +252,12 @@ public abstract class AlarmListAlarmSet extends AlarmListActivity{
 	protected OnClickListener onClickTitle = new OnClickListener(){
 		@Override
 		public void onClick(View v) {
-			final LinearLayout alarmTitleDialog = (LinearLayout) View.inflate(getParent(), R.layout.alarm_title_dialog, null);
+			final LinearLayout alarmTitleDialog = (LinearLayout) View.inflate(ActivityAlarmSetAbstract.this, R.layout.dialog_alarm_title, null);
 			EditText tmpTitle = (EditText)alarmTitleDialog.findViewById(R.id.editAlarmTitle);
 			
 			tmpTitle.setText(title);
 			
-			new AlertDialog.Builder(getParent())
+			new AlertDialog.Builder(ActivityAlarmSetAbstract.this)
 			.setTitle(R.string.label_alarm_title)
 //			.setIcon(R.drawable.clock)
 			.setView(alarmTitleDialog)
@@ -287,7 +281,7 @@ public abstract class AlarmListAlarmSet extends AlarmListActivity{
 					setAlarmTime(hourOfDay, minute);
 				}
 			};
-			TimePickerDialog alert = new TimePickerDialog(getParent(), mTimeSetListener, alarmTime[0], alarmTime[1], true);
+			TimePickerDialog alert = new TimePickerDialog(ActivityAlarmSetAbstract.this, mTimeSetListener, alarmTime[0], alarmTime[1], true);
 			
 			alert.show();
 		}
@@ -298,7 +292,7 @@ public abstract class AlarmListAlarmSet extends AlarmListActivity{
 	protected OnClickListener onClickSnooze = new OnClickListener(){
 		@Override
 		public void onClick(View v) {
-			new AlertDialog.Builder(getParent())
+			new AlertDialog.Builder(ActivityAlarmSetAbstract.this)
 			.setTitle(R.string.label_snooze)
 //			.setIcon(R.drawable.clock)
 			.setItems(R.array.dialog_snooze, new DialogInterface.OnClickListener(){
@@ -332,7 +326,8 @@ public abstract class AlarmListAlarmSet extends AlarmListActivity{
 				Uri oUri = Uri.parse(bellURI);
 				intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, oUri);
 			}
-	        getParent().startActivityForResult(intent, 0);
+			intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_ALARM);
+	        ActivityAlarmSetAbstract.this.startActivityForResult(intent, 0);
 		}
 	};
 	protected OnSeekBarChangeListener onChangeVolume = new OnSeekBarChangeListener() {
@@ -348,7 +343,7 @@ public abstract class AlarmListAlarmSet extends AlarmListActivity{
 	protected OnClickListener onClickRepeat = new OnClickListener(){
 		@Override
 		public void onClick(View v) {
-			new AlertDialog.Builder(getParent())
+			new AlertDialog.Builder(ActivityAlarmSetAbstract.this)
 			.setTitle(R.string.label_repeat)
 //			.setIcon(R.drawable.clock)
 			.setMultiChoiceItems(R.array.weekday, parseRepeatBinary(repeat), new OnMultiChoiceClickListener(){
@@ -367,7 +362,7 @@ public abstract class AlarmListAlarmSet extends AlarmListActivity{
 	protected OnClickListener onClickRecogStrength = new OnClickListener(){
 		@Override
 		public void onClick(View v) {
-			new AlertDialog.Builder(getParent())
+			new AlertDialog.Builder(ActivityAlarmSetAbstract.this)
 			.setTitle(R.string.label_recog_strength)
 //			.setIcon(R.drawable.clock)
 			.setItems(R.array.dialog_recog_strength, new DialogInterface.OnClickListener(){
@@ -386,14 +381,15 @@ public abstract class AlarmListAlarmSet extends AlarmListActivity{
 		public void onClick(View v) {
 			onBackPressed();
 			try {
-				AlarmListAlarmSet.this.finalize();
+				ActivityAlarmSetAbstract.this.finalize();
 			} catch (Throwable e) {
 				e.printStackTrace();
 			}
 		}
 	};
 	
-/*	@Override
+/*	
+	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     	switch(requestCode){
     	case 0 :
@@ -407,20 +403,15 @@ public abstract class AlarmListAlarmSet extends AlarmListActivity{
 	
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		Log.d("ResultCode", resultCode + "");
+		Log.d("ResultCode", requestCode + "");
 		if(resultCode != 0){
 	    	switch(requestCode){
 	    	case 0 :
 	    		Uri uri = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
 	    		Log.d("URI", uri + "");
+	    		Log.d("Ttile", data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_TITLE) + "");
 	    		
-	    		String resultURI = "";
-	    		
-	    		if(uri == null)
-	    			resultURI = null;
-	    		else
-	    			resultURI = uri.toString();
-	    		
-	    		setBellURI(resultURI);
+	    		setBellURI(uri);
 	
 	    		break;
 	    	}

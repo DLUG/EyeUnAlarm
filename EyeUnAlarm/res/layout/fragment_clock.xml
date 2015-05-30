@@ -5,11 +5,13 @@
 
         <AnalogClock
             android:id="@+id/analogClock1"
-            android:layout_width="250dp"
-            android:layout_height="250dp"
+            android:layout_width="350dp"
+            android:layout_height="350dp"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:layout_margin="20dp" />
+            android:dial="@drawable/clock_front"
+            android:hand_hour="@drawable/clock_hand_hour"
+            android:hand_minute="@drawable/clock_hand_minute" />
 
         <DigitalClock
             android:id="@+id/digitalClock1"
