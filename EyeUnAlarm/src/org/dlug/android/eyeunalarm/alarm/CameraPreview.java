@@ -6,6 +6,7 @@ import java.util.List;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.hardware.Camera;
@@ -24,13 +25,9 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 	private int format;
 	
 	Bitmap bm;
-	
 	ImageView modifyImage;
-
 	
 	boolean isPreviewRunning = false;
-
-//	private ImageView ivCam;
 
 	private SurfaceHolder mHolder;
 	private Camera mCamera;
@@ -54,7 +51,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 		
 		System.loadLibrary("DetectEye");
 		
-		this.judgement_thresold = judgement_thresold*1000;
+		this.judgement_thresold = judgement_thresold * 1000;
 		this.parent = parent;
 		
 		this.maxWidth = maxWidth;
@@ -64,8 +61,6 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 		mHolder.addCallback(this);
 		mHolder.setType(SurfaceHolder.SURFACE_TYPE_NORMAL);
 		setWillNotDraw(false);
-		
-		
 	}
 
 	public void start(){
@@ -78,7 +73,6 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 		
 	}
 
-	public native void ObjectRecog(int width, int height, byte yuv[], int rgba[], int[] value);
 
 	public void setModifyView(ImageView modifyImage) {
 		this.modifyImage = modifyImage;
@@ -98,7 +92,6 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 			Date tmpDate = new Date();
 			judgement += (tmpDate.getTime() - lastCheck.getTime());
 			parent.setProgressBar((int) ((double)judgement/(double)judgement_thresold*100));
-			
 		}
 			
 		
@@ -107,12 +100,8 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 		}
 		
 		
-		if(bm != null)
-			bm.recycle();
-		bm = Bitmap.createBitmap(previewHeight, previewWidth, Bitmap.Config.ARGB_8888);
+		bm.eraseColor(Color.TRANSPARENT);
 		bm.setPixels(result, 0, previewHeight, 0, 0, previewHeight, previewWidth);
-		
-
 		
 		
 //		modifyImage.setImageBitmap(bm);
@@ -154,6 +143,9 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 			}
 		}
 		Log.i("Still","Using size.width>" + previewWidth + "/size.height" + previewHeight);
+		
+		bm = Bitmap.createBitmap(previewHeight, previewWidth, Bitmap.Config.ARGB_8888);
+		
 		parameters.setPreviewSize(previewWidth, previewHeight);
 
 		
@@ -211,7 +203,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 		try{
             mCamera.setPreviewCallback(this);
         }catch(Exception e){
-            android.util.Log.e("", e.getMessage());
+            Log.e("surfaceCratedError", e.getMessage());
         }
 	}
 
@@ -235,4 +227,6 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 		    invalidate();
 		}
 	}
+	
+	public native void ObjectRecog(int width, int height, byte yuv[], int rgba[], int[] value);
 }

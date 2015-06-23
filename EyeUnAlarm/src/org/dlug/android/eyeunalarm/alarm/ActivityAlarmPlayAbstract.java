@@ -16,25 +16,21 @@ import android.app.Activity;
 import android.app.KeyguardManager;
 import android.app.KeyguardManager.KeyguardLock;
 import android.content.Context;
-import android.database.Cursor;
-import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.Ringtone;
-import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.Vibrator;
 import android.os.PowerManager.WakeLock;
-import android.provider.MediaStore;
-import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 public abstract class ActivityAlarmPlayAbstract extends Activity{
 	protected String title = "";
@@ -47,6 +43,7 @@ public abstract class ActivityAlarmPlayAbstract extends Activity{
 	protected int repeatBinary = 127;
 	protected boolean[] repeat;
 	protected int recogStrength = 5;
+	protected boolean isTest = true;
 
 	final long[] pattern = {1000, 200, 1000, 2000, 1200};
 
@@ -62,6 +59,8 @@ public abstract class ActivityAlarmPlayAbstract extends Activity{
 
 		AlarmController.init(this);
 
+		prepareData();
+		
 		File xmlFile = new File(this.getFilesDir().getPath() + "/eyes.xml");
 		if(!xmlFile.exists()){
 			/*
@@ -87,11 +86,7 @@ public abstract class ActivityAlarmPlayAbstract extends Activity{
 			}
 		}
 
-
 		setContentView(R.layout.activity_alarm_play);
-
-		init();
-		
 		
 		
 		PowerManager pm = (PowerManager) getApplicationContext().getSystemService(Context.POWER_SERVICE);
@@ -102,25 +97,22 @@ public abstract class ActivityAlarmPlayAbstract extends Activity{
 		KeyguardLock keyguardLock =  keyguardManager.newKeyguardLock("TAG");
 		keyguardLock.disableKeyguard();
 
-		//		try{
-		cameraView = new CameraPreview(getApplicationContext(), 640, 480, this, recogStrength);
-		LinearLayout layoutPlayVideo = (LinearLayout)findViewById(R.id.layoutPlayVideo);
-
-		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-				LinearLayout.LayoutParams.MATCH_PARENT,
-				LinearLayout.LayoutParams.MATCH_PARENT);
-
-		layoutPlayVideo.addView(cameraView);
-
-		//			cameraView.start();
-
-
-
-		//		} catch(Exception e){
-		//			Log.e("OpenCV", "Cannot connect to OpenCV Manager");
-		//			Toast.makeText(this, R.string.toast_cannot_open_camera , 5).show();
-		//			faultOpenVideo();
-		//		}
+		try{
+			cameraView = new CameraPreview(getApplicationContext(), 640, 480, this, recogStrength);
+			LinearLayout layoutPlayVideo = (LinearLayout)findViewById(R.id.layoutPlayVideo);
+			
+			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+					LinearLayout.LayoutParams.MATCH_PARENT,
+					LinearLayout.LayoutParams.MATCH_PARENT);
+	
+			cameraView.setLayoutParams(params);
+			
+			layoutPlayVideo.addView(cameraView);
+		} catch(Exception e){
+			Log.e("OpenCV", "Cannot connect to OpenCV Manager");
+			Toast.makeText(this, R.string.toast_cannot_open_camera , 5).show();
+			faultOpenVideo();
+		}
 
 
 		if(typeS){
@@ -154,20 +146,11 @@ public abstract class ActivityAlarmPlayAbstract extends Activity{
 		
 		
 		barRecogEye.setMax(100);
-		
-
-		GregorianCalendar currentCalendar = new GregorianCalendar(TimeZone.getTimeZone("GMT+09:00"));
-		int todayDayOfWeek = currentCalendar.get(Calendar.DAY_OF_WEEK);
-		if(!repeat[todayDayOfWeek - 1])
-			finish();
-
-		Log.i("proc", "End");
-
-
 	}
 
+	
 
-	protected abstract void init();	
+	protected abstract void prepareData();	
 
 	
 	OnClickListener onClickSnooze = new OnClickListener(){
@@ -179,18 +162,18 @@ public abstract class ActivityAlarmPlayAbstract extends Activity{
 	};
 	
 	public void pass(){
-		if(typeS)
-//			ringtone.stop();
-			player.stop();
-		if(typeV)
-			vibe.cancel();
-		
 		try{
 			cameraView.pause();
 		} catch(Exception e){
 			e.printStackTrace();
 		}
+		
+		if(typeS)
+			player.stop();
 
+		if(typeV)
+			vibe.cancel();
+		
 		AlarmController.resetAlarm();
 		
 		finish();
@@ -215,12 +198,6 @@ public abstract class ActivityAlarmPlayAbstract extends Activity{
 		});
 	}
 	
-	@Override
-	public void onBackPressed(){
-		Log.i("Btn", "Back");
-	}
-
-
 	public void setProgressBar(int percent){
 		barRecogEye.setProgress(percent);
 	}

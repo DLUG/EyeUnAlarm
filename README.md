@@ -27,8 +27,12 @@ ChangeLog
 
 ▶0.7.0
 - Change Logic of Tab (Using DolmanTab)
-- Refactoring Logic
 - Update OpenCV Library (to 2.4.11)
 - Support for x86
-- Fix Images
+- Refactoring Whole Code
+- Improve Recognizing Eye Performance
+- Add Test Mode for Each Alarm
+- Change Clock Design
+- Modify Some Images
 - Use Android Own Theme of Each Version
+- Apply Notification Bar Color for Lollipop

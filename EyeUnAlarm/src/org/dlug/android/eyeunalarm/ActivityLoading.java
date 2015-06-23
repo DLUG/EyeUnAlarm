@@ -6,8 +6,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.dlug.android.eyeunalarm.alarm.ActivityAlarmPlayTest;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -52,7 +50,6 @@ public class ActivityLoading extends Activity {
 				
 				
 				AlarmController.init(ActivityLoading.this);
-				
 				
 /*				
 				alarmListData = myDb.getAlarmList();

@@ -3,6 +3,8 @@ package org.dlug.android.eyeunalarm;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.dlug.android.eyeunalarm.R.color;
+
 import info.mabin.android.dolmantab.DolmanTabAdapter;
 import info.mabin.android.dolmantab.DolmanTabInterface;
 import info.mabin.android.dolmantab.DolmanTabLayout;
@@ -14,6 +16,8 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
+import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 
 public class ActivityMain extends FragmentActivity {
 	@Override
@@ -35,6 +39,12 @@ public class ActivityMain extends FragmentActivity {
 		
 		tabsAdapter.addTab(tabWidget.newTab().setIcon(R.drawable.tab_clock), FragmentClock.class, null);
 		tabsAdapter.addTab(tabWidget.newTab().setCustomView(tabAlarmListImage), FragmentAlarmList.class, null);
+		
+		LinearLayout linearLayout = new LinearLayout(this);
+		linearLayout.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+		linearLayout.setBackgroundColor(color.primaryDark);
+		
+		tabWidget.setIndicator(R.layout.tab_indicator);
 	}
 
 	private class TabsAdapter extends DolmanTabAdapter{

@@ -8,6 +8,7 @@ import org.dlug.android.eyeunalarm.R;
 import org.dlug.android.eyeunalarm.AlarmController.AlarmData;
 
 import android.content.Context;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -15,10 +16,12 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class AdapterAlarmList extends BaseAdapter{
 	private Context context;
 	private List<AlarmData> alarmListData;
+	private SparseArray<ViewHolder> mapHolder = new SparseArray<ViewHolder>();
 	private LayoutInflater inflater; 
 	
 	GregorianCalendar currentCalendar = new GregorianCalendar(TimeZone.getTimeZone("GMT+09:00"));
@@ -49,10 +52,20 @@ public class AdapterAlarmList extends BaseAdapter{
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
+		ViewHolder tmpHolder = null;
 		if(convertView == null){
 			convertView = inflater.inflate(R.layout.item_alarm_list, parent, false);
+			
+			tmpHolder = new ViewHolder();
+			tmpHolder.viewAlarmTime = (TextView) convertView.findViewById(R.id.txtAlarmTime);
+			tmpHolder.viewAlarmTitle = (TextView) convertView.findViewById(R.id.txtAlarmTitle);
+			tmpHolder.viewAlarmState = (ImageView) convertView.findViewById(R.id.imageToggle);
+			tmpHolder.viewTxtRepeat = (TextView) convertView.findViewById(R.id.txtRepeat);
+			
+			mapHolder.put(convertView.hashCode(), tmpHolder);
+		} else {
+			tmpHolder = mapHolder.get(convertView.hashCode());
 		}
-		
 		AlarmData currentData = alarmListData.get(position); 
 		String alarmTime = String.format("%02d", currentData.hours) + ":" + String.format("%02d", currentData.minutes);
 		String alarmTitle = (String)currentData.alarmName;
@@ -63,51 +76,43 @@ public class AdapterAlarmList extends BaseAdapter{
 			alert_state = false;
 		}
 		
-		TextView alarmTimeView = (TextView) convertView.findViewById(R.id.txtAlarmTime);
-		TextView alarmTitleView = (TextView) convertView.findViewById(R.id.txtAlarmTitle);
-		ImageView alarmStateView = (ImageView) convertView.findViewById(R.id.imageToggle);
-
-		alarmTimeView.setText(alarmTime);
-		alarmTitleView.setText(alarmTitle);
+		tmpHolder.viewAlarmTime.setText(alarmTime);
+		tmpHolder.viewAlarmTitle.setText(alarmTitle);
 		if(alert_state){
-			alarmStateView.setImageResource(R.drawable.icon_alarm_on);
+			tmpHolder.viewAlarmState.setImageResource(R.drawable.icon_alarm_on);
 		} else {
-			alarmStateView.setImageResource(R.drawable.icon_alarm_off);
+			tmpHolder.viewAlarmState.setImageResource(R.drawable.icon_alarm_off);
 		}
-		alarmStateView.setTag(position);
-
-		alarmStateView.setOnClickListener(onClickAlarmState);
+		tmpHolder.viewAlarmState.setOnClickListener(getOnClickAlarmState(position));
 		
-		TextView txtRepeat = (TextView) convertView.findViewById(R.id.txtRepeat);
-		
-		int repeat = (Integer) currentData.repeat;
+		int repeat = currentData.repeat;
 		
 		String[] weekday = context.getResources().getStringArray(R.array.weekday);
 		
 		if(repeat == 127){
-			txtRepeat.setText(context.getString(R.string.everyday));
+			tmpHolder.viewTxtRepeat.setText(context.getString(R.string.everyday));
 		} else if (repeat == 62){
-			txtRepeat.setText(context.getString(R.string.workday));
+			tmpHolder.viewTxtRepeat.setText(context.getString(R.string.workday));
 		} else {
-			String result = "";
+			String txtRepeat = "";
 			
 			if((repeat & 64) == 64)
-				result += weekday[0] + ", ";
+				txtRepeat += weekday[0] + ", ";
 			if((repeat & 32) == 32)
-				result += weekday[1] + ", ";
+				txtRepeat += weekday[1] + ", ";
 			if((repeat & 16) == 16)
-				result += weekday[2] + ", ";
+				txtRepeat += weekday[2] + ", ";
 			if((repeat & 8) == 8)
-				result += weekday[3] + ", ";
+				txtRepeat += weekday[3] + ", ";
 			if((repeat & 4) == 4)
-				result += weekday[4] + ", ";
+				txtRepeat += weekday[4] + ", ";
 			if((repeat & 2) == 2)
-				result += weekday[5] + ", ";
+				txtRepeat += weekday[5] + ", ";
 			if((repeat & 1) == 1)
-				result += weekday[6] + ", ";
+				txtRepeat += weekday[6] + ", ";
 
-			result = result.substring(0, result.length() - 2);
-			txtRepeat.setText(result);
+			txtRepeat = txtRepeat.substring(0, txtRepeat.length() - 2);
+			tmpHolder.viewTxtRepeat.setText(txtRepeat);
 		}
 		
 		
@@ -119,26 +124,39 @@ public class AdapterAlarmList extends BaseAdapter{
 		this.notifyDataSetChanged();
 	}
 	
-	private OnClickListener onClickAlarmState = new OnClickListener(){
-		@Override
-		public void onClick(View v) {
-			ImageView viewHandler = (ImageView) v;
-			int position = (Integer) v.getTag();
-			
-			AlarmData alarmItemHandler = alarmListData.get(position);
-			if(alarmItemHandler.alertState == 1){
-				viewHandler.setImageResource(R.drawable.icon_alarm_off);
-				alarmItemHandler.alertState = 0;
+	private OnClickListener getOnClickAlarmState(final int position){
+		OnClickListener onClickAlarmState = new OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				ImageView viewHandler = (ImageView) v;
 				
-				AlarmController.disableAlarm(position);
-			} else {
-				viewHandler.setImageResource(R.drawable.icon_alarm_on);
-				alarmItemHandler.alertState = 1;
-				
-				AlarmController.enableAlarm(position);
+				AlarmData alarmItemHandler = alarmListData.get(position);
+				if(alarmItemHandler.alertState == 1){
+					viewHandler.setImageResource(R.drawable.icon_alarm_off);
+					alarmItemHandler.alertState = 0;
+					
+					AlarmController.disableAlarm(alarmItemHandler._id);
+					
+					String tmpMessage = context.getString(R.string.toast_alarm_disabled_prefix).replace("{AlarmName}", alarmItemHandler.alarmName);
+					Toast.makeText(context, tmpMessage, Toast.LENGTH_SHORT).show();
+				} else {
+					viewHandler.setImageResource(R.drawable.icon_alarm_on);
+					alarmItemHandler.alertState = 1;
+					
+					AlarmController.enableAlarm(alarmItemHandler._id);
+					String tmpMessage = context.getString(R.string.toast_alarm_enabled_prefix).replace("{AlarmName}", alarmItemHandler.alarmName);
+					Toast.makeText(context, tmpMessage, Toast.LENGTH_SHORT).show();
+				}
 			}
-		}
-	};
+		};
+		
+		return onClickAlarmState;
+	}
 	
-	
+	private static class ViewHolder {
+		TextView viewAlarmTime;
+		TextView viewAlarmTitle;
+		ImageView viewAlarmState;
+		TextView viewTxtRepeat;
+	}
 }

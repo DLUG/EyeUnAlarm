@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:background="@drawable/background"
+        android:paddingTop="20dp" >
 
 <LinearLayout
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical" >
 
 	<TextView
@@ -36,7 +38,7 @@
                 android:layout_width="110dp"
                 android:layout_height="wrap_content"
                 android:text="@string/label_alarm_title"
-                android:textSize="18dp"
+                android:textSize="18sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -45,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:text="Title Test"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textSize="18dp" />
+                android:textSize="18sp" />
 
         </LinearLayout>
 
@@ -60,9 +62,8 @@
 	            android:id="@+id/labelTime"
 	            android:layout_width="110dp"
 	            android:layout_height="wrap_content"
-	            android:gravity="left"
 	            android:text="@string/label_alarm_time"
-	            android:textSize="18dp" 
+	            android:textSize="18sp" 
 	            android:textStyle="bold" />
 	        
 	        <TextView
@@ -70,7 +71,7 @@
 	            android:layout_width="fill_parent"
 	            android:layout_height="wrap_content"
 	            android:text="AM 12:00"
-	            android:textSize="18dp" />
+	            android:textSize="18sp" />
 	    
 	    </LinearLayout>
 	    
@@ -86,7 +87,7 @@
 	            android:layout_width="110dp"
 	            android:layout_height="wrap_content"
 	            android:text="@string/label_snooze"
-	            android:textSize="18dp" 
+	            android:textSize="18sp" 
 	            android:textStyle="bold" />
 	        
 	        <TextView
@@ -94,7 +95,7 @@
 	            android:layout_width="fill_parent"
 	            android:layout_height="wrap_content"
 	            android:text="5 Minutes"
-	            android:textSize="18dp" />
+	            android:textSize="18sp" />
 	        
 	    </LinearLayout>
 	    
@@ -110,15 +111,13 @@
 	            android:layout_width="110dp"
 	            android:layout_height="wrap_content"
 	            android:text="@string/label_alarm_type"
-	            android:textSize="18dp" 
+	            android:textSize="18sp" 
 	            android:textStyle="bold" />
 	        
 	        <ImageView
 	            android:id="@+id/btnTypeS"
 	            android:layout_width="50dp"
 	            android:layout_height="50dp"
-	            android:layout_alignParentRight="true"
-	            android:layout_centerVertical="true"
 	            android:layout_marginRight="25dp"
 	            android:src="@drawable/icon_bgm_on" />
 	
@@ -126,8 +125,6 @@
 			    android:id="@+id/btnTypeV"
 			    android:layout_width="50dp"
 			    android:layout_height="50dp"
-			    android:layout_alignParentRight="true"
-			    android:layout_centerVertical="true"
 			    android:src="@drawable/icon_vib_on" />
 	
 	    </LinearLayout>
@@ -144,16 +141,16 @@
 	            android:layout_width="110dp"
 	            android:layout_height="wrap_content"
 	            android:text="@string/label_bell"
-	            android:textSize="18dp" 
+	            android:textSize="18sp" 
 	            android:textStyle="bold" />
 
 	        <TextView
 	            android:id="@+id/viewBell"
-	            android:layout_width="fill_parent"
+	            android:layout_width="0dp"
 	            android:layout_height="wrap_content"
 	            android:layout_weight="1"
 	            android:text="Bell Sound" 
-	            android:textSize="18dp" />
+	            android:textSize="18sp" />
 
 	    </LinearLayout>
 	    
@@ -169,12 +166,12 @@
 	            android:layout_width="110dp"
 	            android:layout_height="wrap_content"
 	            android:text="@string/label_volume"
-	            android:textSize="18dp" 
+	            android:textSize="18sp" 
 	            android:textStyle="bold" />
 	
 	        <SeekBar
 	            android:id="@+id/barVolume"
-	            android:layout_width="match_parent"
+	            android:layout_width="0dp"
 	            android:layout_height="wrap_content"
 	            android:layout_weight="1" />
 	
@@ -192,7 +189,7 @@
 	            android:layout_width="110dp"
 	            android:layout_height="wrap_content"
 	            android:text="@string/label_repeat"
-	            android:textSize="18dp" 
+	            android:textSize="18sp" 
 	            android:textStyle="bold" />
 	        
 	        <TextView
@@ -216,7 +213,7 @@
 	            android:layout_width="110dp"
 	            android:layout_height="wrap_content"
 	            android:text="@string/label_recog_strength"
-	            android:textSize="18dp" 
+	            android:textSize="18sp" 
 	            android:textStyle="bold" />
 	        
 	        <TextView
@@ -224,7 +221,7 @@
 	            android:layout_width="fill_parent"
 	            android:layout_height="wrap_content"
 	            android:text="5"
-	            android:textSize="18dp" />
+	            android:textSize="18sp" />
 
 	    </LinearLayout>
 	</LinearLayout>
@@ -249,7 +246,7 @@
             android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:text="@string/btn_cancel"
-            android:textSize="18dp" />
+            android:textSize="18sp" />
 
     </LinearLayout>
 

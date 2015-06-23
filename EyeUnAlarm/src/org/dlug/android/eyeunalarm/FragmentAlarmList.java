@@ -3,6 +3,7 @@ package org.dlug.android.eyeunalarm;
 import java.util.List;
 
 import org.dlug.android.eyeunalarm.AlarmController.AlarmData;
+import org.dlug.android.eyeunalarm.alarm.ActivityAlarmPlayTest;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -92,9 +93,30 @@ public class FragmentAlarmList extends Fragment {
 	private OnItemLongClickListener onLongClickList = new OnItemLongClickListener(){
 		@Override
 		public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-			deleteTargetPosition = position;
+			final int finalPosition = position;
 			
-			showQuestion(R.string.delete_title, R.string.delete_message, onClickQuestionOk);
+			new AlertDialog.Builder(FragmentAlarmList.this.getActivity())
+//			.setTitle(R.string.label_snooze)
+//			.setIcon(R.drawable.clock)
+			.setItems(new String[]{"Test", "Remove"}, new DialogInterface.OnClickListener(){
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					if(which == 0){
+						Intent i = new Intent(getActivity(), ActivityAlarmPlayTest.class);
+						i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+						i.putExtra("dbIdx", adapter.getItem(finalPosition)._id);
+						i.putExtra("isTest", true);
+						getActivity().startActivity(i);
+
+					} else if(which == 1){
+						deleteTargetPosition = finalPosition;
+						
+						showQuestion(R.string.delete_title, R.string.delete_message, onClickQuestionOk);
+					}
+				}
+			})
+//			.setNegativeButton(R.string.btn_cancel, null)
+			.show();
 			
 			return true;
 		}
