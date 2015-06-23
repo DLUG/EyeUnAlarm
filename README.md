@@ -36,3 +36,6 @@ ChangeLog
 - Modify Some Images
 - Use Android Own Theme of Each Version
 - Apply Notification Bar Color for Lollipop
+
+▶0.7.1
+- Hotfix: Data Initializing Bug

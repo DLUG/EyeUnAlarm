@@ -87,7 +87,7 @@ public class AlarmController{
 			public void onCreate(SQLiteDatabase db) {
 				String query = "CREATE TABLE " + TABLE_NAME + " (";
 				
-				for(int i = 0; i < FIELD_INFO.length / 2; i += 2){
+				for(int i = 0; i < FIELD_INFO.length; i += 2){
 					query += FIELD_INFO[i] + " " + FIELD_INFO[i + 1] + ", ";
 				}
 				
