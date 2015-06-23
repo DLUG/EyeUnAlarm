@@ -1,16 +1,14 @@
 package org.dlug.android.eyeunalarm.alarm;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Matrix;
+import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.graphics.RectF;
-import android.graphics.YuvImage;
 import android.hardware.Camera;
 import android.hardware.Camera.PreviewCallback;
 import android.content.Context;
@@ -27,14 +25,9 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 	private int format;
 	
 	Bitmap bm;
-	
 	ImageView modifyImage;
-
-	int judgement = 0;
 	
 	boolean isPreviewRunning = false;
-
-//	private ImageView ivCam;
 
 	private SurfaceHolder mHolder;
 	private Camera mCamera;
@@ -44,17 +37,21 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 	
 	int recogValue[] = new int[2];
 	
-	int judgement_thresold;
+	long judgement = 0;
+	long judgement_thresold;
+	Date lastCheck;
 	
-	AlarmPlayImpl parent;
+	ActivityAlarmPlayAbstract parent;
 
 	@SuppressWarnings("deprecation")
-	CameraPreview(Context context, int maxWidth, int maxHeight, AlarmPlayImpl parent, int judgement_thresold) throws RuntimeException, NullPointerException{
+	CameraPreview(Context context, int maxWidth, int maxHeight, ActivityAlarmPlayAbstract parent, int judgement_thresold) throws RuntimeException, NullPointerException{
 		super(context);
-
+		
+		lastCheck = new Date();
+		
 		System.loadLibrary("DetectEye");
 		
-		this.judgement_thresold = judgement_thresold;
+		this.judgement_thresold = judgement_thresold * 1000;
 		this.parent = parent;
 		
 		this.maxWidth = maxWidth;
@@ -64,8 +61,6 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 		mHolder.addCallback(this);
 		mHolder.setType(SurfaceHolder.SURFACE_TYPE_NORMAL);
 		setWillNotDraw(false);
-		
-		
 	}
 
 	public void start(){
@@ -78,7 +73,6 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 		
 	}
 
-	public native void ObjectRecog(int width, int height, byte yuv[], int rgba[], int[] value);
 
 	public void setModifyView(ImageView modifyImage) {
 		this.modifyImage = modifyImage;
@@ -95,8 +89,9 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 		ObjectRecog(previewWidth, previewHeight, _data, result, recogValue);
 		
 		if(recogValue[0] == 1){
-			judgement++;
-			parent.setProgressBar(judgement);
+			Date tmpDate = new Date();
+			judgement += (tmpDate.getTime() - lastCheck.getTime());
+			parent.setProgressBar((int) ((double)judgement/(double)judgement_thresold*100));
 		}
 			
 		
@@ -105,15 +100,12 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 		}
 		
 		
-		if(bm != null)
-			bm.recycle();
-		bm = Bitmap.createBitmap(previewHeight, previewWidth, Bitmap.Config.ARGB_8888);
+		bm.eraseColor(Color.TRANSPARENT);
 		bm.setPixels(result, 0, previewHeight, 0, 0, previewHeight, previewWidth);
-		
-
 		
 		
 //		modifyImage.setImageBitmap(bm);
+		lastCheck = new Date();
 	}
 
 	@Override
@@ -151,6 +143,9 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 			}
 		}
 		Log.i("Still","Using size.width>" + previewWidth + "/size.height" + previewHeight);
+		
+		bm = Bitmap.createBitmap(previewHeight, previewWidth, Bitmap.Config.ARGB_8888);
+		
 		parameters.setPreviewSize(previewWidth, previewHeight);
 
 		
@@ -208,7 +203,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 		try{
             mCamera.setPreviewCallback(this);
         }catch(Exception e){
-            android.util.Log.e("", e.getMessage());
+            Log.e("surfaceCratedError", e.getMessage());
         }
 	}
 
@@ -232,4 +227,6 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 		    invalidate();
 		}
 	}
+	
+	public native void ObjectRecog(int width, int height, byte yuv[], int rgba[], int[] value);
 }

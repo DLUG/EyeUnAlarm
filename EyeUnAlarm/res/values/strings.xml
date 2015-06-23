@@ -31,8 +31,12 @@
     <string name="btn_cancel">Cancel</string>
     <string name="btn_back">Back</string>
 
+    <string name="btn_test_end">Test End</string>
+    
     <string name="toast_updated_alarm">Updated!</string>
     <string name="toast_added_alarm">Added!</string>
+    <string name="toast_alarm_enabled_prefix">Enabled Alarm \"{AlarmName}\"</string>
+    <string name="toast_alarm_disabled_prefix">Disabled Alarm \"{AlarmName}\"</string>
     <string name="toast_cannot_open_camera">Cannot Open Camera</string>
     
     <string name="minutes">minutes</string>

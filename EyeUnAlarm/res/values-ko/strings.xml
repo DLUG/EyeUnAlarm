@@ -31,8 +31,12 @@
     <string name="btn_cancel">취소</string>
     <string name="btn_back">뒤로</string>
 
+    <string name="btn_test_end">테스트 종료</string>
+    
     <string name="toast_updated_alarm">업데이트 되었습니다.!</string>
     <string name="toast_added_alarm">추가되었습니다.!</string>
+    <string name="toast_alarm_enabled_prefix">\"{AlarmName}\" 알람이 설정되었습니다.</string>
+    <string name="toast_alarm_disabled_prefix">\"{AlarmName}\" 알람이 해제되었습니다.</string>
     <string name="toast_cannot_open_camera">카메라를 열 수 없습니다.</string>
     
     <string name="minutes">분</string>
