@@ -72,5 +72,6 @@
 	    <item>Fri</item>
 	    <item>Sat</item>
 	</string-array>
+	<string name="weekday_none">None</string>
 	
 </resources>

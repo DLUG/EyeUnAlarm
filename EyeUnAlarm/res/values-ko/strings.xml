@@ -72,5 +72,6 @@
 	    <item>금</item>
 	    <item>토</item>
 	</string-array>
+	<string name="weekday_none">반복 없음</string>
 	
 </resources>

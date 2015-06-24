@@ -205,7 +205,11 @@ public abstract class ActivityAlarmSetAbstract extends Activity{
 			if((repeat & 1) == 1)
 				result += weekday[6] + ", ";
 
-			result = result.substring(0, result.length() - 2);
+			if(result.equals("")){
+				result = getResources().getString(R.string.weekday_none);
+			} else {
+				result = result.substring(0, result.length() - 2);
+			}
 			viewRepeat.setText(result);
 		}
 		
