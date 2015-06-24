@@ -50,6 +50,8 @@ public class ActivityLoading extends Activity {
 				
 				
 				AlarmController.init(ActivityLoading.this);
+				Bridge.setAdapterAlarmList(new AdapterAlarmList(ActivityLoading.this));
+				Bridge.setShowedPopup(false);
 				
 /*				
 				alarmListData = myDb.getAlarmList();

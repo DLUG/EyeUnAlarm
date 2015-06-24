@@ -45,16 +45,17 @@ public class FragmentAlarmList extends Fragment {
 		viewAlarmList.setOnItemClickListener(onClickList);
 		viewAlarmList.setOnItemLongClickListener(onLongClickList);
 		
-		List<AlarmData> alarmListData = AlarmController.getAlarmList();
-		adapter = new AdapterAlarmList(getActivity());
-		Bridge.setAdapterAlarmList(adapter);
+//		adapter = new AdapterAlarmList(getActivity());
+		adapter = Bridge.getAdapterAlarmList();
+//		Bridge.setAdapterAlarmList(adapter);
 		
 		viewAlarmList.setAdapter(adapter);
 		
 //		adapterAlarmList.notifyDataSetChanged();
 		
-		if(alarmListData.size() == 0){
+		if(adapter.getCount() == 0 && !Bridge.isShowedPopup()){
 			showMessage(R.string.empty_title, R.string.empty_message);
+			Bridge.setShowedPopup(true);
 		}
 
         
@@ -128,7 +129,10 @@ public class FragmentAlarmList extends Fragment {
 
 			AlarmController.deleteAlarm(dbId);
 			
-			Bridge.getAdapterAlarmList().reloadData();
+			adapter.reloadData();
+			if(adapter.getCount() == 0){
+				Bridge.setShowedPopup(false);
+			}
 		}
 	};
 	
