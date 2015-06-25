@@ -31,7 +31,8 @@
         <activity android:name="org.dlug.android.eyeunalarm.ActivityMain" />
         <activity android:name="org.dlug.android.eyeunalarm.ActivityAlarmAdd" />
         <activity android:name="org.dlug.android.eyeunalarm.ActivityAlarmModify" />
-        <activity android:name="org.dlug.android.eyeunalarm.alarm.ActivityAlarmPlay"/>
+        <activity android:name="org.dlug.android.eyeunalarm.alarm.ActivityAlarmPlay" 
+            android:excludeFromRecents="true" />
         <activity android:name="org.dlug.android.eyeunalarm.alarm.ActivityAlarmPlayTest"/>
 <!--
         <activity android:name="org.dlug.android.eyeunalarm.old.TabMain"> </activity>

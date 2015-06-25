@@ -47,3 +47,4 @@ ChangeLog
 - Show 'Please Add Alarm' Popup Just Once per Each Run
 - Add Snooze Function
 - Modify Initial values of RecogLength & Snooze
+- Exclude AlarmPlay in Task List
