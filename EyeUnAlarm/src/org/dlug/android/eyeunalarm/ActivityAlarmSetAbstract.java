@@ -25,20 +25,25 @@ import android.widget.TimePicker;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
 public abstract class ActivityAlarmSetAbstract extends Activity{
-	protected static final int[] snoozeArr = {5, 10, 15, 20};
-	protected static final int[] recogStrengthArr = {10, 20, 30, 40, 50, 60, 70, 80, 90, 100};
+	protected static final int[] arrSnooze = {5, 10, 15, 20};
+	protected static final int[] arrRecogStrength = {10, 20, 30, 40, 50, 60, 70, 80, 90, 100};
 	protected static final int TRUE = 1;
 	protected static final int FALSE = 0;
 	
+	String[] arrSnoozeString;
+	String[] arrRecogString;
+	String stringMinutes;
+	String stringSeconds;
+	
 	protected String title = "";
 	protected int[] alarmTime = {0, 0};
-	protected int snooze = 5;
+	protected int snooze = arrSnooze[0];
 	protected int typeS = 1;
 	protected int typeV = 1;
 	protected String bellURI = "content://settings/system/ringtone";
 	protected int volume = 100;
 	protected int repeat = 127;
-	protected int recogStrength = 5;
+	protected int recogStrength = arrRecogStrength[0];
 	
 	protected TextView titleAlarmSet;
 	protected TextView viewTitle;
@@ -82,6 +87,19 @@ public abstract class ActivityAlarmSetAbstract extends Activity{
 		findViewById(R.id.btnCancel).setOnClickListener(onClickCancel);
 		
 		btnConfirm.setText("Modify This");
+		
+		stringMinutes = getString(R.string.minutes);
+		stringSeconds = getString(R.string.seconds);
+
+		arrSnoozeString = new String[arrSnooze.length];
+		for(int i = 0; i < arrSnooze.length; i++){
+			arrSnoozeString[i] = String.valueOf(arrSnooze[i]) + " " + stringMinutes;
+		}
+
+		arrRecogString = new String[arrRecogStrength.length];
+		for(int i = 0; i < arrRecogStrength.length; i++){
+			arrSnoozeString[i] = String.valueOf(arrRecogStrength[i]) + " " + stringSeconds;
+		}
 	}
 	
 	protected void setTitle(String title){
@@ -296,13 +314,14 @@ public abstract class ActivityAlarmSetAbstract extends Activity{
 	protected OnClickListener onClickSnooze = new OnClickListener(){
 		@Override
 		public void onClick(View v) {
+			
 			new AlertDialog.Builder(ActivityAlarmSetAbstract.this)
 			.setTitle(R.string.label_snooze)
 //			.setIcon(R.drawable.clock)
-			.setItems(R.array.dialog_snooze, new DialogInterface.OnClickListener(){
+			.setItems(arrSnoozeString, new DialogInterface.OnClickListener(){
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					snooze = snoozeArr[which];
+					snooze = arrSnooze[which];
 					viewSnooze.setText(snooze + " " + getString(R.string.minutes));
 				}
 			})
@@ -364,15 +383,18 @@ public abstract class ActivityAlarmSetAbstract extends Activity{
 		}
 	};
 	protected OnClickListener onClickRecogStrength = new OnClickListener(){
+		
+		
 		@Override
 		public void onClick(View v) {
+			
 			new AlertDialog.Builder(ActivityAlarmSetAbstract.this)
 			.setTitle(R.string.label_recog_strength)
 //			.setIcon(R.drawable.clock)
-			.setItems(R.array.dialog_recog_strength, new DialogInterface.OnClickListener(){
+			.setItems(arrRecogString, new DialogInterface.OnClickListener(){
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					recogStrength = recogStrengthArr[which];
+					recogStrength = arrRecogStrength[which];
 					viewRecogStrength.setText(recogStrength + "");
 				}
 			})

@@ -16,7 +16,6 @@ public class ActivityAlarmPlayTest extends ActivityAlarmPlayAbstract{
 	@Override
 	protected void prepareData(){
 		int dbIdx = getIntent().getIntExtra("dbIdx", -1);
-		isTest = getIntent().getBooleanExtra("isTest", false);
 
 		if(dbIdx == -1){
 			Log.e("AlarmPlay", "Not Exist Db Idx");
@@ -46,17 +45,21 @@ public class ActivityAlarmPlayTest extends ActivityAlarmPlayAbstract{
 		Button btnSnooze = (Button) findViewById(R.id.btnSnooze);
 
 		btnSnooze.setText(R.string.btn_test_end);
-		btnSnooze.setOnClickListener(new OnClickListener(){
-
-			@Override
-			public void onClick(View v) {
-				pass();
-			}
-		});
 	}
 	
 	@Override
 	public void onBackPressed() {
 		pass();
+	}
+
+	@Override
+	protected OnClickListener getButtonOnClickListener() {
+		return new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				pass();
+			}
+		};
 	}
 }

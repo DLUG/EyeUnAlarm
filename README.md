@@ -39,3 +39,11 @@ ChangeLog
 
 ▶0.7.1
 - Hotfix: Data Initializing Bug
+
+▶0.7.2
+- Update DolmanTab (for Fix Bug of Direction Change)
+- Scale up Height of ProgressBar in AlarmPlay.
+- Fix Non-set Repeat bug in AlarmSet
+- Show 'Please Add Alarm' Popup Just Once per Each Run
+- Add Snooze Function
+- Modify Initial values of RecogLength & Snooze

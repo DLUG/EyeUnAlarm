@@ -44,24 +44,8 @@
     <string name="everyday">매일</string>
     <string name="workday">근무요일</string>
     
-    <string-array name="dialog_snooze">
-	    <item>5 분</item>
-	    <item>10 분</item>
-	    <item>15 분</item>
-	    <item>20 분</item>
-	</string-array>
-	<string-array name="dialog_recog_strength">
-	    <item>10</item>
-	    <item>20</item>
-	    <item>30</item>
-	    <item>40</item>
-	    <item>50</item>
-	    <item>60</item>
-	    <item>70</item>
-	    <item>80</item>
-	    <item>90</item>
-	    <item>100</item>
-	</string-array>
+	<string name="time_minutes">분</string>
+	<string name="time_seconds">초</string>
 	
 	<string-array name="weekday">
 	    <item>일</item>

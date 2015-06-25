@@ -42,10 +42,9 @@ public abstract class ActivityAlarmPlayAbstract extends Activity{
 	protected int volume = 100;
 	protected int repeatBinary = 127;
 	protected boolean[] repeat;
-	protected int recogStrength = 5;
-	protected boolean isTest = true;
+	protected int recogStrength = 10;
 
-	final long[] pattern = {1000, 200, 1000, 2000, 1200};
+	final long[] vibePattern = {1000, 200, 1000, 2000, 1200};
 
 	CameraPreview cameraView;
 	public ProgressBar barRecogEye;
@@ -116,8 +115,6 @@ public abstract class ActivityAlarmPlayAbstract extends Activity{
 
 
 		if(typeS){
-//			ringtone = RingtoneManager.getRingtone(getApplicationContext(), Uri.parse(bellURI));
-//			ringtone.play();
 			try{
 				player = new MediaPlayer();
 				if(bellURI.equals("")){
@@ -137,11 +134,11 @@ public abstract class ActivityAlarmPlayAbstract extends Activity{
 		}
 		if(typeV){
 			vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-			vibe.vibrate(pattern, 0);
+			vibe.vibrate(vibePattern, 0);
 		}
 		
 		
-		findViewById(R.id.btnSnooze).setOnClickListener(onClickSnooze);
+		findViewById(R.id.btnSnooze).setOnClickListener(getButtonOnClickListener());
 		barRecogEye = (ProgressBar) findViewById(R.id.barRecogEye);
 		
 		
@@ -151,15 +148,7 @@ public abstract class ActivityAlarmPlayAbstract extends Activity{
 	
 
 	protected abstract void prepareData();	
-
-	
-	OnClickListener onClickSnooze = new OnClickListener(){
-		@Override
-		public void onClick(View v) {
-//			finish();
-		}
-		
-	};
+	protected abstract OnClickListener getButtonOnClickListener();
 	
 	public void pass(){
 		try{
@@ -175,6 +164,12 @@ public abstract class ActivityAlarmPlayAbstract extends Activity{
 			vibe.cancel();
 		
 		AlarmController.resetAlarm();
+		
+		int dbIdx = this.getIntent().getIntExtra("dbIdx", -1);
+		boolean snoozeMode = this.getIntent().getBooleanExtra("snoozeMode", false);
+		if(snoozeMode && dbIdx >= 0){
+			AlarmController.cancelAlarmManager(dbIdx * -1);
+		}
 		
 		finish();
 	}

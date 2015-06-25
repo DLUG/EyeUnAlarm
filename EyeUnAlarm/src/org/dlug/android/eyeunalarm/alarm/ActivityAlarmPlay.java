@@ -10,9 +10,13 @@ import org.dlug.android.eyeunalarm.AlarmController.AlarmData;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
 
 public class ActivityAlarmPlay extends ActivityAlarmPlayAbstract{
 
+	private AlarmData currentAlarm;
+	
 	@Override
 	protected void prepareData(){
 		int dbIdx = getIntent().getIntExtra("dbIdx", -1);
@@ -22,7 +26,7 @@ public class ActivityAlarmPlay extends ActivityAlarmPlayAbstract{
 			finish();
 		}
 		
-		AlarmData currentAlarm = AlarmController.getAlarm(dbIdx);
+		currentAlarm = AlarmController.getAlarm(dbIdx);
 		
 		if(currentAlarm.alertState == 0){
 			finish();
@@ -50,5 +54,26 @@ public class ActivityAlarmPlay extends ActivityAlarmPlayAbstract{
 	@Override
 	public void onBackPressed() {
 		Log.d("OnBackPressed", "Clicked");
+	}
+	
+	@Override
+	protected OnClickListener getButtonOnClickListener() {
+		return new OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				currentAlarm.minutes = currentAlarm.minutes + snooze;
+				if(currentAlarm.minutes >= 60){
+					currentAlarm.minutes -= 60;
+					currentAlarm.hours++;
+				}
+				
+				if(currentAlarm.hours >= 24){
+					currentAlarm.hours -= 24;
+				}
+				
+				AlarmController.setAlarmManagerSnooze(currentAlarm);
+				pass();
+			}
+		};
 	}
 }

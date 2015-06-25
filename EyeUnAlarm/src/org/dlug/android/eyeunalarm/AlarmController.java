@@ -286,7 +286,33 @@ public class AlarmController{
 		alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, alarmTime, AlarmManager.INTERVAL_DAY, pIntent);
 	}
 	
-	private static void cancelAlarmManager(int idx){
+	public static void setAlarmManagerSnooze(AlarmData alarm){
+		gregorianCalendar = new GregorianCalendar(TimeZone.getTimeZone("GMT+09:00"));
+		currentCalendar = new GregorianCalendar(TimeZone.getTimeZone("GMT+09:00"));
+
+		currentYY = currentCalendar.get(Calendar.YEAR);
+		currentMM = currentCalendar.get(Calendar.MONTH);
+		currentDD = currentCalendar.get(Calendar.DAY_OF_MONTH);
+
+		gregorianCalendar.set(currentYY, currentMM, currentDD, alarm.hours, alarm.minutes, 00);
+		
+	  	if(gregorianCalendar.getTimeInMillis() < currentCalendar.getTimeInMillis()){
+	  		gregorianCalendar.set(currentYY, currentMM, currentDD+1, alarm.hours, alarm.minutes, 0);
+	  	} else {
+	  		gregorianCalendar.set(currentYY, currentMM, currentDD, alarm.hours, alarm.minutes, 0);
+	  	}
+	  	
+	  	long alarmTime = gregorianCalendar.getTimeInMillis();
+
+	  	Intent intent = new Intent(context, ReceiverAlarm.class);
+	  	intent.putExtra("dbIdx", alarm._id);
+	  	intent.putExtra("snooze", true);
+		PendingIntent pIntent = PendingIntent.getBroadcast(context, alarm._id * -1, intent, 0);
+		alarmManager.cancel(pIntent);
+		alarmManager.set(AlarmManager.RTC_WAKEUP, alarmTime, pIntent);
+	}
+	
+	public static void cancelAlarmManager(int idx){
 		Intent intent = new Intent(context, ReceiverAlarm.class);
 		PendingIntent pIntent = PendingIntent.getBroadcast(context, idx, intent, 0);
 		alarmManager.cancel(pIntent);		
