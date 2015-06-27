@@ -1,9 +1,5 @@
 package org.dlug.android.eyeunalarm;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.TimeZone;
-
 import org.dlug.android.eyeunalarm.R;
 import org.dlug.android.eyeunalarm.AlarmController.AlarmData;
 
@@ -26,17 +22,15 @@ public class ActivityAlarmAdd extends ActivityAlarmSetAbstract{
 	
 	@Override
 	protected void onResume(){
-		GregorianCalendar currentCalendar = new GregorianCalendar(TimeZone.getTimeZone("GMT+09:00"));
-		
-		setTitle("Alarm");
-		setAlarmTime(currentCalendar.get(Calendar.HOUR_OF_DAY), currentCalendar.get(Calendar.MINUTE));
-		setSnooze(snooze);
-		setTypeS(TRUE);
-		setTypeV(TRUE);
-		setBellURI(Uri.parse("content://settings/system/ringtone"));
-		setVolume(100);
-		setRepeat(127);
-		setRecogStrength(5);
+		setTitle(this.title);
+		setAlarmTime(this.alarmTime[0], this.alarmTime[1]);
+		setSnooze(this.snooze);
+		setTypeS(this.typeS);
+		setTypeV(this.typeV);
+		setBellURI(Uri.parse(this.bellURI));
+		setVolume(this.volume);
+		setRepeat(this.repeat);
+		setRecogStrength(this.recogStrength);
 
 		super.onResume();
 	}

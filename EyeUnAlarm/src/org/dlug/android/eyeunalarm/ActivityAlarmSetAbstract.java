@@ -1,5 +1,9 @@
 package org.dlug.android.eyeunalarm;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.TimeZone;
+
 import org.dlug.android.eyeunalarm.R;
 
 import android.app.Activity;
@@ -36,7 +40,7 @@ public abstract class ActivityAlarmSetAbstract extends Activity{
 	String stringSeconds;
 	
 	protected String title = "";
-	protected int[] alarmTime = {0, 0};
+	protected int[] alarmTime;
 	protected int snooze = arrSnooze[0];
 	protected int typeS = 1;
 	protected int typeV = 1;
@@ -56,6 +60,8 @@ public abstract class ActivityAlarmSetAbstract extends Activity{
 	protected TextView viewRepeat;
 	protected TextView viewRecogStrength;
 	protected Button btnConfirm;
+	
+	protected GregorianCalendar currentCalendar;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
@@ -100,6 +106,10 @@ public abstract class ActivityAlarmSetAbstract extends Activity{
 		for(int i = 0; i < arrRecogStrength.length; i++){
 			arrRecogString[i] = String.valueOf(arrRecogStrength[i]) + " " + stringSeconds;
 		}
+		
+		currentCalendar = new GregorianCalendar(TimeZone.getTimeZone("GMT+09:00"));
+		alarmTime = new int[]{currentCalendar.get(Calendar.HOUR_OF_DAY), currentCalendar.get(Calendar.MINUTE)};
+		title = getString(R.string.alarm);
 	}
 	
 	protected void setTitle(String title){
@@ -267,7 +277,7 @@ public abstract class ActivityAlarmSetAbstract extends Activity{
 	}
 	
 	protected void setRecogStrength(int strength){
-		viewRecogStrength.setText(strength + "");
+		viewRecogStrength.setText(strength + getString(R.string.seconds));
 		recogStrength = strength;
 	}
 	

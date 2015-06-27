@@ -2,7 +2,9 @@
 <resources>
     <string name="app_name">EyeUn Alarm</string>
 
-    <string name="loading">Loading</string>
+    <string name="loading">읽는 중</string>
+    
+    <string name="alarm">알람</string>
     
     <string name="title_alarm_list">알람 목록</string>
     <string name="title_add_alarm">알람 추가</string>

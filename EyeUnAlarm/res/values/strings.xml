@@ -4,6 +4,8 @@
 
     <string name="loading">Loading</string>
     
+    <string name="alarm">Alarm</string>
+    
     <string name="title_alarm_list">Alarm List</string>
     <string name="title_add_alarm">Add Alarm</string>
     <string name="title_modify_alarm">Modify Alarm</string>
