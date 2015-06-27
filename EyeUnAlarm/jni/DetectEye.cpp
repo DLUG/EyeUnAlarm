@@ -35,7 +35,9 @@ extern "C" {
 
 		Point center(width / 2, width / 2);
 		Mat M = cv::getRotationMatrix2D(center, 90, 1.0);
-		cv::warpAffine(mbgra, dst, M, cv::Size(height, width));
+		Mat tmp(width, height, CV_8UC4);
+		cv::flip(mbgra, tmp, 0);
+		cv::warpAffine(tmp, dst, M, cv::Size(height, width));
 
 
 	 //Start ===============================================
