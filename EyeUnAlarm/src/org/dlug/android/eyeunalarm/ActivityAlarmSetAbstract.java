@@ -9,9 +9,11 @@ import org.dlug.android.eyeunalarm.R;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnMultiChoiceClickListener;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -110,6 +112,11 @@ public abstract class ActivityAlarmSetAbstract extends Activity{
 		currentCalendar = new GregorianCalendar(TimeZone.getTimeZone("GMT+09:00"));
 		alarmTime = new int[]{currentCalendar.get(Calendar.HOUR_OF_DAY), currentCalendar.get(Calendar.MINUTE)};
 		title = getString(R.string.alarm);
+		
+		AudioManager audio = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+		volume = (int) (audio.getStreamVolume(AudioManager.STREAM_ALARM) / (float) audio.getStreamMaxVolume(AudioManager.STREAM_ALARM) * 100);
+		Log.d("Volume", audio.getStreamVolume(AudioManager.STREAM_ALARM) + "");
+		Log.d("VolumeMax", audio.getStreamMaxVolume(AudioManager.STREAM_ALARM) + "");
 	}
 	
 	protected void setTitle(String title){

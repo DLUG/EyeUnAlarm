@@ -125,7 +125,7 @@ public abstract class ActivityAlarmPlayAbstract extends Activity{
 				player.setDataSource(this, Uri.parse(bellURI));
 				
 				player.setLooping(true);
-				player.setVolume(volume, volume);
+				player.setVolume(volume/100f, volume/100f);
 				player.prepare();
 				player.start();
 			} catch(Exception e){

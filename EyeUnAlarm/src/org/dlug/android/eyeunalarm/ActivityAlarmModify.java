@@ -47,15 +47,16 @@ public class ActivityAlarmModify extends ActivityAlarmSetAbstract{
 		@Override
 		public void onClick(View v) {
 			Map<String, Object> inputData = new HashMap<String,Object>(10);
-			inputData.put("alarm_name", title);
-			inputData.put("hours", alarmTime[0]);
-			inputData.put("minutes", alarmTime[1]);
-			inputData.put("repeat", repeat);
-			inputData.put("snooze", snooze);
-			inputData.put("alert_song", bellURI);
-			inputData.put("type", (typeS * 2 + typeV));
-			inputData.put("recog_time", recogStrength);
-			inputData.put("alert_state", 1);
+			inputData.put(AlarmController.FIELD_ALARM_NAME, title);
+			inputData.put(AlarmController.FIELD_HOURS, alarmTime[0]);
+			inputData.put(AlarmController.FIELD_MINUTES, alarmTime[1]);
+			inputData.put(AlarmController.FIELD_REPEAT, repeat);
+			inputData.put(AlarmController.FIELD_SNOOZE, snooze);
+			inputData.put(AlarmController.FIELD_ALERT_SONG, bellURI);
+			inputData.put(AlarmController.FIELD_TYPE, (typeS * 2 + typeV));
+			inputData.put(AlarmController.FIELD_RECOG_TIME, recogStrength);
+			inputData.put(AlarmController.FIELD_ALERT_STATE, 1);
+			inputData.put(AlarmController.FIELD_ALERT_VOLUME, volume);
 			
 			AlarmController.updateAlarm(inputData, selectedAlarmId);
 			
