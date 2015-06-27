@@ -98,7 +98,7 @@ public abstract class ActivityAlarmSetAbstract extends Activity{
 
 		arrRecogString = new String[arrRecogStrength.length];
 		for(int i = 0; i < arrRecogStrength.length; i++){
-			arrSnoozeString[i] = String.valueOf(arrRecogStrength[i]) + " " + stringSeconds;
+			arrRecogString[i] = String.valueOf(arrRecogStrength[i]) + " " + stringSeconds;
 		}
 	}
 	
