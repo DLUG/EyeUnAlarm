@@ -141,7 +141,7 @@ public abstract class ActivityAlarmPlayAbstract extends Activity{
 		findViewById(R.id.btnSnooze).setOnClickListener(getButtonOnClickListener());
 		barRecogEye = (ProgressBar) findViewById(R.id.barRecogEye);
 		
-		
+		barRecogEye.setProgress(0);
 		barRecogEye.setMax(100);
 	}
 
