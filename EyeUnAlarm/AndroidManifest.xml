@@ -34,21 +34,6 @@
         <activity android:name="org.dlug.android.eyeunalarm.alarm.ActivityAlarmPlay" 
             android:excludeFromRecents="true" />
         <activity android:name="org.dlug.android.eyeunalarm.alarm.ActivityAlarmPlayTest"/>
-<!--
-        <activity android:name="org.dlug.android.eyeunalarm.old.TabMain"> </activity>
-        <activity android:name="org.dlug.android.eyeunalarm.old.AlarmList"> </activity>
-        <activity androiorg.dlug.android.eyeunalarm.old.AlarmListAlarmAddAlarmAdd"> </activity>
-        <activity android:name="org.dlug.android.eyeunalarm.old.AlarmListAlarmModify"> </activity>
-        <activity android:naorg.dlug.android.eyeunalarm.old.TabGroupFirstirst"></activity>
-        <activitorg.dlug.android.eyeunalarm.old.TabGroupSecondm.TabGroupSecond"></activity>
-        <activity androiorg.dlug.android.eyeunalarm.old.ViewCounselGroupselGroup"></activity>
-        <activity android:name="org.dlug.android.eyeunalarm.alarm.AlarmPlayTest">
-.AlarmListLoading 
-            <intent-filter>
-                <category android:name="android.intent.category.DEFAULT"/>
-          </intent-filter>
-        </activity>
--->
     
         <receiver android:name="org.dlug.android.eyeunalarm.alarm.ReceiverAlarm"/>
         <receiver android:name="org.dlug.android.eyeunalarm.boot.ReceiverBoot"
