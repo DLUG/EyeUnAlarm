@@ -315,6 +315,9 @@ public class AlarmController{
 	public static void cancelAlarmManager(int idx){
 		Intent intent = new Intent(context, ReceiverAlarm.class);
 		PendingIntent pIntent = PendingIntent.getBroadcast(context, idx, intent, 0);
+		alarmManager.cancel(pIntent);
+		
+		pIntent = PendingIntent.getBroadcast(context, idx * -1, intent, 0);
 		alarmManager.cancel(pIntent);		
 	}
 	
