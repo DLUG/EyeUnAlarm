@@ -40,15 +40,13 @@
     <string name="toast_alarm_enabled_prefix">Enabled Alarm \"{AlarmName}\"</string>
     <string name="toast_alarm_disabled_prefix">Disabled Alarm \"{AlarmName}\"</string>
     <string name="toast_cannot_open_camera">Cannot Open Camera</string>
+    <string name="toast_snooze">Snoozed alarm \'{SnoozeTime}\' minute(s).</string>
     
-    <string name="minutes">minutes</string>
-    <string name="seconds">seconds</string>
+    <string name="minutes">minute(s)</string>
+    <string name="seconds">second(s)</string>
     <string name="everyday">Everyday</string>
     <string name="workday">Workday</string>
     
-	<string name="time_minutes">minutes</string>
-	<string name="time_seconds">seconds</string>
-	
 	<string-array name="weekday">
 	    <item>Sun</item>
 	    <item>Mon</item>

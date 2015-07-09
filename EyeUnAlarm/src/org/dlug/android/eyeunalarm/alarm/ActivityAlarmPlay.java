@@ -6,11 +6,13 @@ import java.util.TimeZone;
 
 import org.dlug.android.eyeunalarm.ActivityAlarmSetAbstract;
 import org.dlug.android.eyeunalarm.AlarmController;
+import org.dlug.android.eyeunalarm.R;
 import org.dlug.android.eyeunalarm.AlarmController.AlarmData;
 
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Toast;
 
 public class ActivityAlarmPlay extends ActivityAlarmPlayAbstract{
 
@@ -73,6 +75,10 @@ public class ActivityAlarmPlay extends ActivityAlarmPlayAbstract{
 				}
 				
 				AlarmController.setAlarmManagerSnooze(currentAlarm);
+				
+				String tmpMessage = ActivityAlarmPlay.this.getString(R.string.toast_snooze).replace("{SnoozeTime}", String.valueOf(snooze));
+				Toast.makeText(ActivityAlarmPlay.this, tmpMessage, Toast.LENGTH_SHORT).show();
+				
 				pass();
 			}
 		};
