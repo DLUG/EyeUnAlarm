@@ -14,12 +14,12 @@ import android.widget.Button;
 public class ActivityAlarmPlayTest extends ActivityAlarmPlayAbstract{
 
 	@Override
-	protected void prepareData(){
+	protected boolean prepareData(){
 		int dbIdx = getIntent().getIntExtra("dbIdx", -1);
 
 		if(dbIdx == -1){
 			Log.e("AlarmPlay", "Not Exist Db Idx");
-			finish();
+			return false;
 		}
 
 		AlarmData currentAlarm = AlarmController.getAlarm(dbIdx);
@@ -36,6 +36,8 @@ public class ActivityAlarmPlayTest extends ActivityAlarmPlayAbstract{
 		repeatBinary = currentAlarm.repeat;
 		repeat = ActivityAlarmSetAbstract.parseRepeatBinary(repeatBinary);
 		recogStrength = currentAlarm.recogTime;
+		
+		return true;
 	}
 
 	@Override

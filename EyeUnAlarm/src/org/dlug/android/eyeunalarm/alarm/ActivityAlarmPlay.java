@@ -8,7 +8,6 @@ import org.dlug.android.eyeunalarm.ActivityAlarmSetAbstract;
 import org.dlug.android.eyeunalarm.AlarmController;
 import org.dlug.android.eyeunalarm.AlarmController.AlarmData;
 
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -18,18 +17,18 @@ public class ActivityAlarmPlay extends ActivityAlarmPlayAbstract{
 	private AlarmData currentAlarm;
 	
 	@Override
-	protected void prepareData(){
+	protected boolean prepareData(){
 		int dbIdx = getIntent().getIntExtra("dbIdx", -1);
 		
 		if(dbIdx == -1){
 			Log.e("AlarmPlay", "Not Exist Db Idx");
-			finish();
+			return false;
 		}
 		
 		currentAlarm = AlarmController.getAlarm(dbIdx);
 		
 		if(currentAlarm.alertState == 0){
-			finish();
+			return false;
 		}
 		
 		title = currentAlarm.alarmName;
@@ -48,7 +47,9 @@ public class ActivityAlarmPlay extends ActivityAlarmPlayAbstract{
 		GregorianCalendar currentCalendar = new GregorianCalendar(TimeZone.getTimeZone("GMT+09:00"));
 		int todayDayOfWeek = currentCalendar.get(Calendar.DAY_OF_WEEK);
 		if(!repeat[todayDayOfWeek - 1])
-			finish();
+			return false;
+		
+		return true;
 	}
 	
 	@Override

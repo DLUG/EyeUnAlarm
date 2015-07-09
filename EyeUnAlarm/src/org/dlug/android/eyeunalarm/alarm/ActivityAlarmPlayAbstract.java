@@ -58,16 +58,13 @@ public abstract class ActivityAlarmPlayAbstract extends Activity{
 
 		AlarmController.init(this);
 
-		prepareData();
+		if(prepareData() == false){
+			finish();
+			return;
+		}
 		
 		File xmlFile = new File(this.getFilesDir().getPath() + "/eyes.xml");
 		if(!xmlFile.exists()){
-			/*
-			File filesFolder = new File("/data/data/com.example.detectobject/files");
-			if(!filesFolder.exists()){
-				filesFolder.mkdir();
-			}
-			 */			
 			try {
 				InputStream input = getAssets().open("haarcascade_eye.xml");
 				byte[] data = new byte[input.available()];
@@ -77,10 +74,8 @@ public abstract class ActivityAlarmPlayAbstract extends Activity{
 				output.write(data);
 				output.close();
 			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -147,7 +142,7 @@ public abstract class ActivityAlarmPlayAbstract extends Activity{
 
 	
 
-	protected abstract void prepareData();	
+	protected abstract boolean prepareData();	
 	protected abstract OnClickListener getButtonOnClickListener();
 	
 	public void pass(){
