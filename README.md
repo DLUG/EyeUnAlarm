@@ -48,3 +48,6 @@ ChangeLog
 - Add Snooze Function
 - Modify Initial values of RecogLength & Snooze
 - Exclude AlarmPlay in Task List
+
+▶0.7.3
+- Add Notification when Alarm go to background.

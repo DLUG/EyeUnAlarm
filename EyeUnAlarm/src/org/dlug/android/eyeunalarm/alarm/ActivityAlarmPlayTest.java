@@ -5,7 +5,15 @@ import org.dlug.android.eyeunalarm.AlarmController;
 import org.dlug.android.eyeunalarm.R;
 import org.dlug.android.eyeunalarm.AlarmController.AlarmData;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
+import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -48,7 +56,7 @@ public class ActivityAlarmPlayTest extends ActivityAlarmPlayAbstract{
 
 		btnSnooze.setText(R.string.btn_test_end);
 	}
-	
+
 	@Override
 	public void onBackPressed() {
 		pass();
@@ -63,5 +71,14 @@ public class ActivityAlarmPlayTest extends ActivityAlarmPlayAbstract{
 				pass();
 			}
 		};
+	}
+	
+	@Override
+	protected void onPause() {
+		if(!boolPassed){
+			showNotification(this);
+		}
+			
+		super.onPause();
 	}
 }

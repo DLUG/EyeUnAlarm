@@ -9,13 +9,18 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
+import org.dlug.android.eyeunalarm.ActivityAlarmModify;
 import org.dlug.android.eyeunalarm.AlarmController;
 import org.dlug.android.eyeunalarm.R;
 
 import android.app.Activity;
 import android.app.KeyguardManager;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.KeyguardManager.KeyguardLock;
 import android.content.Context;
+import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.Ringtone;
@@ -24,6 +29,7 @@ import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.Vibrator;
 import android.os.PowerManager.WakeLock;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -43,6 +49,8 @@ public abstract class ActivityAlarmPlayAbstract extends Activity{
 	protected int repeatBinary = 127;
 	protected boolean[] repeat;
 	protected int recogStrength = 10;
+	protected boolean boolPassed = false;
+	protected NotificationManager notificationManager;
 
 	final long[] vibePattern = {1000, 200, 1000, 2000, 1200};
 
@@ -62,6 +70,8 @@ public abstract class ActivityAlarmPlayAbstract extends Activity{
 			finish();
 			return;
 		}
+
+		notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 		
 		File xmlFile = new File(this.getFilesDir().getPath() + "/eyes.xml");
 		if(!xmlFile.exists()){
@@ -81,8 +91,8 @@ public abstract class ActivityAlarmPlayAbstract extends Activity{
 		}
 
 		setContentView(R.layout.activity_alarm_play);
-		
-		
+
+
 		PowerManager pm = (PowerManager) getApplicationContext().getSystemService(Context.POWER_SERVICE);
 		WakeLock wakeLock = pm.newWakeLock((PowerManager.SCREEN_BRIGHT_WAKE_LOCK | PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP), "TAG");
 		wakeLock.acquire();
@@ -94,13 +104,13 @@ public abstract class ActivityAlarmPlayAbstract extends Activity{
 		try{
 			cameraView = new CameraPreview(getApplicationContext(), 640, 480, this, recogStrength);
 			LinearLayout layoutPlayVideo = (LinearLayout)findViewById(R.id.layoutPlayVideo);
-			
+
 			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 					LinearLayout.LayoutParams.MATCH_PARENT,
 					LinearLayout.LayoutParams.MATCH_PARENT);
-	
+
 			cameraView.setLayoutParams(params);
-			
+
 			layoutPlayVideo.addView(cameraView);
 		} catch(Exception e){
 			Log.e("OpenCV", "Cannot connect to OpenCV Manager");
@@ -115,10 +125,10 @@ public abstract class ActivityAlarmPlayAbstract extends Activity{
 				if(bellURI.equals("")){
 					bellURI = "content://settings/system/ringtone";
 				}
-				
+
 				player.setAudioStreamType(AudioManager.STREAM_ALARM);
 				player.setDataSource(this, Uri.parse(bellURI));
-				
+
 				player.setLooping(true);
 				player.setVolume(volume/100f, volume/100f);
 				player.prepare();
@@ -131,51 +141,61 @@ public abstract class ActivityAlarmPlayAbstract extends Activity{
 			vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 			vibe.vibrate(vibePattern, 0);
 		}
-		
-		
+
+
 		findViewById(R.id.btnSnooze).setOnClickListener(getButtonOnClickListener());
 		barRecogEye = (ProgressBar) findViewById(R.id.barRecogEye);
-		
+
 		barRecogEye.setProgress(0);
 		barRecogEye.setMax(100);
 	}
 
-	
+	@Override
+	protected void onResume() {
+		notificationManager.cancel(0);
+
+		super.onResume();
+	}
 
 	protected abstract boolean prepareData();	
 	protected abstract OnClickListener getButtonOnClickListener();
-	
+
 	public void pass(){
+		boolPassed = true;
+
 		try{
 			cameraView.pause();
 		} catch(Exception e){
 			e.printStackTrace();
 		}
-		
+
 		if(typeS)
 			player.stop();
 
 		if(typeV)
 			vibe.cancel();
-		
+
 		AlarmController.resetAlarm();
-		
+
 		int dbIdx = this.getIntent().getIntExtra("dbIdx", -1);
 		boolean snoozeMode = this.getIntent().getBooleanExtra("snoozeMode", false);
 		if(snoozeMode && dbIdx >= 0){
 			AlarmController.cancelAlarmManager(dbIdx * -1);
 		}
+
+		String toastMessage = getString(R.string.toast_dismissed).replace("{AlarmName}", title);
+		Toast.makeText(this, toastMessage, Toast.LENGTH_SHORT).show();
 		
 		finish();
 	}
-	
+
 	private void faultOpenVideo(){
 		LinearLayout layoutPlayVideo = (LinearLayout)findViewById(R.id.layoutPlayVideo);
-		
+
 		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-	            LinearLayout.LayoutParams.MATCH_PARENT,
-	            LinearLayout.LayoutParams.MATCH_PARENT);
-		
+				LinearLayout.LayoutParams.MATCH_PARENT,
+				LinearLayout.LayoutParams.MATCH_PARENT);
+
 		Button unlockBtn = new Button(this);
 		unlockBtn.setText("Temporary unlock");
 		layoutPlayVideo.removeAllViewsInLayout();
@@ -187,8 +207,29 @@ public abstract class ActivityAlarmPlayAbstract extends Activity{
 			}
 		});
 	}
-	
+
 	public void setProgressBar(int percent){
 		barRecogEye.setProgress(percent);
+	}
+
+	protected void showNotification(ActivityAlarmPlayAbstract object){
+	
+		
+		Intent restorentent = new Intent(object, object.getClass());
+		restorentent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+		PendingIntent restorePendingIntent = PendingIntent.getActivity(this, 0, restorentent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+		Notification tmpNotification = new NotificationCompat.Builder(this)
+		.setSmallIcon(R.drawable.notification_icon)
+		.setContentTitle(getString(R.string.message_still_alarming))
+		.setContentText(getString(R.string.message_still_alarming2))
+		.setContentIntent(restorePendingIntent)
+		.build();
+
+		tmpNotification.flags |= Notification.FLAG_ONGOING_EVENT;
+
+
+		notificationManager.notify(0, tmpNotification);
 	}
 }
