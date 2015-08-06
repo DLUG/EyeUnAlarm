@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <AnalogClock
+            android:id="@+id/analogClock1"
+            android:layout_width="350dp"
+            android:layout_height="350dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:dial="@drawable/clock_front"
+            android:hand_hour="@drawable/clock_hand_hour"
+            android:hand_minute="@drawable/clock_hand_minute" />
+
+        <DigitalClock
+            android:id="@+id/digitalClock1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/analogClock1"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:text="DigitalClock"
+            android:textSize="20sp" />
+
+    </RelativeLayout>

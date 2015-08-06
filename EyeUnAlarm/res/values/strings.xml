@@ -4,6 +4,8 @@
 
     <string name="loading">Loading</string>
     
+    <string name="alarm">Alarm</string>
+    
     <string name="title_alarm_list">Alarm List</string>
     <string name="title_add_alarm">Add Alarm</string>
     <string name="title_modify_alarm">Modify Alarm</string>
@@ -31,34 +33,20 @@
     <string name="btn_cancel">Cancel</string>
     <string name="btn_back">Back</string>
 
+    <string name="btn_test_end">Test End</string>
+    
     <string name="toast_updated_alarm">Updated!</string>
     <string name="toast_added_alarm">Added!</string>
+    <string name="toast_alarm_enabled_prefix">Enabled Alarm \"{AlarmName}\"</string>
+    <string name="toast_alarm_disabled_prefix">Disabled Alarm \"{AlarmName}\"</string>
     <string name="toast_cannot_open_camera">Cannot Open Camera</string>
+    <string name="toast_snooze">Snoozed alarm \'{SnoozeTime}\' minute(s).</string>
     
-    <string name="minutes">minutes</string>
-    <string name="seconds">seconds</string>
+    <string name="minutes">minute(s)</string>
+    <string name="seconds">second(s)</string>
     <string name="everyday">Everyday</string>
     <string name="workday">Workday</string>
     
-    <string-array name="dialog_snooze">
-	    <item>5 minutes</item>
-	    <item>10 minutes</item>
-	    <item>15 minutes</item>
-	    <item>20 minutes</item>
-	</string-array>
-	<string-array name="dialog_recog_strength">
-	    <item>10</item>
-	    <item>20</item>
-	    <item>30</item>
-	    <item>40</item>
-	    <item>50</item>
-	    <item>60</item>
-	    <item>70</item>
-	    <item>80</item>
-	    <item>90</item>
-	    <item>100</item>
-	</string-array>
-	
 	<string-array name="weekday">
 	    <item>Sun</item>
 	    <item>Mon</item>
@@ -68,5 +56,6 @@
 	    <item>Fri</item>
 	    <item>Sat</item>
 	</string-array>
+	<string name="weekday_none">None</string>
 	
 </resources>

@@ -14,7 +14,8 @@ using namespace std;
 using namespace cv;
 
 extern "C" {
-	JNIEXPORT void JNICALL Java_org_dlug_android_eyeunalarm_alarm_CameraPreview_ObjectRecog(JNIEnv* env, jobject, jint width, jint height, jbyteArray yuv, jintArray bgra, jintArray recogValue)
+	JNIEXPORT void JNICALL Java_org_dlug_android_eyeunalarm_alarm_CameraPreview_ObjectRecog(
+			JNIEnv* env, jobject, jint width, jint height, jbyteArray yuv, jintArray bgra, jintArray recogValue)
 	{
 		jbyte* _yuv  = env->GetByteArrayElements(yuv, 0);
 		jint*  _bgra = env->GetIntArrayElements(bgra, 0);
@@ -24,6 +25,7 @@ extern "C" {
 		Mat m_bgra(width, height, CV_8UC4, (unsigned char *)_bgra);
 	//    Mat mgray(height, width, CV_8UC1, (unsigned char *)_yuv);
 		Mat mbgra;
+		Mat rgb;
 		Mat dst;
 
 		//Please make attention about BGRA byte order
@@ -31,9 +33,11 @@ extern "C" {
 		cvtColor(myuv, mbgra, CV_YUV420sp2BGR, 4);
 
 
-		Point center(width / 2, height / 2);
-		Mat M = cv::getRotationMatrix2D(center, -90, 1.0);
-		cv::warpAffine(mbgra, dst, M, cv::Size(height, width));
+		Point center(width / 2, width / 2);
+		Mat M = cv::getRotationMatrix2D(center, 90, 1.0);
+		Mat tmp(width, height, CV_8UC4);
+		cv::flip(mbgra, tmp, 0);
+		cv::warpAffine(tmp, dst, M, cv::Size(height, width));
 
 
 	 //Start ===============================================
@@ -71,7 +75,7 @@ extern "C" {
 			//|CV_HAAR_DO_ROUGH_SEARCH
 			|CV_HAAR_SCALE_IMAGE
 			,
-			Size(60, 60) );
+			Size(100, 100) );
 
 		int judge = 0;
 		for( vector<Rect>::const_iterator r = faces.begin(); r != faces.end(); r++, i++ )

@@ -1,13 +1,14 @@
 package org.dlug.android.eyeunalarm.alarm;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 import android.graphics.Bitmap;
-import android.graphics.Matrix;
-import android.graphics.Rect;
-import android.graphics.YuvImage;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.RectF;
 import android.hardware.Camera;
 import android.hardware.Camera.PreviewCallback;
 import android.content.Context;
@@ -16,22 +17,19 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.ImageView;
 
-public class CameraPreview extends SurfaceView{
+public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback, Camera.PreviewCallback{
 	private int maxWidth;
 	private int maxHeight;
 	private int previewWidth;
 	private int previewHeight;
 	private int format;
 	
+	Bitmap bm;
 	ImageView modifyImage;
-
-	int judgement = 0;
 	
-	private boolean trigger = true;
+	boolean isPreviewRunning = false;
 
-//	private ImageView ivCam;
-
-//	private SurfaceHolder mHolder;
+	private SurfaceHolder mHolder;
 	private Camera mCamera;
 
 	private byte[] previewData;
@@ -39,41 +37,82 @@ public class CameraPreview extends SurfaceView{
 	
 	int recogValue[] = new int[2];
 	
-	int judgement_thresold;
+	long judgement = 0;
+	long judgement_thresold;
+	Date lastCheck;
 	
-	AlarmPlay parent;
+	ActivityAlarmPlayAbstract parent;
 
 	@SuppressWarnings("deprecation")
-	CameraPreview(Context context, int maxWidth, int maxHeight, AlarmPlay parent, int judgement_thresold) throws RuntimeException, NullPointerException{
+	CameraPreview(Context context, int maxWidth, int maxHeight, ActivityAlarmPlayAbstract parent, int judgement_thresold) throws RuntimeException, NullPointerException{
 		super(context);
-
+		
+		lastCheck = new Date();
+		
 		System.loadLibrary("DetectEye");
 		
-		this.judgement_thresold = judgement_thresold;
+		this.judgement_thresold = judgement_thresold * 1000;
 		this.parent = parent;
 		
-//		mHolder = getHolder();
-//		mHolder.addCallback(this);
-//		mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 		this.maxWidth = maxWidth;
 		this.maxHeight = maxHeight;
 		
-		int useCameraId = 99;
+		mHolder = getHolder();
+		mHolder.addCallback(this);
+		mHolder.setType(SurfaceHolder.SURFACE_TYPE_NORMAL);
+		setWillNotDraw(false);
+	}
+
+	public void start(){
+		mCamera.startPreview();
+		Log.d("Camera", "Started");
+	}
+	
+// Pausing	
+	public void pause(){
 		
-		Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
-		int cameraCount = Camera.getNumberOfCameras();
-		
-		for(int i = 0; i < cameraCount; i++){
-			Camera.getCameraInfo( i, cameraInfo );
-			if ( cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
-            	useCameraId = i;
-			}
+	}
+
+
+	public void setModifyView(ImageView modifyImage) {
+		this.modifyImage = modifyImage;
+	}
+
+	@Override
+	public void onPreviewFrame(byte[] _data, Camera camera) {
+		if(result == null){
+			result = new int[_data.length];
 		}
 		
-		if(useCameraId == 99)
-			mCamera = Camera.open();
-		else
-			mCamera = Camera.open(useCameraId);
+		recogValue[0] = 0;
+		recogValue[1] = 0;
+		ObjectRecog(previewWidth, previewHeight, _data, result, recogValue);
+		
+		if(recogValue[0] == 1){
+			Date tmpDate = new Date();
+			judgement += (tmpDate.getTime() - lastCheck.getTime());
+			parent.setProgressBar((int) ((double)judgement/(double)judgement_thresold*100));
+		}
+			
+		
+		if(judgement > judgement_thresold){
+			parent.pass();
+		}
+		
+		
+		bm.eraseColor(Color.TRANSPARENT);
+		bm.setPixels(result, 0, previewHeight, 0, 0, previewHeight, previewWidth);
+		
+		
+//		modifyImage.setImageBitmap(bm);
+		lastCheck = new Date();
+	}
+
+	@Override
+	public void surfaceChanged(SurfaceHolder holder, int format, int width,
+			int height) {
+		
+		mCamera.stopPreview();
 		
 		Log.i("Still", "surfaceCreated(SurfaceHolder holder) ");
 		
@@ -104,6 +143,9 @@ public class CameraPreview extends SurfaceView{
 			}
 		}
 		Log.i("Still","Using size.width>" + previewWidth + "/size.height" + previewHeight);
+		
+		bm = Bitmap.createBitmap(previewHeight, previewWidth, Bitmap.Config.ARGB_8888);
+		
 		parameters.setPreviewSize(previewWidth, previewHeight);
 
 		
@@ -124,73 +166,67 @@ public class CameraPreview extends SurfaceView{
 		parameters.setPictureSize(pictureWidth, pictureHeight);
 		mCamera.setParameters(parameters);
 		
-		setPreviewEvent();
-	}
-
-// Take Picture (Not Use) ================================
-/*
-	@Deprecated
-	public boolean capture(Camera.PictureCallback jpegHandler){
-		if(mCamera != null){
-			mCamera.takePicture(null, null, jpegHandler);
-			return true;
-		}else{
-			return false;
-		}		
-	}
-*/
-
-	public void start(){
+		try {
+			mCamera.setPreviewDisplay(getHolder());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		mCamera.setPreviewCallback(this);
 		mCamera.startPreview();
 	}
-	
-// Pausing	
-	public void pause(){
-		trigger = false;
-		mCamera.stopPreview();
-		mCamera.setPreviewCallback(null);
-		mCamera.release();
-	}
 
-// PreviewEvent for Capture
-	public void setPreviewEvent(){
-		trigger = true;
-		this.mCamera.setPreviewCallback(new PreviewCallback(){
-			public void onPreviewFrame(byte[] _data, Camera _camera) {
-				if(result == null)
-					result = new int[_data.length];
-//				_data = new byte[_data.length];
-//				if(trigger){
-//					previewData = _data;
-//				}
-				recogValue[0] = 0;
-				recogValue[1] = 0;
-				ObjectRecog(previewWidth, previewHeight, _data, result, recogValue);
-				
-				if(recogValue[0] == 1){
-					judgement++;
-					parent.barRecogEye.setProgress(judgement);
-				}
-					
-				
-				if(judgement > judgement_thresold){
-					parent.pass();
-				}
-				
-				
-				Bitmap bm = Bitmap.createBitmap(previewHeight, previewWidth, Bitmap.Config.ARGB_8888);
-				bm.setPixels(result, 0/* offset */, previewHeight /* stride */, 0, 0, previewHeight, previewWidth);
-
-				modifyImage.setImageBitmap(bm);
-				
+	@Override
+	public void surfaceCreated(SurfaceHolder holder) {
+		// TODO Auto-generated method stub
+		int useCameraId = 99;
+		
+		this.setWillNotDraw(false);
+		
+		Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
+		int cameraCount = Camera.getNumberOfCameras();
+		
+		for(int i = 0; i < cameraCount; i++){
+			Camera.getCameraInfo( i, cameraInfo );
+			if ( cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+            	useCameraId = i;
 			}
-		});
+		}
+		if(useCameraId == 99)
+			mCamera = Camera.open();
+		else
+			mCamera = Camera.open(useCameraId);
+		
+		isPreviewRunning = true;
+		
+		try{
+            mCamera.setPreviewCallback(this);
+        }catch(Exception e){
+            Log.e("surfaceCratedError", e.getMessage());
+        }
 	}
 
+	@Override
+	public void surfaceDestroyed(SurfaceHolder holder) {
+		// TODO Auto-generated method stub
+		mCamera.setPreviewCallback(null);
+		mCamera.stopPreview();
+		mCamera.release();
+		
+		isPreviewRunning = false;
+	}
 	
-	public native void ObjectRecog(int width, int height, byte yuv[], int[] rgba, int[] value);
-
-	public void setModifyView(ImageView modifyImage) {
-		this.modifyImage = modifyImage;
+	@Override //from SurfaceView
+	public void onDraw(Canvas canvas) {
+		if(canvas != null && bm != null){
+			int viewWidth = this.getWidth();
+			int viewHeight = this.getHeight();
+			
+			canvas.drawBitmap(bm , null, new RectF(0, 0, viewWidth, viewHeight), new Paint());
+		    invalidate();
+		}
 	}
+	
+	public native void ObjectRecog(int width, int height, byte yuv[], int rgba[], int[] value);
 }
