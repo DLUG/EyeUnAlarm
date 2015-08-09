@@ -12,7 +12,7 @@
     
     <string name="label_alarm_title">Alarm Title</string>
     <string name="label_alarm_time">Alarm Time</string>
-    <string name="label_snooze">Snooze</string>
+    <string name="label_snooze">Snooze Time</string>
     <string name="label_alarm_type">Alarm Type</string>
     <string name="label_bell">Bell Sound</string>
     <string name="label_volume">Volume</string>
@@ -32,7 +32,8 @@
     <string name="btn_update">Update</string>
     <string name="btn_cancel">Cancel</string>
     <string name="btn_back">Back</string>
-
+    <string name="btn_snooze">Snooze</string>
+    
     <string name="btn_test_end">Test End</string>
     
     <string name="toast_updated_alarm">Updated!</string>
@@ -41,6 +42,11 @@
     <string name="toast_alarm_disabled_prefix">Disabled Alarm \"{AlarmName}\"</string>
     <string name="toast_cannot_open_camera">Cannot Open Camera</string>
     <string name="toast_snooze">Snoozed alarm \'{SnoozeTime}\' minute(s).</string>
+    <string name="toast_dismissed">Dismissed Alarm \"{AlarmName}\".</string>
+
+    <string name="message_still_alarming">Still Alarming...</string>
+    <string name="message_still_alarming2">Please Dismiss Alarm</string>
+    
     
     <string name="minutes">minute(s)</string>
     <string name="seconds">second(s)</string>

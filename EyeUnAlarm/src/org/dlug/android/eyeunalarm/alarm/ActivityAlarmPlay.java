@@ -83,4 +83,13 @@ public class ActivityAlarmPlay extends ActivityAlarmPlayAbstract{
 			}
 		};
 	}
+	
+	@Override
+	protected void onPause() {
+		if(!boolPassed){
+			showNotification(this);
+		}
+			
+		super.onPause();
+	}
 }

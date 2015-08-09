@@ -1,8 +1,5 @@
 package org.dlug.android.eyeunalarm;
 
-import java.util.List;
-
-import org.dlug.android.eyeunalarm.AlarmController.AlarmData;
 import org.dlug.android.eyeunalarm.alarm.ActivityAlarmPlayTest;
 
 import android.app.AlertDialog;

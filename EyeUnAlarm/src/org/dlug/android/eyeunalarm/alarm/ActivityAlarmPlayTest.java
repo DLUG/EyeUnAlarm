@@ -48,7 +48,7 @@ public class ActivityAlarmPlayTest extends ActivityAlarmPlayAbstract{
 
 		btnSnooze.setText(R.string.btn_test_end);
 	}
-	
+
 	@Override
 	public void onBackPressed() {
 		pass();
@@ -63,5 +63,14 @@ public class ActivityAlarmPlayTest extends ActivityAlarmPlayAbstract{
 				pass();
 			}
 		};
+	}
+	
+	@Override
+	protected void onPause() {
+		if(!boolPassed){
+			showNotification(this);
+		}
+			
+		super.onPause();
 	}
 }
