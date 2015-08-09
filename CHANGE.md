@@ -37,5 +37,6 @@ CHangeLog
 - Modify Initial values of RecogLength & Snooze
 - Exclude AlarmPlay in Task List
 
-▶0.7.3
+▶0.8.0
 - Add Notification when Alarm go to background.
+- Battery Optimize
