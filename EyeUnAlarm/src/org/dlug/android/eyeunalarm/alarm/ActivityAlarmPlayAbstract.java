@@ -5,11 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.TimeZone;
-
-import org.dlug.android.eyeunalarm.ActivityAlarmModify;
 import org.dlug.android.eyeunalarm.AlarmController;
 import org.dlug.android.eyeunalarm.R;
 
@@ -21,6 +16,7 @@ import android.app.PendingIntent;
 import android.app.KeyguardManager.KeyguardLock;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.Ringtone;
@@ -34,8 +30,10 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RadioGroup.LayoutParams;
 import android.widget.Toast;
 
 public abstract class ActivityAlarmPlayAbstract extends Activity{
@@ -55,6 +53,10 @@ public abstract class ActivityAlarmPlayAbstract extends Activity{
 	final long[] vibePattern = {1000, 200, 1000, 2000, 1200};
 
 	CameraPreview cameraView;
+	
+	LinearLayout layoutPlayVideo;
+	
+	ImageView viewStart;
 	public ProgressBar barRecogEye;
 
 	MediaPlayer player;
@@ -101,9 +103,27 @@ public abstract class ActivityAlarmPlayAbstract extends Activity{
 		KeyguardLock keyguardLock =  keyguardManager.newKeyguardLock("TAG");
 		keyguardLock.disableKeyguard();
 
+		layoutPlayVideo = (LinearLayout)findViewById(R.id.layoutPlayVideo);
+		layoutPlayVideo.setBackgroundColor(0);
+		
+		viewStart = new ImageView(this);
+		viewStart.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+		viewStart.setImageResource(R.drawable.clock);
+		
+		layoutPlayVideo.addView(viewStart);
+
+		viewStart.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				layoutPlayVideo.setBackgroundColor(Color.BLACK);
+				layoutPlayVideo.removeAllViews();
+				layoutPlayVideo.addView(cameraView);
+			}
+		});
+		
 		try{
 			cameraView = new CameraPreview(getApplicationContext(), 640, 480, this, recogStrength);
-			LinearLayout layoutPlayVideo = (LinearLayout)findViewById(R.id.layoutPlayVideo);
 
 			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 					LinearLayout.LayoutParams.MATCH_PARENT,
@@ -111,7 +131,6 @@ public abstract class ActivityAlarmPlayAbstract extends Activity{
 
 			cameraView.setLayoutParams(params);
 
-			layoutPlayVideo.addView(cameraView);
 		} catch(Exception e){
 			Log.e("OpenCV", "Cannot connect to OpenCV Manager");
 			Toast.makeText(this, R.string.toast_cannot_open_camera , 5).show();
@@ -231,5 +250,14 @@ public abstract class ActivityAlarmPlayAbstract extends Activity{
 
 
 		notificationManager.notify(0, tmpNotification);
+	}
+	
+	@Override
+	protected void onPause() {
+		layoutPlayVideo.setBackgroundColor(0);
+		layoutPlayVideo.removeAllViews();
+		layoutPlayVideo.addView(viewStart);
+
+		super.onPause();
 	}
 }
