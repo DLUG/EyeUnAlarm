@@ -1,3 +1,4 @@
 [submodule "DolmanTab"]
 	path = DolmanTab
 	url = https://github.com/mabin359/DolmanTab.git
+	branch = master
